@@ -5,7 +5,7 @@ export class FakeAPI {
     private reelNumber: number = 4; // get from config
     private reelSize: number = 20; // get from config
     private reelManager: ReelManager;
-    private initalBalance: number = 100;
+    private balance: number = 100;
 
     constructor() {
         this.reelManager = new ReelManager();
@@ -44,21 +44,29 @@ export class FakeAPI {
                 response = {
                 "action": "init",
                 "symbols": this.reelManager.Reels,
-                "balance": this.initalBalance,
+                "balance": this.balance,
             }
-        } else if (request.action === "spin") {
-            const reelIndexes = this.getNewReelPositions();
-            const win = this.checkForWin(reelIndexes);
+        } else if (request.action === "spin") {      
+            if (request.bet > this.balance) {
+                response = {
+                    "action": "error",
+                    "error": "Not enough money",
+                }
+            } else { // TODO: tidy brackets
+                const reelIndexes = this.getNewReelPositions();
+                const win = this.checkForWin(reelIndexes);
 
-            const newBalance = this.initalBalance - request.bet + win;
+                const newBalance = this.balance - request.bet + win;
+                this.balance = newBalance;
 
-            response = {
-                "action": "update",
-                "spin-result": {
-                    "reelIndexes": reelIndexes,
-                    "win": win,
-                },
-                "balance": newBalance,
+                response = {
+                    "action": "update",
+                    "spin-result": {
+                        "reelIndexes": reelIndexes,
+                        "win": win,
+                    },
+                    "balance": newBalance,
+                }
             }
         }
         return new Promise((resolve, reject) => {
@@ -78,6 +86,8 @@ export class FakeAPI {
         }
         return positions;
     }
+
+    // TODO: change to calculate Betways win logic?
 
     private checkForWin(reelIndexes: number[]): number {
         const reels: Reel[] = this.reelManager.getVisibleSymbols(reelIndexes);

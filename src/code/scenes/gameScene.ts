@@ -7,28 +7,39 @@ import { Request } from "../common/types";
 export class GameScene extends Container implements IScene {
     private api: FakeAPI;
     private bet = 5;
+
     constructor(){
         super();
+
         console.log("GameScene");
         this.api = new FakeAPI();
         this.createGame();
     }
 
     private async createGame(): Promise<void> {
-        // const symbolsBundle = await Assets.loadBundle("symbolsBundle");
-        // if (!symbolsBundle) {
-        //     throw new Error("symbolsBundle not loaded");
-        // }
-        // const ids = Object.keys(symbolsBundle);
-        // const symbols = ids.map((id) => symbolsBundle[id] as Texture);
-        // console.log(symbols);
+        const symbolsBundle = await Assets.loadBundle("symbolsBundle");
+        if (!symbolsBundle) {
+            throw new Error("symbolsBundle not loaded");
+        }
+        const ids = Object.keys(symbolsBundle);
+        const symbols = ids.map((id) => symbolsBundle[id] as Texture);
+        console.log(symbols);
 
         this.init();
-        this.spin();
+
+        const button = new Button(
+            { x: 100, y: 100 },
+            symbols[0],
+            symbols[1],
+            () => {
+                this.spin();
+            },
+            this,
+        );
+
     }
 
     private async init(): Promise<void> {
-        console.log("init");
         const request: Request = {
             action: "init",
         }
@@ -37,7 +48,6 @@ export class GameScene extends Container implements IScene {
     }
 
     private async spin(): Promise<void> {
-        console.log("spin");
         const request: Request = {
             action: "spin",
             "bet": this.bet,
