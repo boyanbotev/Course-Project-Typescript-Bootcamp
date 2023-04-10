@@ -13,7 +13,7 @@
     },
     "include": [
       "./src/code/**/*.ts"
-    ]
+, "src/code/backend/backendReelCalculator.ts"    ]
   }
   
   

@@ -24,5 +24,11 @@ export const manifest: ResolverManifest = {
                 "я": "assets/images/symbols/я.jpg",
             }
         },
+        {
+            name: "uiBundle",
+            assets: {
+                "spinButton": "assets/images/ui/spin.png",
+            }
+        },
     ]
 };

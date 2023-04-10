@@ -1,8 +1,9 @@
 import { Container, Assets, Texture } from "pixi.js";
 import { IScene } from "../common/IScene";
-import { FakeAPI } from "../common/fakeAPI";
-import { Button } from "../components/button";
+import { FakeAPI } from "../backend/fakeAPI";
 import { Request } from "../common/types";
+import { UIContainer } from "../components/uiContainer";
+import { ReelContainer } from "../components/reelContainer";
 
 export class GameScene extends Container implements IScene {
     private api: FakeAPI;
@@ -17,26 +18,10 @@ export class GameScene extends Container implements IScene {
     }
 
     private async createGame(): Promise<void> {
-        const symbolsBundle = await Assets.loadBundle("symbolsBundle");
-        if (!symbolsBundle) {
-            throw new Error("symbolsBundle not loaded");
-        }
-        const ids = Object.keys(symbolsBundle);
-        const symbols = ids.map((id) => symbolsBundle[id] as Texture);
-        console.log(symbols);
-
         this.init();
 
-        const button = new Button(
-            { x: 100, y: 100 },
-            symbols[0],
-            symbols[1],
-            () => {
-                this.spin();
-            },
-            this,
-        );
-
+        new ReelContainer(this);
+        new UIContainer(this);
     }
 
     private async init(): Promise<void> {
@@ -47,7 +32,7 @@ export class GameScene extends Container implements IScene {
         console.log(response);
     }
 
-    private async spin(): Promise<void> {
+    public async spin(): Promise<void> {
         const request: Request = {
             action: "spin",
             "bet": this.bet,

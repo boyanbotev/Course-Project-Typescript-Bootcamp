@@ -1,14 +1,14 @@
-import { SlotSymbol } from "./types"
+import { SlotSymbol } from "../common/types"
 
 // TODO: name consistency with casing
 
-// TODO: reelNumber should come from config
+// TODO: reelNumber should come from config, rename reelCount?
 
 export interface Reel {
     symbols: SlotSymbol[];
 }
 
-export class ReelManager {
+export class BackendReelCalculator {
     private reels: Reel[] = [];
 
     constructor() {
@@ -27,7 +27,7 @@ export class ReelManager {
 
         function createReel() {
             const symbols: SlotSymbol[] = ["T", "jem", "princess", "dagger", "king", "axe", "H", "warrior", "C", "B", "horns", "square", "emerald", "X", "P", "и", "я"];
-            // TODO: Get slotsymbol aray from SlotSymbol type
+            // TODO: Get slotsymbol array from SlotSymbol type
 
             const reel: SlotSymbol[] = [];
             let randomIndex: number;
@@ -49,13 +49,12 @@ export class ReelManager {
             }
             return reel;
         }
-
-        console.log(reels);
         return reels;
     }
 
     /** 
      * Should return the symbols on the reels starting at the reelIndexes
+     * TODO: Separate visible reelLength (horizontal) from visible reelHeight (vertical)
      */
     public getVisibleSymbols(reelIndexes: number[]): Reel[] {     // test this function?
         const visibleReels: Reel[] = [];

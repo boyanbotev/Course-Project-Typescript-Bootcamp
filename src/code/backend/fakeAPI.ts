@@ -1,49 +1,23 @@
-import { ReelManager, Reel } from "./ReelManager";
-import { Request, Response } from "./types";
+import { BackendReelCalculator, Reel } from "./backendReelCalculator";
+import { Request, Response } from "../common/types";
 
 export class FakeAPI {
     private reelNumber: number = 4; // get from config
+    private reelHeight: number = 4; // get from config + incorporate into calculations 
     private reelSize: number = 20; // get from config
-    private reelManager: ReelManager;
+    private reelCalculator: BackendReelCalculator;
     private balance: number = 100;
 
     constructor() {
-        this.reelManager = new ReelManager();
+        this.reelCalculator = new BackendReelCalculator();
     }
-
-    private responses: Response[] = [
-        {
-            "action": "update",
-            "spin-result": {
-                "reelIndexes": [1, 6, 3, 2],
-                "win": 0,
-            },
-            "balance": 95,
-        },
-        {
-            "action": "update",
-            "spin-result": {
-                "reelIndexes": [1, 6, 3, 2],
-                "win": 100,
-            },
-            "balance": 195,
-        },
-        {
-            "action": "update",
-            "spin-result": {
-                "reelIndexes": [1, 6, 3, 2],
-                "win": 0,
-            },
-            "balance": 190,
-        },
-    ]
 
     public async sendRequest(request: Request): Promise<Response> {
         let response: Response;
         if (request.action === "init") {
                 response = {
                 "action": "init",
-                "symbols": this.reelManager.Reels,
+                "symbols": this.reelCalculator.Reels,
                 "balance": this.balance,
             }
         } else if (request.action === "spin") {      
@@ -70,7 +44,6 @@ export class FakeAPI {
             }
         }
         return new Promise((resolve, reject) => {
-           // const response = this.responses.shift();
             if (response) {
                 resolve(response);
             } else {
@@ -90,13 +63,14 @@ export class FakeAPI {
     // TODO: change to calculate Betways win logic?
 
     private checkForWin(reelIndexes: number[]): number {
-        const reels: Reel[] = this.reelManager.getVisibleSymbols(reelIndexes);
+        const reels: Reel[] = this.reelCalculator.getVisibleSymbols(reelIndexes);
         console.log(reels);
 
         // Check reels for horizontal matches
         for (let i = 0; i < reels[0].symbols.length; i++) {
             let isFull = true;
             console.log("#################");
+
             for (let j = 0; j < reels.length; j++) {
                 console.log(reels[j].symbols[i]);
                 // TODO: Go over each reel, checking if three are the same in a row
