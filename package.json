@@ -3,7 +3,7 @@
     "lint": "eslint ./src/code --ext ts",
     "build:dev": "webpack --mode=development --progress",
     "watch:dev": "webpack --mode=development --progress --watch",
-    "start:dev": "webpack-dev-server",
+    "start": "webpack-dev-server",
     "test": "jest"
   },
   "dependencies": {

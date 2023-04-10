@@ -1,13 +1,7 @@
-import { Application, Sprite, Texture } from "pixi.js";
+import { Manager } from "./common/manager";
+import { LoaderScene } from "./scenes/loaderScene";
 
-window.addEventListener("DOMContentLoaded", () => {
-    const app = new Application<HTMLCanvasElement>({
-        view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
-        width: 1600,
-        height: 900,
-        backgroundColor: 0x000000,
-        autoDensity: true,
-        resolution: window.devicePixelRatio || 1,
-    });
-    console.log("PIXI Application created", app);
-});
+Manager.initialize(1600, 900, 0xFFFFFF);
+
+const loaderScene = new LoaderScene();
+Manager.changeScene(loaderScene);
