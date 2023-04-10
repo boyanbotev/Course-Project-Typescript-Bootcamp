@@ -20,6 +20,7 @@ export class Manager {
     public static initialize(width: number, height: number, backgroundColor: number): void {
         Manager.width = width;
         Manager.height = height;
+        
         Manager.app = new Application({
             view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
             resolution: window.devicePixelRatio || 1,
@@ -30,6 +31,29 @@ export class Manager {
         });
 
         Manager.app.ticker.add(Manager.update);
+
+        window.addEventListener("resize", Manager.resize);
+
+        Manager.resize();
+    }
+
+    public static resize(): void {
+        const screenWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        const screenHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+        const scale = Math.min(screenWidth / Manager.width, screenHeight / Manager.height);
+
+        const enlargedWidth = Math.floor(Manager.width * scale);
+        const enlargedHeight = Math.floor(Manager.height * scale);
+
+        const horizontalMargin = (screenWidth - enlargedWidth) / 2;
+        const verticalMargin = (screenHeight - enlargedHeight) / 2;
+
+        const view = Manager.app.view as HTMLCanvasElement;
+        view.style.width = enlargedWidth + "px";
+        view.style.height = enlargedHeight + "px";
+        view.style.marginLeft = view.style.marginRight = horizontalMargin + "px";
+        view.style.marginTop = view.style.marginBottom = verticalMargin + "px";
     }
 
     public static changeScene(newScene: IScene): void {
