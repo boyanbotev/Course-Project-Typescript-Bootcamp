@@ -2,6 +2,8 @@ import { SlotSymbol } from "./types"
 
 // TODO: name consistency with casing
 
+// TODO: reelNumber should come from config
+
 export interface Reel {
     symbols: SlotSymbol[];
 }
@@ -52,9 +54,40 @@ export class ReelManager {
         return reels;
     }
 
-    // should return the symbols on the reels at the given positions
-    public getSymbolsAtPositions(positions: number[]): Reel[] {
-        const reels: Reel[] = [{symbols: ["T", "jem", "princess", "dagger"]}];
+    /** 
+     * Should return the symbols on the reels starting at the reelIndexes
+     */
+    public getVisibleSymbols(reelIndexes: number[]): Reel[] {     // test this function?
+        const visibleReels: Reel[] = [];
+        for (let i = 0; i < reelIndexes.length; i++) {
+            const symbols: SlotSymbol[] = [];
+            console.log("_______________________");
+            for ( let j = 0; j < reelIndexes.length; j++ ) {
+
+                let index = reelIndexes[i]+j;
+                console.log(index);
+
+                if (index >= this.reels[i].symbols.length) {
+                    console.log("index is greater than reel length");
+                    index = index - this.reels[i].symbols.length;
+                    console.log(index);
+                }
+
+                console.log(this.reels[i].symbols[index]);
+                symbols.push(this.reels[i].symbols[index]);
+            }
+            visibleReels.push({
+                symbols: symbols,
+            });
+        }
+        return visibleReels;
+    }
+
+    public get Reels() {
+        const reels: SlotSymbol[][] = [];
+        for (let i = 0; i < this.reels.length; i++) {
+            reels.push(this.reels[i].symbols);
+        }
         return reels;
     }
 }
