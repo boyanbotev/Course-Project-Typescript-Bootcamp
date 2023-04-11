@@ -37,7 +37,7 @@ export class ReelContainer extends Container {
             const reel = new Reel();
             this.addChild(reel);
 
-            for (let j = 0; j < this.reelLength; j++) {
+            for (let j = 0; j < this.reelLength; j++) { // reel length + 1 to have extra reels to ensure player always sees a full reel
                 const symbol = new Symbol();
                 symbol.texture = symbolsBundle[reels[i][j]];
                 symbol.x = this.symbolSize * i;
@@ -61,8 +61,16 @@ export class ReelContainer extends Container {
         for (let i = 0; i < reels.length; i++) {
             const reel = reels[i];
             // tween reel
-            const distanceToTween = this.symbolSize * 1 * Math.floor(Math.random() * 2 + 1);
-            const tween = new Tween(reel).to({y: reel.y + distanceToTween}, 10000).start();
+            const distanceToTween = this.symbolSize/3;
+            const tween = new Tween(reel).to({y: reel.y + distanceToTween}, 4800).start();
+            // TODO: add easing
+            tween.onComplete(() => {
+                // TODO: check if all reels are stopped
+
+                // SHOULDN'T BE NECESSARY
+                const tweenUp = new Tween(reel).to({y: this.topMargin}, 100).start();
+                this.stop();
+            });
         }
     }
 
@@ -72,13 +80,11 @@ export class ReelContainer extends Container {
         }
         for (let i = 0; i < this.children.length; i++) {
             const reel = this.children[i] as Reel;
-            // if (reel.y > this.symbolSize * this.reelLength) {
-            //     reel.y = 0;
-            // }
+
             for (let j = 0; j < reel.children.length; j++) {
                 const symbol = reel.children[j] as Symbol;
-                //symbol.y = (reel.y + this.symbolSize * j + this.topMargin) % (this.symbolSize * this.reelLength);
                 symbol.y = ((reel.y + j) % this.reelLength) * this.symbolSize - this.symbolSize;
+                // incorporate top margin
             }
         }
     }
@@ -87,7 +93,6 @@ export class ReelContainer extends Container {
         console.log("stop");
         this.isRunning = false;
     }
-
 
 }
 
