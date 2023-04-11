@@ -1,9 +1,10 @@
-import { Container, Assets, Texture } from "pixi.js";
+import { Container, Assets, Texture, Ticker } from "pixi.js";
 import { IScene } from "../common/IScene";
 import { FakeAPI } from "../backend/fakeAPI";
 import { InitResponse, Request } from "../common/types";
 import { UIContainer } from "../components/uiContainer";
 import { ReelContainer } from "../components/reelContainer";
+import { Group } from "tweedle.js";
 
 export class GameScene extends Container implements IScene {
     private bet = 5;
@@ -25,6 +26,8 @@ export class GameScene extends Container implements IScene {
 
     private async createGame(): Promise<void> {
         this.init();
+        const ticker = Ticker.shared;
+        ticker.add(this.update.bind(this));
     }
 
     private async init(): Promise<void> {
@@ -44,8 +47,11 @@ export class GameScene extends Container implements IScene {
         }
         const response = await this.api.sendRequest(request);
         console.log(response);
+        this.reels.spin();
     }
 
     public update(delta: number): void {
+        Group.shared.update();
+        this.reels.update(delta);
     }
 }
