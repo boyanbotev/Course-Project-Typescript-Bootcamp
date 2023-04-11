@@ -37,7 +37,7 @@ export class ReelContainer extends Container {
             const reel = new Reel();
             this.addChild(reel);
 
-            for (let j = 0; j < this.reelLength; j++) { // reel length + 1 to have extra reels to ensure player always sees a full reel
+            for (let j = 0; j < this.reelLength; j++) { // adapt to have extra reels to ensure player always sees a full reel?
                 const symbol = new Symbol();
                 symbol.texture = symbolsBundle[reels[i][j]];
                 symbol.x = this.symbolSize * i;
@@ -46,12 +46,10 @@ export class ReelContainer extends Container {
                 symbol.height = this.symbolSize;
                 reel.addChild(symbol);
             }
-
         }
     }
 
     public async spin(): Promise<void> {
-        console.log("spin");
         if (this.isRunning) {
             return;
         }
@@ -60,16 +58,20 @@ export class ReelContainer extends Container {
         const reels = this.children as Reel[];
         for (let i = 0; i < reels.length; i++) {
             const reel = reels[i];
-            // tween reel
-            const distanceToTween = this.symbolSize/3;
-            const tween = new Tween(reel).to({y: reel.y + distanceToTween}, 4800).start();
+
+            const placeHolderDistanceToTween = this.symbolSize/3 * (Math.floor(Math.random()* 2 +1));
+            // distance should always be divisible by symbolsize
+
+            const tween = new Tween(reel).to({y: reel.y + placeHolderDistanceToTween}, 4800).start();
+            reel.isRunning = true;
             // TODO: add easing
             tween.onComplete(() => {
                 // TODO: check if all reels are stopped
 
                 // SHOULDN'T BE NECESSARY
                 const tweenUp = new Tween(reel).to({y: this.topMargin}, 100).start();
-                this.stop();
+                reel.isRunning = false;
+                this.checkIfStop(reels);
             });
         }
     }
@@ -85,18 +87,32 @@ export class ReelContainer extends Container {
                 const symbol = reel.children[j] as Symbol;
                 symbol.y = ((reel.y + j) % this.reelLength) * this.symbolSize - this.symbolSize;
                 // incorporate top margin
+
+                // get master reels of all 20 symbols
+                // TODO: swap symbols when they go off screen
+                if (symbol.y > this.topMargin) {
+                    // swap symbol with next in reel
+
+                }
             }
         }
+        
     }
 
-    public stop(): void {
+    public checkIfStop(reels: Reel[]): void {
+        for (let i = 0; i < reels.length; i++) {
+            const reel = reels[i];
+            if (reel.isRunning) {
+                return;
+            }
+        }
         console.log("stop");
         this.isRunning = false;
     }
-
 }
 
 class Reel extends Container {
+    public isRunning: boolean = false;
     constructor() {
         super();
     }
