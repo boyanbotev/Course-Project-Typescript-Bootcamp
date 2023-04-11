@@ -6,8 +6,8 @@ import { Manager } from "../common/manager";
 export class ReelContainer extends Container {
     private reelCount: number = 4; // get from config
     private reelLength: number = 4; // get from config
-    private symbolSize: number = 150; // get from config
-    private topMargin: number = 50;
+    private symbolSize: number = 165; // get from config
+    private topMargin: number = 65;
 
     private scene: GameScene;
 
