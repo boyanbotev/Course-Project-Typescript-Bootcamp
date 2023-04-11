@@ -4,12 +4,8 @@ import { SlotSymbol } from "../common/types"
 
 // TODO: reelNumber should come from config, rename reelCount?
 
-export interface Reel {
-    symbols: SlotSymbol[];
-}
-
 export class BackendReelCalculator {
-    private reels: Reel[] = [];
+    private reels: SlotSymbol[][] = [];
 
     constructor() {
         this.reels = this.createReels();
@@ -18,11 +14,11 @@ export class BackendReelCalculator {
     /**
      * Randomly create reels of size 20 using each symbol at least once
      */
-    private createReels(reelNumber: number = 4, reelSize: number = 20): Reel[] {
+    private createReels(reelNumber: number = 4, reelSize: number = 20): SlotSymbol[][] {
 
-        const reels: Reel[] = [];
+        const reels: SlotSymbol[][] = [];
         for (let i = 0; i < reelNumber; i++) {
-            reels.push({symbols: createReel()});
+            reels.push(createReel());
         }
 
         function createReel() {
@@ -56,8 +52,8 @@ export class BackendReelCalculator {
      * Should return the symbols on the reels starting at the reelIndexes
      * TODO: Separate visible reelLength (horizontal) from visible reelHeight (vertical)
      */
-    public getVisibleSymbols(reelIndexes: number[]): Reel[] {     // test this function?
-        const visibleReels: Reel[] = [];
+    public getVisibleSymbols(reelIndexes: number[]): SlotSymbol[][] {     // test this function?
+        const visibleReels: SlotSymbol[][] = [];
         for (let i = 0; i < reelIndexes.length; i++) {
             const symbols: SlotSymbol[] = [];
             console.log("_______________________");
@@ -66,27 +62,22 @@ export class BackendReelCalculator {
                 let index = reelIndexes[i]+j;
                 console.log(index);
 
-                if (index >= this.reels[i].symbols.length) {
+                if (index >= this.reels[i].length) {
                     console.log("index is greater than reel length");
-                    index = index - this.reels[i].symbols.length;
+                    index = index - this.reels[i].length;
                     console.log(index);
                 }
 
-                console.log(this.reels[i].symbols[index]);
-                symbols.push(this.reels[i].symbols[index]);
+                console.log(this.reels[i][index]);
+                symbols.push(this.reels[i][index]);
             }
-            visibleReels.push({
-                symbols: symbols,
-            });
+
+            visibleReels.push(symbols);
         }
         return visibleReels;
     }
 
     public get Reels() {
-        const reels: SlotSymbol[][] = [];
-        for (let i = 0; i < this.reels.length; i++) {
-            reels.push(this.reels[i].symbols);
-        }
-        return reels;
+        return this.reels;
     }
 }

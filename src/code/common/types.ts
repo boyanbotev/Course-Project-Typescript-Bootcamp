@@ -18,7 +18,7 @@ type ErrorResponse = {
     "error": string,
 }
 
-type InitResponse = {
+export type InitResponse = {
     "action": "init",
     "symbols": SlotSymbol[][],
     "balance": number,

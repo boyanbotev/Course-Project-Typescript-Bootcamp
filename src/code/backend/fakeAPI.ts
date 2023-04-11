@@ -1,5 +1,5 @@
-import { BackendReelCalculator, Reel } from "./backendReelCalculator";
-import { Request, Response } from "../common/types";
+import { BackendReelCalculator } from "./backendReelCalculator";
+import { Request, Response, SlotSymbol } from "../common/types";
 
 export class FakeAPI {
     private reelNumber: number = 4; // get from config
@@ -63,18 +63,18 @@ export class FakeAPI {
     // TODO: change to calculate Betways win logic?
 
     private checkForWin(reelIndexes: number[]): number {
-        const reels: Reel[] = this.reelCalculator.getVisibleSymbols(reelIndexes);
+        const reels: SlotSymbol[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
         console.log(reels);
 
         // Check reels for horizontal matches
-        for (let i = 0; i < reels[0].symbols.length; i++) {
+        for (let i = 0; i < reels[0].length; i++) {
             let isFull = true;
             console.log("#################");
 
             for (let j = 0; j < reels.length; j++) {
-                console.log(reels[j].symbols[i]);
+                console.log(reels[j][i]);
                 // TODO: Go over each reel, checking if three are the same in a row
-                if (reels[j].symbols[i] !== reels[0].symbols[i]) {
+                if (reels[j][i] !== reels[0][i]) {
                     isFull = false;
                     // currently checks if they are all the same
                 }
