@@ -22,7 +22,7 @@ export class UIContainer extends Container {
         new Button(
             {
                 x: Manager.Width/2, 
-                y: Manager.Height - spin.height/2
+                y: Manager.Height - spin.height/3,
             },
             spin,
             spin,
@@ -30,7 +30,7 @@ export class UIContainer extends Container {
                 this.scene.spin();
             },
             this,
-            0.7,
+            0.5,
         );
     }
     

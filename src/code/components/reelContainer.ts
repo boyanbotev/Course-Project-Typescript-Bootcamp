@@ -7,6 +7,8 @@ export class ReelContainer extends Container {
     private reelCount: number = 4; // get from config
     private reelLength: number = 4; // get from config
     private symbolSize: number = 150; // get from config
+    private topMargin: number = 50;
+
     private scene: GameScene;
 
     constructor(scene: GameScene) {
@@ -33,7 +35,7 @@ export class ReelContainer extends Container {
                 const reel = new Reel();
                 reel.texture = symbolsBundle[reels[i][j]];
                 reel.x = this.symbolSize * i;
-                reel.y = this.symbolSize * j;
+                reel.y = this.symbolSize * j + this.topMargin;
                 reel.width = this.symbolSize;
                 reel.height = this.symbolSize;
                 this.addChild(reel);
