@@ -1,10 +1,12 @@
 import { Container, Texture, Assets, Sprite } from "pixi.js";
 import { GameScene } from "../scenes/gameScene";
 import { SlotSymbol } from "../common/types";
+import { Manager } from "../common/manager";
 
 export class ReelContainer extends Container {
     private reelCount: number = 4; // get from config
     private reelLength: number = 4; // get from config
+    private symbolSize: number = 150; // get from config
     private scene: GameScene;
 
     constructor(scene: GameScene) {
@@ -12,6 +14,10 @@ export class ReelContainer extends Container {
         console.log("ReelContainer");
         this.scene = scene;
         this.scene.addChild(this);
+
+        const containerWidth = this.reelCount * this.symbolSize;
+        this.pivot.x = containerWidth / 2;
+        this.x = Manager.Width/2;
     }
 
     public async createReels(reels: SlotSymbol[][]): Promise<void> {
@@ -19,13 +25,20 @@ export class ReelContainer extends Container {
         if (!symbolsBundle) {
             throw new Error("symbolsBundle not loaded");
         }
-        const ids = Object.keys(symbolsBundle);
-        const symbols = ids.map((id) => symbolsBundle[id] as Texture);
 
-        console.log("symbols", symbols);
-
+        // fragile implementation
         for (let i = 0; i < this.reelCount; i++) {
-            const reel = new Reel();
+
+            for (let j = 0; j < this.reelLength; j++) {
+                const reel = new Reel();
+                reel.texture = symbolsBundle[reels[i][j]];
+                reel.x = this.symbolSize * i;
+                reel.y = this.symbolSize * j;
+                reel.width = this.symbolSize;
+                reel.height = this.symbolSize;
+                this.addChild(reel);
+            }
+
         }
     }
 }
