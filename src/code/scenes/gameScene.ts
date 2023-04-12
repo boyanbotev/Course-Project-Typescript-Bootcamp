@@ -3,14 +3,14 @@ import { IScene } from "../common/IScene";
 import { FakeAPI } from "../backend/fakeAPI";
 import { InitResponse, Request } from "../common/types";
 import { UIContainer } from "../components/uiContainer";
-import { ReelContainer } from "../components/reelContainer";
+import { SlotMachine } from "../components/slotMachine";
 import { Group } from "tweedle.js";
 
 export class GameScene extends Container implements IScene {
     private bet = 5;
 
     private api: FakeAPI;
-    private reels: ReelContainer;
+    private slotMachine: SlotMachine;
 
 
     constructor(){
@@ -18,7 +18,7 @@ export class GameScene extends Container implements IScene {
 
         console.log("GameScene");
         this.api = new FakeAPI();
-        this.reels = new ReelContainer(this);
+        this.slotMachine = new SlotMachine(this);
         new UIContainer(this);
 
         this.createGame();
@@ -37,7 +37,7 @@ export class GameScene extends Container implements IScene {
         const response = await this.api.sendRequest(request) as InitResponse;
         console.log(response);
 
-        this.reels.createReels(response.symbols);
+        this.slotMachine.createReels(response.symbols);
     }
 
     // doesn't belong in here, refactor later
@@ -48,11 +48,10 @@ export class GameScene extends Container implements IScene {
         }
         const response = await this.api.sendRequest(request);
         console.log(response);
-        this.reels.spin();
+        this.slotMachine.spin();
     }
 
     public update(delta: number): void {
-        Group.shared.update();
-        this.reels.update(delta);
+        this.slotMachine.update(delta);
     }
 }
