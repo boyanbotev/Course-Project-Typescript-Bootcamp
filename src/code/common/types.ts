@@ -1,6 +1,7 @@
 // TODO: Add d.ts file for types
 
 export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" | "P" | "princess" | "square" | "T" | "warrior" | "X" | "jem" | "dagger" | "и" | "я";
+// makes this rigid
 
 export type Response = UpdateResponse | InitResponse | ErrorResponse;
 

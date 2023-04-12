@@ -4,26 +4,26 @@ export const manifest: ResolverManifest = {
     bundles: [
         {
             name: "symbolsBundle",
-            assets: {
-                "axe": "assets/images/symbols/axe.jpg",
-                "B": "assets/images/symbols/B.jpg",
-                "C": "assets/images/symbols/C.jpg",
-                "dagger": "assets/images/symbols/dagger.jpg",
-                "emerald": "assets/images/symbols/emerald.jpg",
-                "H": "assets/images/symbols/H.jpg",
-                "horns": "assets/images/symbols/horns.jpg",
-                "jem": "assets/images/symbols/jem.jpg",
-                "king": "assets/images/symbols/king.jpg",
-                "P": "assets/images/symbols/P.png",
-                "princess": "assets/images/symbols/princess.jpg",
-                "square": "assets/images/symbols/square.jpg",
-                "T": "assets/images/symbols/T.jpg",
-                "warrior": "assets/images/symbols/warrior.jpg",
-                "X": "assets/images/symbols/X.jpg",
-                "и": "assets/images/symbols/и.jpg",
-                "я": "assets/images/symbols/я.jpg",
+            assets: { // TODO: Refactor with number as indexes
+                "axe": "assets/images/symbols/symbol1.png",
+                "princess": "assets/images/symbols/symbol2.png",
+                "emerald": "assets/images/symbols/symbol3.png",
+                "jem": "assets/images/symbols/symbol4.png",
+                "square": "assets/images/symbols/symbol5.png",
+                "dagger": "assets/images/symbols/symbol6.png",
+                "warrior": "assets/images/symbols/symbol7.png",
+                "king": "assets/images/symbols/symbol8.png",
+                "horns": "assets/images/symbols/symbol9.png",
+                "B": "assets/images/symbols/symbol10.png",
+                "C": "assets/images/symbols/symbol11.png",
+                "T": "assets/images/symbols/symbol12.png",
+                "X": "assets/images/symbols/symbol13.png",
+                "P": "assets/images/symbols/symbol14.png",
+                "H": "assets/images/symbols/symbol15.png",
+                "и": "assets/images/symbols/symbol16.png",
+                "я": "assets/images/symbols/symbol17.png",
             }
-        },
+        }, // change to symbol0, symbol1, symbol2
         {
             name: "uiBundle",
             assets: {

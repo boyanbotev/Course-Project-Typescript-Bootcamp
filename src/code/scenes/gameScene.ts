@@ -40,6 +40,7 @@ export class GameScene extends Container implements IScene {
         this.reels.createReels(response.symbols);
     }
 
+    // doesn't belong in here, refactor later
     public async spin(): Promise<void> {
         const request: Request = {
             action: "spin",

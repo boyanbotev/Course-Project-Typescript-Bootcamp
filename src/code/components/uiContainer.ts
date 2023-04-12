@@ -19,6 +19,7 @@ export class UIContainer extends Container {
         const spinBundle = await Assets.loadBundle("uiBundle");
         const spin = spinBundle["spinButton"] as Texture;
 
+        // TODO: relate button size to reel size?
         new Button(
             {
                 x: Manager.Width/2, 

@@ -4,7 +4,7 @@ import { SlotSymbol } from "../common/types";
 import { Manager } from "../common/manager";
 import { Tween } from "tweedle.js";
 
-export class ReelContainer extends Container {
+export class ReelContainer extends Container { //rename SlotMachine?
     private reelCount: number = 4; // get from config
     private reelLength: number = 4; // get from config
     private symbolSize: number = 165; // get from config
@@ -95,8 +95,7 @@ export class ReelContainer extends Container {
 
                 }
             }
-        }
-        
+        }    
     }
 
     public checkIfStop(reels: Reel[]): void {
@@ -123,3 +122,21 @@ class Symbol extends Sprite {
         super();
     }
 }
+
+// Break the reelcontainer up into little pieces
+
+// consider Hierarchy:
+// each reel indpendent
+
+// slot machine initializes certain reels, tells them where they start and stop
+
+// symbols could have their own movement logic
+// or the reel does it
+
+// make it modular
+
+// make it scaleable
+// keep it in source: config.ts
+// put it in json, parse to config.ts
+// do some simple type checking to check its correct
+
