@@ -5,6 +5,7 @@ import { config } from "../common/config"
 
 export class BackendReelCalculator {
     private reelCount: number = config.reelCount;
+    private reelLength: number = config.reelLength; // incorporate into calculations
     private reelSize: number = config.reelSize;
 
     private reels: SlotSymbol[][] = [];
@@ -59,7 +60,7 @@ export class BackendReelCalculator {
         for (let i = 0; i < reelIndexes.length; i++) {
             const symbols: SlotSymbol[] = [];
             console.log("_______________________");
-            for ( let j = 0; j < reelIndexes.length; j++ ) {
+            for ( let j = 0; j < this.reelLength; j++ ) { // using reelIndexes.length as reelHeight forces the reels to be square
 
                 let index = reelIndexes[i]+j;
                 console.log(index);

@@ -1,12 +1,13 @@
 import { BackendReelCalculator } from "./backendReelCalculator";
 import { Request, Response, SlotSymbol } from "../common/types";
+import { config } from "../common/config";
 
 export class FakeAPI {
-    private reelNumber: number = 4; // get from config
-    private reelHeight: number = 4; // get from config + incorporate into calculations 
-    private reelSize: number = 20; // get from config
+    private reelCount: number = config.reelCount;
+    private reelLength: number = config.reelLength; // incorporate into calculations 
+    private reelSize: number = config.reelSize;
     private reelCalculator: BackendReelCalculator;
-    private balance: number = 100;
+    private balance: number = config.initialBalance;
 
     constructor() {
         this.reelCalculator = new BackendReelCalculator();
@@ -54,7 +55,7 @@ export class FakeAPI {
 
     private getNewReelPositions(): number[] {
         const positions: number[] = [];
-        for (let i = 0; i < this.reelNumber; i++) {
+        for (let i = 0; i < this.reelCount; i++) {
             positions.push(Math.floor(Math.random() * this.reelSize));
         }
         return positions;

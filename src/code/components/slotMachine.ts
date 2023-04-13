@@ -2,7 +2,6 @@ import { Container, Texture, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../scenes/gameScene";
 import { SlotSymbol } from "../common/types";
 import { Manager } from "../common/manager";
-import { Tween } from "tweedle.js"; // use gsap instead?
 import { Reel } from "./Reel";
 import { config } from "../common/config";
 
@@ -57,6 +56,7 @@ export class SlotMachine extends Container {
     }
 
     public async spin(): Promise<void> {
+        // add logic to stop spin if not in idle state
         for (let i = 0; i < this.reels.length; i++) {
             const reel = this.reels[i];
             reel.spin();

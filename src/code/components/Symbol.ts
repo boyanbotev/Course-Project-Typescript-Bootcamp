@@ -67,7 +67,10 @@ export class Symbol extends Sprite {
         this.reelIndex = this.reel.incrementReelStoppingIndex();
         console.log(this.endPoint - (this.startPoint * this.reelIndex));
 
-        gsap.to(this, { y: this.y + (this.endPoint - (this.startPoint * this.reelIndex)), duration: 0.3, onComplete: () => {
+        const duration = 0.6 - (this.reelIndex * 0.09);
+        // weird bug of bottom item popping up at end of animation
+
+        gsap.to(this, { y: this.y + (this.endPoint - (this.startPoint * this.reelIndex)), duration: duration, onComplete: () => {
             this.currentState = SpinningState.Idle;
         }});
     }

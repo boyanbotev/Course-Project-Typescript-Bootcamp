@@ -118,3 +118,7 @@ export class Reel extends Container {
         }
     }
 }
+
+// Weird bugs of symbols flying down through already stopped symbols
+// And symbols never being stopped
+
