@@ -1,4 +1,4 @@
-import { Container, Texture, Assets } from "pixi.js";
+import { Container, Texture, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../scenes/gameScene";
 import { SlotSymbol } from "../common/types";
 import { Manager } from "../common/manager";
@@ -8,14 +8,16 @@ import { config } from "../common/config";
 
 enum SpinningState {
     Idle,
-    Spinning, // randomly assinging symbols
+    Spinning, // randomly assigning symbols
     Stopping, // preparing symbols specified by backend
 }
 
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
     private reelLength: number = config.reelLength;
+    private addedReelLength: number = config.reelLength +1;
     private symbolSize: number = config.symbolSize;
+    private reelCreationMargin: number = config.symbolSize;
     private topMargin: number = config.topMargin;
 
     private scene: GameScene;
@@ -26,11 +28,14 @@ export class SlotMachine extends Container {
         console.log("ReelContainer");
         this.scene = scene;
         this.scene.addChild(this);
-        this.reelLength += 1; // add one extra symbol to ensure symbols are always visible
 
         const containerWidth = this.reelCount * this.symbolSize;
         this.pivot.x = containerWidth / 2;
         this.x = Manager.Width/2;
+
+        this.y = -(this.symbolSize-this.topMargin);
+
+        this.createMask();
     }
 
     public async createReels(reels: SlotSymbol[][]): Promise<void> {
@@ -41,10 +46,20 @@ export class SlotMachine extends Container {
 
         console.log(this.reelCount);
         for (let i = 0; i < this.reelCount; i++) {
-            const reel = new Reel(i, this.reelLength, this.symbolSize, this.topMargin, symbolsBundle, reels, this);
+            const reel = new Reel(i, this.addedReelLength, this.symbolSize, this.reelCreationMargin, symbolsBundle, reels, this);
             console.log(reel);
             this.reels.push(reel);
         }
+    }
+
+    private createMask() {
+        const graphics = new Graphics();
+        graphics.beginFill(0x000000);
+        graphics.drawRect(0, this.reelCreationMargin, this.reelCount * this.symbolSize, this.symbolSize * this.reelLength); // find a way to make + 1 and -1 clearer
+        graphics.endFill();
+        this.addChild(graphics);
+
+        this.mask = graphics;
     }
 
     public async spin(): Promise<void> {
@@ -72,5 +87,3 @@ export class SlotMachine extends Container {
     //     // this.isRunning = false;
     // }
 }
-
-// TODO: Add masking to reels

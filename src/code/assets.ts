@@ -23,7 +23,7 @@ export const manifest: ResolverManifest = {
                 "и": "assets/images/symbols/symbol16.png",
                 "я": "assets/images/symbols/symbol17.png",
             }
-        }, // change to symbol0, symbol1, symbol2
+        },
         {
             name: "uiBundle",
             assets: {

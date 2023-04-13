@@ -15,6 +15,7 @@ export class Reel extends Container {
     private symbolsBundle: any;
     private symbols: Symbol[] = [];
     public isRunning: boolean = false;
+    
     constructor(
         reelXpos: number,
         reelLength: number,

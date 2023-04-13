@@ -22,20 +22,17 @@ export class Symbol extends Sprite {
         this.y += delta * this.velocity;
 
         this.y = (this.y % this.endPoint);
-        // this causes problems when endmargin was not a multiple of symbolsize
 
         // TODO: swap symbols when they go off screen
         if (this.y < this.startPoint) {
             this.swapSymbols();
         }
 
-
         if (this.velocity > 0) {
             this.velocity -= this.decreaseRate;
         } else {
             this.velocity = 0;
-        }
-        
+        }      
     }
 
     public set Velocity(velocity: number) {
@@ -50,7 +47,5 @@ export class Symbol extends Sprite {
 
 
 // TODO: Add blur
-
-// TODO: get more control over start and end point and distance between symbols
 
 // TODO: add stopping state that instantiates new symbols and tweens them into place

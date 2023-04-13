@@ -12,7 +12,6 @@ export class GameScene extends Container implements IScene {
     private api: FakeAPI;
     private slotMachine: SlotMachine;
 
-
     constructor(){
         super();
 

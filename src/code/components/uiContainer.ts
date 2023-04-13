@@ -3,7 +3,6 @@ import { Manager } from "../common/manager";
 import { Button } from "./button";
 import { GameScene } from "../scenes/gameScene";
 
-
 export class UIContainer extends Container {
     private scene: GameScene;
     constructor(scene: GameScene) {
