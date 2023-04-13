@@ -1,4 +1,4 @@
-import { Container } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SlotSymbol } from "../common/types";
 
@@ -38,7 +38,7 @@ export class Reel extends Container {
         // should be refactored
 
         for (let j = 0; j < this.reelLength; j++) {
-            const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength));
+            const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
             symbol.texture = this.symbolsBundle[this.reels[this.reelXIndex][j]];
             symbol.x = this.symbolSize * this.reelXIndex;
             symbol.y = this.symbolSize * j + this.symbolSize;
@@ -55,6 +55,11 @@ export class Reel extends Container {
             const symbol = this.symbols[i];
             symbol.update(delta);
         }
+    }
+
+    public getRandomTexture(): Texture {
+        const randomIndex = Math.floor(Math.random() * this.reels[this.reelXIndex].length);
+        return this.symbolsBundle[this.reels[this.reelXIndex][randomIndex]];
     }
 
     public spin(): void {

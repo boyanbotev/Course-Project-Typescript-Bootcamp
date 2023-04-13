@@ -1,4 +1,5 @@
-import { Sprite } from "pixi.js";
+import { Sprite, Texture } from "pixi.js";
+import { Reel } from "./Reel";
 
 // does Symbol have its own spinning state?
 // is it aware of the spinning state of the reel?
@@ -8,14 +9,17 @@ export class Symbol extends Sprite {
     private endPoint: number = 500;
     private velocity: number = 0;
     private decreaseRate: number = 0.1;
+    private reel: Reel;
 
     constructor(
         startPoint: number,
         endMargin: number,
+        reel: Reel
     ) {
         super();
         this.startPoint = startPoint;
         this.endPoint = endMargin;
+        this.reel = reel;
     }
 
     public update(delta: number): void {
@@ -23,8 +27,8 @@ export class Symbol extends Sprite {
 
         this.y = (this.y % this.endPoint);
 
-        // TODO: swap symbols when they go off screen
-        if (this.y < this.startPoint) {
+        // Checks if y is very small, because checking if 0 will not work
+        if (this.y <= this.startPoint / 10) {
             this.swapSymbols();
         }
 
@@ -42,6 +46,8 @@ export class Symbol extends Sprite {
     private swapSymbols(): void {
         // request random symbol from reel
         // set symbol to that symbol
+        const texture: Texture = this.reel.getRandomTexture();
+        this.texture = texture;
     }
 }
 
