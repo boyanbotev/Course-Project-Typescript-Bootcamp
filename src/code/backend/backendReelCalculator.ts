@@ -1,10 +1,14 @@
 import { SlotSymbol } from "../common/types"
+import { config } from "../common/config"
 
 // TODO: name consistency with casing
 
 // TODO: reelNumber should come from config, rename reelCount?
 
 export class BackendReelCalculator {
+    private reelCount: number = config.reelCount;
+    private reelSize: number = config.reelSize;
+
     private reels: SlotSymbol[][] = [];
 
     constructor() {
@@ -14,14 +18,14 @@ export class BackendReelCalculator {
     /**
      * Randomly create reels of size 20 using each symbol at least once
      */
-    private createReels(reelNumber: number = 4, reelSize: number = 20): SlotSymbol[][] {
+    private createReels(): SlotSymbol[][] {
 
         const reels: SlotSymbol[][] = [];
-        for (let i = 0; i < reelNumber; i++) {
-            reels.push(createReel());
+        for (let i = 0; i < this.reelCount; i++) {
+            reels.push(createReel(this.reelSize));
         }
 
-        function createReel() {
+        function createReel(reelSize: number) {
             const symbols: SlotSymbol[] = ["T", "jem", "princess", "dagger", "king", "axe", "H", "warrior", "C", "B", "horns", "square", "emerald", "X", "P", "и", "я"];
             // TODO: Get slotsymbol array from SlotSymbol type
 

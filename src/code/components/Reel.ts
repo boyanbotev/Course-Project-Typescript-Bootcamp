@@ -37,7 +37,7 @@ export class Reel extends Container {
 
     public createSymbols(): void {
         // fragile implementation for getting symbols from symbolBundle by id
-        // should be refactored to use a map
+        // should be refactored
 
         for (let j = 0; j < this.reelLength; j++) { // adapt to have extra reels to ensure player always sees a full reel?
             const symbol = new Symbol(this.topMargin, (this.symbolSize * this.reelLength));
@@ -52,13 +52,11 @@ export class Reel extends Container {
         }
     }
 
-    public update(delta: number): void {
-        // if (this.isRunning) {
-            for (let i = 0; i < this.symbols.length; i++) {
-                const symbol = this.symbols[i];
-                symbol.update(delta);
-            }
-        // }
+    public updateSymbols(delta: number): void {
+        for (let i = 0; i < this.symbols.length; i++) {
+            const symbol = this.symbols[i];
+            symbol.update(delta);
+        }
     }
 
     public spin(): void {

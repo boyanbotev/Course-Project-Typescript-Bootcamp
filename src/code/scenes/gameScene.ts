@@ -52,6 +52,6 @@ export class GameScene extends Container implements IScene {
     }
 
     public update(delta: number): void {
-        this.slotMachine.update(delta);
+        this.slotMachine.updateReels(delta);
     }
 }

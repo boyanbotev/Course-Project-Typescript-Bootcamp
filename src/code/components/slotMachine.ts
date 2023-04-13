@@ -4,6 +4,7 @@ import { SlotSymbol } from "../common/types";
 import { Manager } from "../common/manager";
 import { Tween } from "tweedle.js"; // use gsap instead?
 import { Reel } from "./Reel";
+import { config } from "../common/config";
 
 enum SpinningState {
     Idle,
@@ -12,10 +13,10 @@ enum SpinningState {
 }
 
 export class SlotMachine extends Container {
-    private reelCount: number = 4; // get from config
-    private reelLength: number = 4; // get from config
-    private symbolSize: number = 165; // get from config
-    private topMargin: number = 65;
+    private reelCount: number = config.reelCount;
+    private reelLength: number = config.reelLength;
+    private symbolSize: number = config.symbolSize;
+    private topMargin: number = config.topMargin;
 
     private scene: GameScene;
     private reels: Reel[] = [];
@@ -25,7 +26,7 @@ export class SlotMachine extends Container {
         console.log("ReelContainer");
         this.scene = scene;
         this.scene.addChild(this);
-        //this.topMargin = this.symbolSize; //maybe?
+        this.reelLength += 1; // add one extra symbol to ensure symbols are always visible
 
         const containerWidth = this.reelCount * this.symbolSize;
         this.pivot.x = containerWidth / 2;
@@ -38,37 +39,38 @@ export class SlotMachine extends Container {
             throw new Error("symbolsBundle not loaded");
         }
 
+        console.log(this.reelCount);
         for (let i = 0; i < this.reelCount; i++) {
             const reel = new Reel(i, this.reelLength, this.symbolSize, this.topMargin, symbolsBundle, reels, this);
+            console.log(reel);
             this.reels.push(reel);
         }
     }
 
     public async spin(): Promise<void> {
-        // for each reel, start spin
         for (let i = 0; i < this.reels.length; i++) {
             const reel = this.reels[i];
             reel.spin();
         }
     }
 
-    public update(delta: number): void {
+    public updateReels(delta: number): void {
         for (let i = 0; i < this.reels.length; i++) {
             const reel = this.reels[i];
-            reel.update(delta);
+            reel.updateSymbols(delta);
         }
     }
 
-    public checkIfStop(reels: Reel[]): void {
-        for (let i = 0; i < reels.length; i++) {
-            const reel = reels[i];
-            if (reel.isRunning) {
-                return;
-            }
-        }
-        console.log("stop");
-        // this.isRunning = false;
-    }
+    // public checkIfStop(reels: Reel[]): void {
+    //     for (let i = 0; i < reels.length; i++) {
+    //         const reel = reels[i];
+    //         if (reel.isRunning) {
+    //             return;
+    //         }
+    //     }
+    //     console.log("stop");
+    //     // this.isRunning = false;
+    // }
 }
 
 // TODO: Add masking to reels
