@@ -17,7 +17,6 @@ export class SlotMachine extends Container {
     private reelLength: number = config.reelLength;
     private addedReelLength: number = config.reelLength +1;
     private symbolSize: number = config.symbolSize;
-    private reelCreationMargin: number = config.symbolSize;
     private topMargin: number = config.topMargin;
 
     private scene: GameScene;
@@ -46,7 +45,7 @@ export class SlotMachine extends Container {
 
         console.log(this.reelCount);
         for (let i = 0; i < this.reelCount; i++) {
-            const reel = new Reel(i, this.addedReelLength, this.symbolSize, this.reelCreationMargin, symbolsBundle, reels, this);
+            const reel = new Reel(i, this.addedReelLength, this.symbolSize, symbolsBundle, reels, this);
             console.log(reel);
             this.reels.push(reel);
         }
@@ -55,7 +54,7 @@ export class SlotMachine extends Container {
     private createMask() {
         const graphics = new Graphics();
         graphics.beginFill(0x000000);
-        graphics.drawRect(0, this.reelCreationMargin, this.reelCount * this.symbolSize, this.symbolSize * this.reelLength); // find a way to make + 1 and -1 clearer
+        graphics.drawRect(0, this.symbolSize, this.reelCount * this.symbolSize, this.symbolSize * this.reelLength); // find a way to make + 1 and -1 clearer
         graphics.endFill();
         this.addChild(graphics);
 

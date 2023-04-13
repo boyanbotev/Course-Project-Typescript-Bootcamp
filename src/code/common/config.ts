@@ -6,7 +6,7 @@ export const config = {
     reelSize: 20,
 
     symbolSize: 165,
-    topMargin: 65, // was 65
+    topMargin: 65,
 
     initialBalance: 100,
 };

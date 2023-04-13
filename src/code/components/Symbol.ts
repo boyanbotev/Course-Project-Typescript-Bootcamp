@@ -10,11 +10,11 @@ export class Symbol extends Sprite {
     private decreaseRate: number = 0.1;
 
     constructor(
-        topMargin: number,
+        startPoint: number,
         endMargin: number,
     ) {
         super();
-        this.startPoint = topMargin;
+        this.startPoint = startPoint;
         this.endPoint = endMargin;
     }
 
