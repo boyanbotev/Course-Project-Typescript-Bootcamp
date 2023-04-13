@@ -1,10 +1,9 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SlotSymbol } from "../common/types";
+import { Tween, Group } from "tweedle.js";
+import { SpinningState } from "../common/types";
 
-// does Reel have its own spinning state?
-// is it aware of the spinning state of the reel?
-// of the slot machine?
 export class Reel extends Container {
     private reelLength: number;
     private symbolSize: number;
@@ -13,7 +12,13 @@ export class Reel extends Container {
     private reels: SlotSymbol[][];
     private symbolsBundle: any;
     private symbols: Symbol[] = [];
-    public isRunning: boolean = false;
+
+    private velocity: number = 0;
+    private decreaseRate: number = 0.1;
+    private velocityThreshold: number = 15;
+
+    private currentState: SpinningState = SpinningState.Idle;
+    private reelIndex: number = 0;
 
     constructor(
         reelXpos: number,
@@ -51,9 +56,46 @@ export class Reel extends Container {
     }
 
     public updateSymbols(delta: number): void {
-        for (let i = 0; i < this.symbols.length; i++) {
-            const symbol = this.symbols[i];
-            symbol.update(delta);
+        if (this.currentState === SpinningState.Spinning) {
+
+            if (this.velocity < this.velocityThreshold) {
+                    
+                this.currentState = SpinningState.Stopping;
+
+                // Update symbols' state
+                for (let i = 0; i < this.symbols.length; i++) {
+                    const symbol = this.symbols[i];
+                    symbol.State = SpinningState.Stopping;
+                }
+
+            }
+                
+            this.velocity -= this.decreaseRate;
+
+            for (let i = 0; i < this.symbols.length; i++) {
+                const symbol = this.symbols[i];
+                symbol.update(delta);
+                symbol.Velocity = this.velocity;
+            }
+        }
+        
+        if (this.currentState === SpinningState.Stopping) {
+            Group.shared.update();
+            for (let i = 0; i < this.symbols.length; i++) {
+                const symbol = this.symbols[i];
+                symbol.update(delta);
+            }
+
+            let isAllStopped = true;
+            for (let i = 0; i < this.symbols.length; i++) {
+                const symbol = this.symbols[i];
+                if (symbol.State != SpinningState.Idle) {
+                    isAllStopped = false;
+                }
+            }
+            if (isAllStopped) {
+                this.currentState = SpinningState.Idle;
+            }
         }
     }
 
@@ -62,12 +104,19 @@ export class Reel extends Container {
         return this.symbolsBundle[this.reels[this.reelXIndex][randomIndex]];
     }
 
+    public incrementReelStoppingIndex(): number {
+        this.reelIndex++;
+        return this.reelIndex;
+    }
+
     public spin(): void {
-        const randomSpeed = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
-        this.isRunning = true;
+        this.reelIndex = 0;
+        this.currentState = SpinningState.Spinning;
+        this.velocity = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
-            symbol.Velocity = randomSpeed;
+            symbol.Velocity = this.velocity;
+            symbol.State = SpinningState.Spinning;
         }
     }
 }

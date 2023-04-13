@@ -6,12 +6,6 @@ import { Tween } from "tweedle.js"; // use gsap instead?
 import { Reel } from "./Reel";
 import { config } from "../common/config";
 
-enum SpinningState {
-    Idle,
-    Spinning, // randomly assigning symbols
-    Stopping, // preparing symbols specified by backend
-}
-
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
     private reelLength: number = config.reelLength;
@@ -86,4 +80,19 @@ export class SlotMachine extends Container {
     //     console.log("stop");
     //     // this.isRunning = false;
     // }
+
+    // how to tween each reel to stop at right symbols?
+    // how to reflect velocity of symbols in each reel in the tween?
+
+    // check velocity of each reel
+    // if velocity is below a certain threshold
+    // tween reel to stop at right symbols
+
+    // but velocity is in the symbol class
+    // so how to access it from reel?
+
+    // maybe reel should set the velocity of each symbol?
+    // and then reel can check if all symbols are below a certain threshold
+
+    // how to calculate velocity threshold to work regardless of different settings?
 }

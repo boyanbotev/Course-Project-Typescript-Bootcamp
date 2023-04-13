@@ -35,3 +35,9 @@ type SpinRequest = {
 type InitRequest = {
     "action": "init",
 }
+
+export enum SpinningState {
+    Idle,
+    Spinning, // randomly assigning symbols
+    Stopping, // preparing symbols specified by backend
+}
