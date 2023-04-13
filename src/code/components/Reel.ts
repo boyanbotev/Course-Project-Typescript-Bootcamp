@@ -17,7 +17,7 @@ export class Reel extends Container {
 
     constructor(
         reelXpos: number,
-        reelLength: number,
+        addedReelLength: number,
         symbolSize: number,
         symbolsBundle: any,
         symbolReferenceOrder: SlotSymbol[][],
@@ -25,7 +25,7 @@ export class Reel extends Container {
     ) {
         super();
         this.reelXIndex = reelXpos;
-        this.reelLength = reelLength;
+        this.reelLength = addedReelLength;
         this.symbolSize = symbolSize;
         this.symbolsBundle = symbolsBundle;
         this.reels = symbolReferenceOrder;
@@ -37,7 +37,7 @@ export class Reel extends Container {
         // fragile implementation for getting symbols from symbolBundle by id
         // should be refactored
 
-        for (let j = 0; j < this.reelLength; j++) { // adapt to have extra reels to ensure player always sees a full reel?
+        for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength));
             symbol.texture = this.symbolsBundle[this.reels[this.reelXIndex][j]];
             symbol.x = this.symbolSize * this.reelXIndex;

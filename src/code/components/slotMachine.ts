@@ -30,8 +30,9 @@ export class SlotMachine extends Container {
 
         const containerWidth = this.reelCount * this.symbolSize;
         this.pivot.x = containerWidth / 2;
-        this.x = Manager.Width/2;
 
+        this.x = Manager.Width/2;
+        // Move reel container up so symbols are created off screen to avoid them popping in
         this.y = -(this.symbolSize-this.topMargin);
 
         this.createMask();
@@ -54,7 +55,7 @@ export class SlotMachine extends Container {
     private createMask() {
         const graphics = new Graphics();
         graphics.beginFill(0x000000);
-        graphics.drawRect(0, this.symbolSize, this.reelCount * this.symbolSize, this.symbolSize * this.reelLength); // find a way to make + 1 and -1 clearer
+        graphics.drawRect(0, this.symbolSize, this.reelCount * this.symbolSize, this.symbolSize * this.reelLength);
         graphics.endFill();
         this.addChild(graphics);
 

@@ -3,8 +3,6 @@ import { config } from "../common/config"
 
 // TODO: name consistency with casing
 
-// TODO: reelNumber should come from config, rename reelCount?
-
 export class BackendReelCalculator {
     private reelCount: number = config.reelCount;
     private reelSize: number = config.reelSize;
