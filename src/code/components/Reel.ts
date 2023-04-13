@@ -1,7 +1,6 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SlotSymbol } from "../common/types";
-import { Tween, Group } from "tweedle.js";
 import { SpinningState } from "../common/types";
 
 export class Reel extends Container {
@@ -80,7 +79,6 @@ export class Reel extends Container {
         }
         
         if (this.currentState === SpinningState.Stopping) {
-            Group.shared.update();
             for (let i = 0; i < this.symbols.length; i++) {
                 const symbol = this.symbols[i];
                 symbol.update(delta);

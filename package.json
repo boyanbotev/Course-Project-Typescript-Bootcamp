@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "copy-webpack-plugin": "^11.0.0",
+    "gsap": "^3.11.5",
     "html-webpack-plugin": "^5.5.0",
     "pixi.js": "^7.2.4",
     "ts-loader": "^9.4.2",

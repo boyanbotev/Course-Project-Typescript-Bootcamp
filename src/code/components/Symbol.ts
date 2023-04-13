@@ -1,7 +1,7 @@
 import { Sprite, Texture } from "pixi.js";
 import { Reel } from "./Reel";
 import { SpinningState } from "../common/types";
-import { Tween } from "tweedle.js";
+import { gsap } from "gsap";
 
 // does Symbol have its own spinning state?
 // is it aware of the spinning state of the reel?
@@ -66,13 +66,10 @@ export class Symbol extends Sprite {
     private initializeTween() {
         this.reelIndex = this.reel.incrementReelStoppingIndex();
         console.log(this.endPoint - (this.startPoint * this.reelIndex));
-        const tween = new Tween(this)
-            .to({ y: this.y + (this.endPoint - (this.startPoint * this.reelIndex))}, 280)
-            //.easing(Tween.Easing.Cubic.Out)
-            .start();
-        tween.onComplete(() => {
+
+        gsap.to(this, { y: this.y + (this.endPoint - (this.startPoint * this.reelIndex)), duration: 0.3, onComplete: () => {
             this.currentState = SpinningState.Idle;
-        });
+        }});
     }
 
 
