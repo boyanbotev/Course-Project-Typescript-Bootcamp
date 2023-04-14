@@ -5,7 +5,7 @@ export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" 
 
 export type Response = UpdateResponse | InitResponse | ErrorResponse;
 
-type UpdateResponse = {
+export type UpdateResponse = {
     "action": "update",
     "spin-result": {
         "reelIndexes": number[],

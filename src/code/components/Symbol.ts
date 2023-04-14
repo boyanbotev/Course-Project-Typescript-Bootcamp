@@ -72,21 +72,20 @@ export class Symbol extends Sprite {
 
     private initializeTween() {
         this.reelIndex = this.reel.incrementReelStoppingIndex();
-        console.log(this.endPoint - (this.startPoint * this.reelIndex));
 
         // Difference in duration betwen indexes flexible given symbol size
         // Smaller symbolsize means smaller difference in duration
         const duration = 0.6 - (this.reelIndex * 0.09 * (this.startPoint / 165));
+        const targetY = this.endPoint - (this.startPoint * this.reelIndex)
 
-        gsap.to(this, { y: this.y + (this.endPoint - (this.startPoint * this.reelIndex)), duration: duration, onComplete: () => {
+        gsap.to(this, { y: targetY, duration: duration, onComplete: () => {
             this.currentState = SymbolState.Idle;
         }});
     }
 
-    private getFinalSymbol(): Texture {
-        return this.texture;
+    private getFinalSymbol(): Texture { // This is getting called one two many times. Why?
+        return this.reel.FinalSymbol;
     }
-
 }
 
 // TODO: Add blur

@@ -4,7 +4,7 @@ import { SlotSymbol } from "../common/types";
 import { Manager } from "../common/manager";
 import { Reel } from "./Reel";
 import { config } from "../common/config";
-import { Response } from "../common/types";
+import { Response, UpdateResponse } from "../common/types";
 import { ReelState } from "../common/types";
 
 export class SlotMachine extends Container {
@@ -16,6 +16,7 @@ export class SlotMachine extends Container {
 
     private scene: GameScene;
     private reels: Reel[] = [];
+    private reelSymbolMap: SlotSymbol[][] = [];
 
     constructor(scene: GameScene) {
         super();
@@ -34,6 +35,7 @@ export class SlotMachine extends Container {
     }
 
     public async createReels(reels: SlotSymbol[][]): Promise<void> {
+        this.reelSymbolMap = reels;
         const symbolsBundle = await Assets.loadBundle("symbolsBundle");
         if (!symbolsBundle) {
             throw new Error("symbolsBundle not loaded");
@@ -57,15 +59,48 @@ export class SlotMachine extends Container {
         this.mask = graphics;
     }
 
-    public async spin(spinResult: Response): Promise<void> {
+    public async spin(spinResult: UpdateResponse): Promise<void> {
         if (!this.areReelsStopped()) {
             return;
         }
-    
-        for (let i = 0; i < this.reels.length; i++) {
+
+        // TODO: parse response and give reels their final symbols
+        const result = spinResult["spin-result"];
+        const reelIndexes = result.reelIndexes;
+
+        // this gets 1 row of symbols
+        
+        // const reelSymbols = reelIndexes.map((reelIndex: number, index: number) => {
+        //     return this.reelSymbolMap[index][reelIndex];
+        // });
+        // console.log(reelSymbols);
+
+        for (let i = 0; i < this.reelCount; i++) {
+            // for each reel, get the symbol
+            console.log("HH____________________");
+            const symbolsForCurrentReel: SlotSymbol[] = [];
+            for (let j = 0; j < this.reelLength; j++) {
+                const n = reelIndexes[i] + j > this.reelSymbolMap[i].length-1 ? reelIndexes[i] + j - this.reelSymbolMap[i].length : reelIndexes[i] + j;
+                console.log("N:",n);
+                const reelSymbol = this.reelSymbolMap[i][n];
+                console.log(reelSymbol);
+                symbolsForCurrentReel.push(reelSymbol);
+            }
             const reel = this.reels[i];
-            reel.spin();
+            reel.spin(symbolsForCurrentReel);
         }
+
+        // const reelSymbols = reelIndexes.map((reelIndex: number, index: number) => {
+        //     return this.reelSymbolMap[index][reelIndex];
+        // });
+        // console.log(reelSymbols);
+
+
+        // for (let i = 0; i < this.reels.length; i++) {        
+
+        //     const reel = this.reels[i];
+        //     reel.spin();
+        // }
     }
 
     private areReelsStopped() {

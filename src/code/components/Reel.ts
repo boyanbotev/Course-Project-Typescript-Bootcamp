@@ -18,6 +18,9 @@ export class Reel extends Container {
 
     private currentState: ReelState = ReelState.Idle;
     private reelIndex: number = 0;
+    private symbolIndex: number = 0;
+
+    private finalSymbols: SlotSymbol[] = [];
 
     constructor(
         reelXpos: number,
@@ -103,7 +106,6 @@ export class Reel extends Container {
         let isAllStopped = true;
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
-            console.log(symbol.State);
             if (symbol.State !== SymbolState.Idle) {
                 isAllStopped = false;
             }
@@ -121,10 +123,13 @@ export class Reel extends Container {
         return this.reelIndex;
     }
 
-    public spin(): void {
+    public spin(finalSymbols: SlotSymbol[]): void {     
+        this.finalSymbols = finalSymbols;
+        console.log("final symbols:",this.finalSymbols);
         this.reelIndex = 0;
+        this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
-        this.velocity = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
+        this.velocity = this.getRandomVelocity();
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
             symbol.Velocity = this.velocity;
@@ -132,7 +137,21 @@ export class Reel extends Container {
         }
     }
 
+    private getRandomVelocity() {
+        const velocity = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
+        return velocity;
+    }
+
     public get State(): ReelState {
         return this.currentState;
+    }
+
+    public get FinalSymbol(): Texture {
+        console.log("symbol index:",this.symbolIndex);
+        const id = this.finalSymbols[this.symbolIndex];
+        console.log("id:",id);
+        console.log(this.symbolsBundle[id]);
+        this.symbolIndex++;
+        return this.symbolsBundle[id];
     }
 }

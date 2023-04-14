@@ -4,7 +4,7 @@ import { FakeAPI } from "../backend/fakeAPI";
 import { InitResponse, Request } from "../common/types";
 import { UIContainer } from "../components/uiContainer";
 import { SlotMachine } from "../components/slotMachine";
-import { Group } from "tweedle.js";
+import { UpdateResponse } from "../common/types";
 
 export class GameScene extends Container implements IScene {
     private bet = 5;
@@ -47,7 +47,8 @@ export class GameScene extends Container implements IScene {
         }
         const response = await this.api.sendRequest(request);
         console.log(response);
-        this.slotMachine.spin(response);
+        // check type
+        this.slotMachine.spin(response as UpdateResponse);
     }
 
     public update(delta: number): void {
