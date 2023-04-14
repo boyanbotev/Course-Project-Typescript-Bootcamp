@@ -55,38 +55,47 @@ export class Reel extends Container {
     }
 
     public updateSymbols(delta: number): void {
-        if (this.currentState === ReelState.Spinning) {
+        switch (this.currentState) {
+            case ReelState.Idle:
+                break;
+            case ReelState.Spinning:
+                this.velocity -= this.decreaseRate;
 
-            if (this.velocity < this.velocityThreshold) {
-                    
-                this.currentState = ReelState.Stopping;
+                updateSymbolVelocity(this.symbols, this.velocity, delta);
 
-                // Update symbols' state
+                if (this.velocity < this.velocityThreshold) {          
+                    this.beginStopping();
+                }  
+                break;
+            case ReelState.Stopping:
                 for (let i = 0; i < this.symbols.length; i++) {
                     const symbol = this.symbols[i];
-                    symbol.State = SymbolState.PreparingToStop;
+                    symbol.update(delta);
                 }
-            }
-                
-            this.velocity -= this.decreaseRate;
+    
+                const stopped = this.areSymbolsStopped();
 
-            for (let i = 0; i < this.symbols.length; i++) {
-                const symbol = this.symbols[i];
+                if (stopped) {
+                    this.currentState = ReelState.Idle;
+                }
+                break;
+        }
+
+        function updateSymbolVelocity(symbols: Symbol[], velocity: number, delta: number) {
+            for (let i = 0; i < symbols.length; i++) {
+                const symbol = symbols[i];
                 symbol.update(delta);
-                symbol.Velocity = this.velocity;
+                symbol.Velocity = velocity;
             }
         }
-        
-        if (this.currentState === ReelState.Stopping) {
-            for (let i = 0; i < this.symbols.length; i++) {
-                const symbol = this.symbols[i];
-                symbol.update(delta);
-            }
+    }
 
-            const stopped = this.areSymbolsStopped();
-            if (stopped) {
-                this.currentState = ReelState.Idle;
-            }
+    private beginStopping() {
+        this.currentState = ReelState.Stopping;
+
+        for (let i = 0; i < this.symbols.length; i++) {
+            const symbol = this.symbols[i];
+            symbol.State = SymbolState.PreparingToStop;
         }
     }
 
@@ -122,7 +131,3 @@ export class Reel extends Container {
         }
     }
 }
-
-// Weird bugs of symbols flying down through already stopped symbols
-// And symbols never being stopped
-

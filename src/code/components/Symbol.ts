@@ -1,6 +1,6 @@
 import { Sprite, Texture } from "pixi.js";
 import { Reel } from "./Reel";
-import { ReelState, SymbolState } from "../common/types";
+import { SymbolState } from "../common/types";
 import { gsap } from "gsap";
 
 export class Symbol extends Sprite {
@@ -11,7 +11,6 @@ export class Symbol extends Sprite {
 
     private currentState: SymbolState = SymbolState.Idle;
     private reelIndex: number = Math.floor(Math.random() * 4 + 1);
-   // private isTweening: boolean = false;
 
     constructor(
         startPoint: number,
@@ -33,17 +32,26 @@ export class Symbol extends Sprite {
 
         this.y = (this.y % this.endPoint);
 
-        // Checks if y is very small, because checking if 0 will not work
-        if (this.y <= this.startPoint / 5) { // was 10
-            this.swapSymbols();
+        this.handleWrap();  
+    }
+
+    /** 
+     * Checks if y is very small, because checking if 0 will not work
+     * Swap texture to wrap around reel
+     */
+    private handleWrap() {
+        if (this.y <= 16) {
             if (this.currentState === SymbolState.PreparingToStop) {
                 this.initializeTween();
+
                 this.velocity = 0;
                 this.currentState = SymbolState.Stopping;
-                console.log("stop", this.currentState);
+
+                this.texture = this.getFinalSymbol();
+            } else {
+                this.texture = this.reel.getRandomTexture();
             }
-        }  
-        console.log("currentState:", this.currentState, "y:", this.y, "velocity:", this.velocity);
+        }
     }
 
     public set Velocity(velocity: number) {
@@ -62,8 +70,8 @@ export class Symbol extends Sprite {
         this.reelIndex = this.reel.incrementReelStoppingIndex();
         console.log(this.endPoint - (this.startPoint * this.reelIndex));
 
-        // make difference in duration betwen indexes flexible given symbol size
-        // smaller symbolsize means smaller difference in duration
+        // Difference in duration betwen indexes flexible given symbol size
+        // Smaller symbolsize means smaller difference in duration
         const duration = 0.6 - (this.reelIndex * 0.09 * (this.startPoint / 165));
 
         gsap.to(this, { y: this.y + (this.endPoint - (this.startPoint * this.reelIndex)), duration: duration, onComplete: () => {
@@ -71,16 +79,10 @@ export class Symbol extends Sprite {
         }});
     }
 
-
-    private swapSymbols(): void {
-        // request random symbol from reel
-        // set symbol to that symbol
-        const texture: Texture = this.reel.getRandomTexture();
-        this.texture = texture;
+    private getFinalSymbol(): Texture {
+        return this.texture;
     }
+
 }
 
-
 // TODO: Add blur
-
-// TODO: add stopping state that instantiates new symbols and tweens them into place
