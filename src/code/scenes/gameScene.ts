@@ -47,7 +47,7 @@ export class GameScene extends Container implements IScene {
         }
         const response = await this.api.sendRequest(request);
         console.log(response);
-        this.slotMachine.spin();
+        this.slotMachine.spin(response);
     }
 
     public update(delta: number): void {

@@ -4,6 +4,8 @@ import { SlotSymbol } from "../common/types";
 import { Manager } from "../common/manager";
 import { Reel } from "./Reel";
 import { config } from "../common/config";
+import { Response } from "../common/types";
+import { ReelState } from "../common/types";
 
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
@@ -55,12 +57,28 @@ export class SlotMachine extends Container {
         this.mask = graphics;
     }
 
-    public async spin(): Promise<void> {
-        // add logic to stop spin if not in idle state
+    public async spin(spinResult: Response): Promise<void> {
+        if (!this.areReelsStopped()) {
+            return;
+        }
+    
         for (let i = 0; i < this.reels.length; i++) {
             const reel = this.reels[i];
             reel.spin();
         }
+    }
+
+    private areReelsStopped() {
+        let isAllStopped = true;
+        for (let i = 0; i < this.reels.length; i++) {
+            const reel = this.reels[i];
+            console.log(reel.State);
+            if (reel.State !== ReelState.Idle) {
+                isAllStopped = false;
+                break;
+            }
+        }
+        return isAllStopped;
     }
 
     public updateReels(delta: number): void {

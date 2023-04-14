@@ -58,6 +58,10 @@ export class Symbol extends Sprite {
         this.velocity = velocity;
     }
 
+    public get State(): SymbolState {
+        return this.currentState;
+    }
+
     public set State(state: SymbolState) {
         this.currentState = state;
     }

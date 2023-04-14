@@ -103,7 +103,8 @@ export class Reel extends Container {
         let isAllStopped = true;
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
-            if (symbol.State != SymbolState.Idle) {
+            console.log(symbol.State);
+            if (symbol.State !== SymbolState.Idle) {
                 isAllStopped = false;
             }
         }
@@ -129,5 +130,9 @@ export class Reel extends Container {
             symbol.Velocity = this.velocity;
             symbol.State = SymbolState.Spinning;
         }
+    }
+
+    public get State(): ReelState {
+        return this.currentState;
     }
 }
