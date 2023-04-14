@@ -1,11 +1,7 @@
 import { Sprite, Texture } from "pixi.js";
 import { Reel } from "./Reel";
-import { SpinningState } from "../common/types";
+import { ReelState, SymbolState } from "../common/types";
 import { gsap } from "gsap";
-
-// does Symbol have its own spinning state?
-// is it aware of the spinning state of the reel?
-// of the slot machine?
 
 export class Symbol extends Sprite {
     private startPoint: number = 0;
@@ -13,9 +9,9 @@ export class Symbol extends Sprite {
     private velocity: number = 0;
     private reel: Reel;
 
-    private currentState: SpinningState = SpinningState.Idle;
+    private currentState: SymbolState = SymbolState.Idle;
     private reelIndex: number = Math.floor(Math.random() * 4 + 1);
-    private isTweening: boolean = false;
+   // private isTweening: boolean = false;
 
     constructor(
         startPoint: number,
@@ -29,33 +25,32 @@ export class Symbol extends Sprite {
     }
 
     public update(delta: number): void {
-        if (this.currentState === SpinningState.Idle) {
+        if (this.currentState === SymbolState.Idle || this.currentState === SymbolState.Stopping) {
             return;
         }
+
         this.y += delta * this.velocity;
 
         this.y = (this.y % this.endPoint);
 
         // Checks if y is very small, because checking if 0 will not work
-        if (this.y <= this.startPoint / 10) {
+        if (this.y <= this.startPoint / 5) { // was 10
             this.swapSymbols();
-            if (this.currentState === SpinningState.Stopping && !this.isTweening) {
+            if (this.currentState === SymbolState.PreparingToStop) {
                 this.initializeTween();
                 this.velocity = 0;
-                this.isTweening = true;
-            }
-            if (this.currentState === SpinningState.Spinning) {
-                this.isTweening = false;
+                this.currentState = SymbolState.Stopping;
+                console.log("stop", this.currentState);
             }
         }  
-        console.log(this.y);
+        console.log("currentState:", this.currentState, "y:", this.y, "velocity:", this.velocity);
     }
 
     public set Velocity(velocity: number) {
         this.velocity = velocity;
     }
 
-    public set State(state: SpinningState) {
+    public set State(state: SymbolState) {
         this.currentState = state;
     }
 
@@ -67,11 +62,12 @@ export class Symbol extends Sprite {
         this.reelIndex = this.reel.incrementReelStoppingIndex();
         console.log(this.endPoint - (this.startPoint * this.reelIndex));
 
-        const duration = 0.6 - (this.reelIndex * 0.09);
-        // weird bug of bottom item popping up at end of animation
+        // make difference in duration betwen indexes flexible given symbol size
+        // smaller symbolsize means smaller difference in duration
+        const duration = 0.6 - (this.reelIndex * 0.09 * (this.startPoint / 165));
 
         gsap.to(this, { y: this.y + (this.endPoint - (this.startPoint * this.reelIndex)), duration: duration, onComplete: () => {
-            this.currentState = SpinningState.Idle;
+            this.currentState = SymbolState.Idle;
         }});
     }
 

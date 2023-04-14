@@ -36,8 +36,15 @@ type InitRequest = {
     "action": "init",
 }
 
-export enum SpinningState {
+export enum ReelState {
     Idle,
     Spinning, // randomly assigning symbols
     Stopping, // preparing symbols specified by backend
+}
+
+export enum SymbolState {
+    Idle,
+    Spinning,
+    PreparingToStop,
+    Stopping
 }

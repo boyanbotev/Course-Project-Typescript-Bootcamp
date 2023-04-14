@@ -1,7 +1,7 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SlotSymbol } from "../common/types";
-import { SpinningState } from "../common/types";
+import { ReelState, SymbolState } from "../common/types";
 
 export class Reel extends Container {
     private reelLength: number;
@@ -16,7 +16,7 @@ export class Reel extends Container {
     private decreaseRate: number = 0.1;
     private velocityThreshold: number = 15;
 
-    private currentState: SpinningState = SpinningState.Idle;
+    private currentState: ReelState = ReelState.Idle;
     private reelIndex: number = 0;
 
     constructor(
@@ -55,18 +55,17 @@ export class Reel extends Container {
     }
 
     public updateSymbols(delta: number): void {
-        if (this.currentState === SpinningState.Spinning) {
+        if (this.currentState === ReelState.Spinning) {
 
             if (this.velocity < this.velocityThreshold) {
                     
-                this.currentState = SpinningState.Stopping;
+                this.currentState = ReelState.Stopping;
 
                 // Update symbols' state
                 for (let i = 0; i < this.symbols.length; i++) {
                     const symbol = this.symbols[i];
-                    symbol.State = SpinningState.Stopping;
+                    symbol.State = SymbolState.PreparingToStop;
                 }
-
             }
                 
             this.velocity -= this.decreaseRate;
@@ -78,23 +77,28 @@ export class Reel extends Container {
             }
         }
         
-        if (this.currentState === SpinningState.Stopping) {
+        if (this.currentState === ReelState.Stopping) {
             for (let i = 0; i < this.symbols.length; i++) {
                 const symbol = this.symbols[i];
                 symbol.update(delta);
             }
 
-            let isAllStopped = true;
-            for (let i = 0; i < this.symbols.length; i++) {
-                const symbol = this.symbols[i];
-                if (symbol.State != SpinningState.Idle) {
-                    isAllStopped = false;
-                }
-            }
-            if (isAllStopped) {
-                this.currentState = SpinningState.Idle;
+            const stopped = this.areSymbolsStopped();
+            if (stopped) {
+                this.currentState = ReelState.Idle;
             }
         }
+    }
+
+    private areSymbolsStopped(): boolean {
+        let isAllStopped = true;
+        for (let i = 0; i < this.symbols.length; i++) {
+            const symbol = this.symbols[i];
+            if (symbol.State != SymbolState.Idle) {
+                isAllStopped = false;
+            }
+        }
+        return isAllStopped;
     }
 
     public getRandomTexture(): Texture {
@@ -109,12 +113,12 @@ export class Reel extends Container {
 
     public spin(): void {
         this.reelIndex = 0;
-        this.currentState = SpinningState.Spinning;
+        this.currentState = ReelState.Spinning;
         this.velocity = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
             symbol.Velocity = this.velocity;
-            symbol.State = SpinningState.Spinning;
+            symbol.State = SymbolState.Spinning;
         }
     }
 }
