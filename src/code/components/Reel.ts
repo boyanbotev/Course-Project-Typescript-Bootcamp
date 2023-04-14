@@ -17,7 +17,6 @@ export class Reel extends Container {
     private velocityThreshold: number = 15;
 
     private currentState: ReelState = ReelState.Idle;
-    private reelIndex: number = 0;
     private symbolIndex: number = 0;
 
     private finalSymbols: SlotSymbol[] = [];
@@ -119,14 +118,13 @@ export class Reel extends Container {
     }
 
     public incrementReelStoppingIndex(): number {
-        this.reelIndex++;
-        return this.reelIndex;
+        this.symbolIndex++;
+        return this.symbolIndex;
     }
 
     public spin(finalSymbols: SlotSymbol[]): void {     
         this.finalSymbols = finalSymbols;
         console.log("final symbols:",this.finalSymbols);
-        this.reelIndex = 0;
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
         this.velocity = this.getRandomVelocity();
@@ -147,11 +145,10 @@ export class Reel extends Container {
     }
 
     public get FinalSymbol(): Texture {
-        console.log("symbol index:",this.symbolIndex);
-        const id = this.finalSymbols[this.symbolIndex];
-        console.log("id:",id);
-        console.log(this.symbolsBundle[id]);
-        this.symbolIndex++;
+        const id = this.finalSymbols[this.symbolIndex-1];
+        if (this.symbolIndex-1 >= this.finalSymbols.length) {
+            console.log("unexpected symbol index:", this.symbolIndex-1);
+        }
         return this.symbolsBundle[id];
     }
 }
