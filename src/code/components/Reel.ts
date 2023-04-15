@@ -2,13 +2,14 @@ import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SlotSymbol, SymbolBundle } from "../common/types";
 import { ReelState, SymbolState } from "../common/types";
+import { slotSymbolMap } from "../common/consts";
 
 export class Reel extends Container {
     private reelLength: number;
     private symbolSize: number;
     private reelXIndex: number;
 
-    private reels: SlotSymbol[][];
+    private reels: number[][];
     private symbolsBundle: SymbolBundle;
     private symbols: Symbol[] = [];
 
@@ -19,14 +20,14 @@ export class Reel extends Container {
     private currentState: ReelState = ReelState.Idle;
     private symbolIndex: number = 0;
 
-    private finalSymbols: SlotSymbol[] = [];
+    private finalSymbols: number[] = [];
 
     constructor(
         reelXpos: number,
         addedReelLength: number,
         symbolSize: number,
         symbolsBundle: SymbolBundle,
-        symbolReferenceOrder: SlotSymbol[][],
+        symbolReferenceOrder: number[][],
         parent: Container
     ) {
         super();
@@ -115,9 +116,9 @@ export class Reel extends Container {
         return this.symbolIndex;
     }
 
-    public spin(finalSymbols: SlotSymbol[]): void {     
+    public spin(finalSymbols: number[]): void {     
         this.finalSymbols = finalSymbols;
-        console.log("final symbols:",this.finalSymbols);
+        console.log("final symbols:",this.finalSymbols.map (id => slotSymbolMap[id]));
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;

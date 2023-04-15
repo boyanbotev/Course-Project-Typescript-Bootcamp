@@ -2,7 +2,10 @@
 import { Texture } from "pixi.js";
 
 export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" | "P" | "princess" | "square" | "T" | "warrior" | "X" | "jem" | "dagger" | "и" | "я";
-// makes this rigid
+
+export type SlotSymbolMap = {
+    [key: number]: SlotSymbol;
+}
 
 export type Response = UpdateResponse | InitResponse | ErrorResponse;
 
@@ -22,7 +25,7 @@ export type ErrorResponse = {
 
 export type InitResponse = {
     "action": "init",
-    "symbols": SlotSymbol[][],
+    "symbols": number[][],
     "balance": number,
 }
 

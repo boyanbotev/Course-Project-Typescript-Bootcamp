@@ -1,6 +1,7 @@
 import { BackendReelCalculator } from "./backendReelCalculator";
 import { Request, Response, SlotSymbol } from "../common/types";
 import { config } from "../common/config";
+import { slotSymbolMap } from "../common/consts";
 
 export class FakeAPI {
     private reelCount: number = config.reelCount;
@@ -64,8 +65,15 @@ export class FakeAPI {
     // TODO: change to calculate Betways win logic?
 
     private checkForWin(reelIndexes: number[]): number {
-        const reels: SlotSymbol[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
-        console.log(reels);
+        const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
+        //console.log(reels);
+        reels.forEach((reel) => {
+            console.log("");
+            reel.forEach((symbol) => {
+                console.log(symbol);
+                console.log(slotSymbolMap[symbol]);
+            })
+        })
 
         // Check reels for horizontal matches
         for (let i = 0; i < reels[0].length; i++) {

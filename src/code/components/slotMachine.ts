@@ -17,7 +17,7 @@ export class SlotMachine extends Container {
     private scene: GameScene;
     private api: FakeAPI;
     private reels: Reel[] = [];
-    private reelSymbolMap: SlotSymbol[][] = [];
+    private reelSymbolMap: number[][] = [];
 
     //private currentState: SlotMachineState = SlotMachineState.Idle;
 
@@ -101,9 +101,9 @@ export class SlotMachine extends Container {
     }
 
     private calculateReelSymbols(reelIndexes: number[]) {  // test function
-        const reelSymbols: SlotSymbol[][] = [];
+        const reelSymbols: number[][] = [];
         for (let i = 0; i < this.reelCount; i++) {
-            const symbolsForCurrentReel: SlotSymbol[] = [];
+            const symbolsForCurrentReel: number[] = [];
 
             for (let j = 0; j < this.reelLength; j++) {
                 const addedIndex = reelIndexes[i] + j;
