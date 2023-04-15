@@ -117,7 +117,7 @@ export class Reel extends Container {
         return this.symbolsBundle[this.reels[this.reelXIndex][randomIndex]];
     }
 
-    public incrementReelStoppingIndex(): number {
+    public incrementSymbolIndex(): number {
         this.symbolIndex++;
         return this.symbolIndex;
     }
@@ -125,9 +125,11 @@ export class Reel extends Container {
     public spin(finalSymbols: SlotSymbol[]): void {     
         this.finalSymbols = finalSymbols;
         console.log("final symbols:",this.finalSymbols);
+        
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
         this.velocity = this.getRandomVelocity();
+
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
             symbol.Velocity = this.velocity;
@@ -135,6 +137,10 @@ export class Reel extends Container {
         }
     }
 
+    /**
+     * Returns random velocity multiplied by which reel it is
+     * Further to right, the faster the reel spins
+     */
     private getRandomVelocity() {
         const velocity = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
         return velocity;
@@ -142,6 +148,10 @@ export class Reel extends Container {
 
     public get State(): ReelState {
         return this.currentState;
+    }
+
+    public get ReelLength(): number {
+        return this.reelLength;
     }
 
     public get FinalSymbol(): Texture {

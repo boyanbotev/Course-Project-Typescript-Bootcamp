@@ -10,7 +10,7 @@ export class Symbol extends Sprite {
     private reel: Reel;
 
     private currentState: SymbolState = SymbolState.Idle;
-    private reelIndex: number = Math.floor(Math.random() * 4 + 1);
+    private symbolIndex: number;
 
     constructor(
         startPoint: number,
@@ -41,19 +41,46 @@ export class Symbol extends Sprite {
      */
     private handleWrap() {
         if (this.y <= 16) {
-            if (this.currentState === SymbolState.PreparingToStop) {
-                this.initializeTween();
 
-                this.velocity = 0;
-                this.currentState = SymbolState.Stopping;
-
-                this.texture = this.getFinalSymbol();
-            } else {
-                this.texture = this.reel.getRandomTexture();
+            switch (this.currentState) {
+                case SymbolState.PreparingToStop:
+                    this.velocity = 0;
+                    this.currentState = SymbolState.Stopping;
+    
+                    this.initializeTween();
+    
+                    // If symbol is not the last (extra) one, set texture to final symbol
+                    if (this.symbolIndex-1 !== this.reel.ReelLength-1){
+                        this.texture = this.getFinalSymbol();
+                    }
+                    break;
+                default:
+                    this.texture = this.reel.getRandomTexture();
+                    break;
             }
         }
     }
 
+    /** 
+     * Make animations duration shorter the later in the reel they start to make symbols move at same speed
+     * Difference in duration betwen indexes flexible given symbol size
+     * Smaller symbolsize means smaller difference in duration 
+     */
+    private initializeTween() {
+        this.symbolIndex = this.reel.incrementSymbolIndex();
+
+        const duration = 0.6 - (this.symbolIndex * 0.09 * (this.startPoint / 165));
+        const targetY = this.endPoint - (this.startPoint * this.symbolIndex)
+
+        gsap.to(this, { y: targetY, duration: duration, onComplete: () => {
+            this.currentState = SymbolState.Idle;
+        }});
+    }
+
+    private getFinalSymbol(): Texture {
+        return this.reel.FinalSymbol;
+    }
+    
     public set Velocity(velocity: number) {
         this.velocity = velocity;
     }
@@ -66,25 +93,8 @@ export class Symbol extends Sprite {
         this.currentState = state;
     }
 
-    public set ReelIndex(index: number) {
-        this.reelIndex = index;
-    }
-
-    private initializeTween() {
-        this.reelIndex = this.reel.incrementReelStoppingIndex();
-
-        // Difference in duration betwen indexes flexible given symbol size
-        // Smaller symbolsize means smaller difference in duration
-        const duration = 0.6 - (this.reelIndex * 0.09 * (this.startPoint / 165));
-        const targetY = this.endPoint - (this.startPoint * this.reelIndex)
-
-        gsap.to(this, { y: targetY, duration: duration, onComplete: () => {
-            this.currentState = SymbolState.Idle;
-        }});
-    }
-
-    private getFinalSymbol(): Texture { // This is getting called one two many times. Why?
-        return this.reel.FinalSymbol;
+    public set SymbolIndex(index: number) {
+        this.symbolIndex = index;
     }
 }
 
