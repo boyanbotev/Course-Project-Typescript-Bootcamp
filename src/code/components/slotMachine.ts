@@ -1,6 +1,6 @@
 import { Container, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../scenes/gameScene";
-import { SlotSymbol, ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse } from "../common/types";
+import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse } from "../common/types";
 import { Manager } from "../common/manager";
 import { Reel } from "./Reel";
 import { config } from "../common/config";

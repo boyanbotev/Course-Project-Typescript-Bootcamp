@@ -1,5 +1,5 @@
 import { BackendReelCalculator } from "./backendReelCalculator";
-import { Request, Response, SlotSymbol } from "../common/types";
+import { Request, Response } from "../common/types";
 import { config } from "../common/config";
 import { slotSymbolMap } from "../common/consts";
 

@@ -118,7 +118,7 @@ export class Reel extends Container {
 
     public spin(finalSymbols: number[]): void {     
         this.finalSymbols = finalSymbols;
-        console.log("final symbols:",this.finalSymbols.map (id => slotSymbolMap[id]));
+        console.log("final symbols:",this.finalSymbols.map(id => slotSymbolMap[id]));
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
