@@ -35,6 +35,5 @@ export class UIContainer extends Container {
             this,
             0.5,
         );
-    }
-    
+    } 
 }
