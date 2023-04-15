@@ -1,13 +1,11 @@
-import { Container, Assets, Texture, Ticker } from "pixi.js";
+import { Container, Ticker } from "pixi.js";
 import { IScene } from "../common/IScene";
 import { FakeAPI } from "../backend/fakeAPI";
-import { SlotMachineState, InitResponse, Request } from "../common/types";
+import { InitResponse, Request } from "../common/types";
 import { UIContainer } from "../components/uiContainer";
 import { SlotMachine } from "../components/slotMachine";
-import { UpdateResponse } from "../common/types";
 
 export class GameScene extends Container implements IScene {
-    private bet = 5;
 
     private api: FakeAPI;
     private slotMachine: SlotMachine;
@@ -15,21 +13,20 @@ export class GameScene extends Container implements IScene {
     constructor(){
         super();
 
-        console.log("GameScene");
         this.api = new FakeAPI();
-        this.slotMachine = new SlotMachine(this);
-        new UIContainer(this);
+        this.slotMachine = new SlotMachine(this, this.api);
+        new UIContainer(this, this.slotMachine);
 
         this.createGame();
     }
 
     private async createGame(): Promise<void> {
-        this.init();
+        this.initializeReels();
         const ticker = Ticker.shared;
         ticker.add(this.update.bind(this));
     }
 
-    private async init(): Promise<void> {
+    private async initializeReels(): Promise<void> {
         const request: Request = {
             action: "init",
         }
@@ -37,26 +34,6 @@ export class GameScene extends Container implements IScene {
         console.log(response);
 
         this.slotMachine.createReels(response.symbols);
-    }
-
-    // doesn't belong in here, refactor later
-    public async spin(): Promise<void> {
-        if (!this.slotMachine.areReelsStopped()) {
-            return;
-        }
-        const request: Request = {
-            action: "spin",
-            "bet": this.bet,
-        }
-        const response = await this.api.sendRequest(request);
-        console.log(response);
-
-        if (response.action === "error") {
-            console.log(response.error);
-            return;
-        }
-        
-        this.slotMachine.spin(response as UpdateResponse);
     }
 
     public update(delta: number): void {

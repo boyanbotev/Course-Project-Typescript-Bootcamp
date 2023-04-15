@@ -59,19 +59,14 @@ export class BackendReelCalculator {
         const visibleReels: SlotSymbol[][] = [];
         for (let i = 0; i < reelIndexes.length; i++) {
             const symbols: SlotSymbol[] = [];
-            console.log("_______________________");
             for ( let j = 0; j < this.reelLength; j++ ) { // using reelIndexes.length as reelHeight forces the reels to be square
 
                 let index = reelIndexes[i]+j;
-                console.log(index);
 
                 if (index >= this.reels[i].length) {
-                    console.log("index is greater than reel length");
                     index = index - this.reels[i].length;
-                    console.log(index);
                 }
 
-                console.log(this.reels[i][index]);
                 symbols.push(this.reels[i][index]);
             }
 

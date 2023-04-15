@@ -1,9 +1,10 @@
 import { Container, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../scenes/gameScene";
-import { SlotSymbol, ReelState, UpdateResponse, SymbolBundle } from "../common/types";
+import { SlotSymbol, ReelState, UpdateResponse, SymbolBundle, Request } from "../common/types";
 import { Manager } from "../common/manager";
 import { Reel } from "./Reel";
 import { config } from "../common/config";
+import { FakeAPI } from "../backend/fakeAPI";
 
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
@@ -11,16 +12,19 @@ export class SlotMachine extends Container {
     private addedReelLength: number = config.reelLength +1;
     private symbolSize: number = config.symbolSize;
     private topMargin: number = config.topMargin;
+    private bet: number = config.bet;
 
     private scene: GameScene;
     private reels: Reel[] = [];
     private reelSymbolMap: SlotSymbol[][] = [];
 
-    constructor(scene: GameScene) {
+    private api: FakeAPI;
+
+    constructor(scene: GameScene, api: FakeAPI) {
         super();
-        console.log("ReelContainer");
         this.scene = scene;
         this.scene.addChild(this);
+        this.api = api;
 
         const containerWidth = this.reelCount * this.symbolSize;
         this.pivot.x = containerWidth / 2;
@@ -40,10 +44,8 @@ export class SlotMachine extends Container {
             throw new Error("symbolsBundle not loaded");
         }
 
-        console.log(this.reelCount);
         for (let i = 0; i < this.reelCount; i++) {
             const reel = new Reel(i, this.addedReelLength, this.symbolSize, symbolsBundle, reels, this);
-            console.log(reel);
             this.reels.push(reel);
         }
     }
@@ -61,26 +63,55 @@ export class SlotMachine extends Container {
     /**
      * Get final symbols for each reel and spin them
      */
-    public spin(spinResult: UpdateResponse) {
-        const result = spinResult["spin-result"];
-        const reelIndexes = result.reelIndexes;
+    public async spin(): Promise<void> {
+        if (!this.areReelsStopped()) {
+            return;
+        }
+ 
+        const reelIndexes = await this.requestSpin();
+        if (!reelIndexes) {
+            return;
+        }
 
+        const reelSymbols = this.calculateReelSymbols(reelIndexes);
+        this.reels.forEach((reel, index) => {
+            reel.spin(reelSymbols[index]);
+        });
+    }
+
+    private calculateReelSymbols(reelIndexes: number[]) {  // test function
+        const reelSymbols: SlotSymbol[][] = [];
         for (let i = 0; i < this.reelCount; i++) {
-            console.log("HH____________________");
             const symbolsForCurrentReel: SlotSymbol[] = [];
 
             for (let j = 0; j < this.reelLength; j++) {
                 const addedIndex = reelIndexes[i] + j;
                 const reelSymbolMap = this.reelSymbolMap[i];
-                const n = addedIndex > reelSymbolMap.length-1 ? addedIndex - reelSymbolMap.length : addedIndex;
-                console.log("N:",n);
-                const reelSymbol = reelSymbolMap[n];
-                console.log(reelSymbol);
+                const wrappedIndex = addedIndex > reelSymbolMap.length - 1 ? addedIndex - reelSymbolMap.length : addedIndex;
+                const reelSymbol = reelSymbolMap[wrappedIndex];
                 symbolsForCurrentReel.push(reelSymbol);
             }
-            const reel = this.reels[i];
-            reel.spin(symbolsForCurrentReel);
+            reelSymbols.push(symbolsForCurrentReel);
         }
+        return reelSymbols;
+    }
+
+    public async requestSpin(): Promise<number[]> {  
+        const request: Request = {
+            action: "spin",
+            "bet": this.bet,
+        }
+        const response = await this.api.sendRequest(request);
+        console.log(response);
+
+        if (response.action === "error") {
+            console.log(response.error);
+            return;
+        }
+
+        const updateResponse = response as UpdateResponse;
+        const result = updateResponse["spin-result"];
+        return result.reelIndexes;
     }
 
     public areReelsStopped() {
@@ -90,10 +121,10 @@ export class SlotMachine extends Container {
                 isAllStopped = false;
             }
         });
-        console.log("Idle");
         return isAllStopped;
     }
 
+    // TODO: use slot machine state only to update reels when necessary
     public updateReels(delta: number): void {
         this.reels.forEach((reel) => {
             reel.updateSymbols(delta);

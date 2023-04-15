@@ -70,7 +70,6 @@ export class FakeAPI {
         // Check reels for horizontal matches
         for (let i = 0; i < reels[0].length; i++) {
             let isFull = true;
-            console.log("#################");
 
             for (let j = 0; j < reels.length; j++) {
                 console.log(reels[j][i]);

@@ -9,4 +9,5 @@ export const config = {
     topMargin: 65,
 
     initialBalance: 100,
+    bet: 5,
 };

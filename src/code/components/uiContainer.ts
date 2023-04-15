@@ -2,13 +2,16 @@ import { Container, Texture, Assets } from "pixi.js";
 import { Manager } from "../common/manager";
 import { Button } from "./button";
 import { GameScene } from "../scenes/gameScene";
+import { SlotMachine } from "./slotMachine";
 
 export class UIContainer extends Container {
     private scene: GameScene;
-    constructor(scene: GameScene) {
+    private slotMachine: SlotMachine;
+
+    constructor(scene: GameScene, slotMachine: SlotMachine) {
         super();
-        console.log("UIContainer");
         this.scene = scene;
+        this.slotMachine = slotMachine;
         this.scene.addChild(this);
 
         this.createUI();
@@ -27,7 +30,7 @@ export class UIContainer extends Container {
             spin,
             spin,
             () => {
-                this.scene.spin();
+                this.slotMachine.spin();
             },
             this,
             0.5,
