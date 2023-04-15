@@ -1,4 +1,5 @@
 // TODO: Add d.ts file for types
+import { Texture } from "pixi.js";
 
 export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" | "P" | "princess" | "square" | "T" | "warrior" | "X" | "jem" | "dagger" | "и" | "я";
 // makes this rigid
@@ -47,4 +48,13 @@ export enum SymbolState {
     Spinning,
     PreparingToStop,
     Stopping
+}
+
+export enum SlotMachineState {
+    Idle,
+    Spinning,
+}
+
+export type SymbolBundle = {
+    [key: string]: Texture;
 }

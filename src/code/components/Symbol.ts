@@ -40,7 +40,8 @@ export class Symbol extends Sprite {
      * Swap texture to wrap around reel
      */
     private handleWrap() {
-        if (this.y <= 16) {
+        const wrapThreshold = 16;
+        if (this.y <= wrapThreshold) {
 
             switch (this.currentState) {
                 case SymbolState.PreparingToStop:
@@ -69,7 +70,11 @@ export class Symbol extends Sprite {
     private initializeTween() {
         this.symbolIndex = this.reel.incrementSymbolIndex();
 
-        const duration = 0.6 - (this.symbolIndex * 0.09 * (this.startPoint / 165));
+        const standardSymbolSize = 165;
+        const baseDuration = 0.6;
+        const xPositionMultiplier = 0.09;
+
+        const duration = baseDuration - (this.symbolIndex * xPositionMultiplier * (this.startPoint / standardSymbolSize));
         const targetY = this.endPoint - (this.startPoint * this.symbolIndex)
 
         gsap.to(this, { y: targetY, duration: duration, onComplete: () => {

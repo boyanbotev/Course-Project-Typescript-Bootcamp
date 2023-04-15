@@ -1,7 +1,7 @@
 import { Container, Assets, Texture, Ticker } from "pixi.js";
 import { IScene } from "../common/IScene";
 import { FakeAPI } from "../backend/fakeAPI";
-import { ErrorResponse, InitResponse, Request } from "../common/types";
+import { SlotMachineState, InitResponse, Request } from "../common/types";
 import { UIContainer } from "../components/uiContainer";
 import { SlotMachine } from "../components/slotMachine";
 import { UpdateResponse } from "../common/types";
@@ -41,6 +41,9 @@ export class GameScene extends Container implements IScene {
 
     // doesn't belong in here, refactor later
     public async spin(): Promise<void> {
+        if (!this.slotMachine.areReelsStopped()) {
+            return;
+        }
         const request: Request = {
             action: "spin",
             "bet": this.bet,

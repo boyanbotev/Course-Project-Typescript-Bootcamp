@@ -1,6 +1,6 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
-import { SlotSymbol } from "../common/types";
+import { SlotSymbol, SymbolBundle } from "../common/types";
 import { ReelState, SymbolState } from "../common/types";
 
 export class Reel extends Container {
@@ -9,7 +9,7 @@ export class Reel extends Container {
     private reelXIndex: number;
 
     private reels: SlotSymbol[][];
-    private symbolsBundle: any;
+    private symbolsBundle: SymbolBundle;
     private symbols: Symbol[] = [];
 
     private velocity: number = 0;
@@ -25,7 +25,7 @@ export class Reel extends Container {
         reelXpos: number,
         addedReelLength: number,
         symbolSize: number,
-        symbolsBundle: any,
+        symbolsBundle: SymbolBundle,
         symbolReferenceOrder: SlotSymbol[][],
         parent: Container
     ) {
@@ -35,7 +35,7 @@ export class Reel extends Container {
         this.symbolSize = symbolSize;
         this.symbolsBundle = symbolsBundle;
         this.reels = symbolReferenceOrder;
-        
+
         parent.addChild(this);
         this.createSymbols();
     }
@@ -64,17 +64,19 @@ export class Reel extends Container {
             case ReelState.Spinning:
                 this.velocity -= this.decreaseRate;
 
-                updateSymbolVelocity(this.symbols, this.velocity, delta);
+                this.symbols.forEach((symbol) => {
+                    symbol.update(delta);
+                    symbol.Velocity = this.velocity;
+                });
 
                 if (this.velocity < this.velocityThreshold) {          
                     this.beginStopping();
                 }  
                 break;
             case ReelState.Stopping:
-                for (let i = 0; i < this.symbols.length; i++) {
-                    const symbol = this.symbols[i];
+                this.symbols.forEach((symbol) => {
                     symbol.update(delta);
-                }
+                });
     
                 const stopped = this.areSymbolsStopped();
 
@@ -82,34 +84,24 @@ export class Reel extends Container {
                     this.currentState = ReelState.Idle;
                 }
                 break;
-        }
-
-        function updateSymbolVelocity(symbols: Symbol[], velocity: number, delta: number) {
-            for (let i = 0; i < symbols.length; i++) {
-                const symbol = symbols[i];
-                symbol.update(delta);
-                symbol.Velocity = velocity;
-            }
-        }
+        }   
     }
 
     private beginStopping() {
         this.currentState = ReelState.Stopping;
 
-        for (let i = 0; i < this.symbols.length; i++) {
-            const symbol = this.symbols[i];
+        this.symbols.forEach((symbol) => {
             symbol.State = SymbolState.PreparingToStop;
-        }
+        });
     }
 
     private areSymbolsStopped(): boolean {
         let isAllStopped = true;
-        for (let i = 0; i < this.symbols.length; i++) {
-            const symbol = this.symbols[i];
+        this.symbols.forEach((symbol) => {
             if (symbol.State !== SymbolState.Idle) {
                 isAllStopped = false;
             }
-        }
+        });
         return isAllStopped;
     }
 
@@ -143,7 +135,11 @@ export class Reel extends Container {
      * Further to right, the faster the reel spins
      */
     private getRandomVelocity() {
-        const velocity = Math.floor(Math.random() * 10) + 30 + this.reelXIndex * 5;
+        const randomValueMultiplier = 10;
+        const baseVelocity = 30;
+        const xPositionMultiplier = 5;
+
+        const velocity = Math.floor(Math.random() * randomValueMultiplier) + baseVelocity + this.reelXIndex * xPositionMultiplier;
         return velocity;
     }
 
