@@ -14,7 +14,7 @@ export type UpdateResponse = {
     "balance": number,
 }
 
-type ErrorResponse = {
+export type ErrorResponse = {
     "action": "error",
     "error": string,
 }

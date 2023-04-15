@@ -35,6 +35,7 @@ export class Reel extends Container {
         this.symbolSize = symbolSize;
         this.symbolsBundle = symbolsBundle;
         this.reels = symbolReferenceOrder;
+        
         parent.addChild(this);
         this.createSymbols();
     }
@@ -125,7 +126,7 @@ export class Reel extends Container {
     public spin(finalSymbols: SlotSymbol[]): void {     
         this.finalSymbols = finalSymbols;
         console.log("final symbols:",this.finalSymbols);
-        
+
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
         this.velocity = this.getRandomVelocity();

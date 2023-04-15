@@ -1,7 +1,7 @@
 import { Container, Assets, Texture, Ticker } from "pixi.js";
 import { IScene } from "../common/IScene";
 import { FakeAPI } from "../backend/fakeAPI";
-import { InitResponse, Request } from "../common/types";
+import { ErrorResponse, InitResponse, Request } from "../common/types";
 import { UIContainer } from "../components/uiContainer";
 import { SlotMachine } from "../components/slotMachine";
 import { UpdateResponse } from "../common/types";
@@ -47,7 +47,12 @@ export class GameScene extends Container implements IScene {
         }
         const response = await this.api.sendRequest(request);
         console.log(response);
-        // check type
+
+        if (response.action === "error") {
+            console.log(response.error);
+            return;
+        }
+        
         this.slotMachine.spin(response as UpdateResponse);
     }
 
