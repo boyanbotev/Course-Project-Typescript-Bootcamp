@@ -15,7 +15,7 @@ export class GameScene extends Container implements IScene {
     constructor(){
         super();
 
-        new Background(Manager.Width, Manager.Height, Assets.get("background1"), this);
+        new Background(Manager.Width, Manager.Height, Assets.get("background3"), this);
         const padding = 165;
         const frame = new Background(config.reelCount * config.symbolSize + padding, Manager.Height + 240, Assets.get("frame"), this);
         frame.x = Manager.Width/2;
