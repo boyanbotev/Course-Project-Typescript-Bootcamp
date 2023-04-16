@@ -1,6 +1,6 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
-import { SlotSymbol, SymbolBundle } from "../common/types";
+import { SymbolBundle } from "../common/types";
 import { ReelState, SymbolState } from "../common/types";
 import { slotSymbolMap } from "../common/consts";
 
@@ -43,7 +43,6 @@ export class Reel extends Container {
 
     public createSymbols(): void {
         // fragile implementation for getting symbols from symbolBundle by id
-        // should be refactored
 
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);

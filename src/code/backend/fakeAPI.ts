@@ -62,9 +62,7 @@ export class FakeAPI {
         return positions;
     }
 
-    // TODO: change to calculate Betways win logic?
-
-    private checkForWin(reelIndexes: number[]): number {
+    private checkForWin(reelIndexes: number[]): number { // test function
         const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
         reels.forEach((reel) => {
             console.log("");
@@ -107,7 +105,6 @@ export class FakeAPI {
             }
         }
 
-        // TODO: win multiplier depends on reel length and count
         const winMultiplier = 20 / (this.reelLength + this.reelCount);
         totalCount *= winMultiplier;
         console.log(totalCount);

@@ -30,7 +30,7 @@ export class BackendReelCalculator {
 
         // Generate random symbols for extra spaces in reel
         for (let i = 0; i < reelSize-symbolLength; i++) {
-            randomIndex = Math.floor(Math.random() * symbolLength +1);
+            randomIndex = Math.floor(Math.random() * symbolLength +1); // +1 because of 1 indexed keys
             reel.push(randomIndex);
         }
 

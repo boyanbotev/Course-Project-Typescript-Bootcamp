@@ -30,5 +30,12 @@ export const manifest: ResolverManifest = {
                 "spinButton": "assets/images/ui/spin.png",
             }
         },
+        {
+            name: "backgroundBundle",
+            assets: {
+                "background1": "assets/images/background/wall1.jpg",
+                "background2": "assets/images/background/wall2.jpg",
+            }
+        }
     ]
 };
