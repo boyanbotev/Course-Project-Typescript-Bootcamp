@@ -33,7 +33,7 @@ export const manifest: ResolverManifest = {
         {
             name: "backgroundBundle",
             assets: {
-                "background1": "assets/images/background/wall1.jpg",
+                "background1": "assets/images/background/wall1.png",
                 "background2": "assets/images/background/wall2.jpg",
                 "frame": "assets/images/background/frame.jpg",
             }

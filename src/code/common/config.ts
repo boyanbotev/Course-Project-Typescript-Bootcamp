@@ -1,7 +1,7 @@
 // TODO: json
 
 export const config = {
-    reelCount: 5, // 5
+    reelCount: 4, // 5
     reelLength: 4, // 4
     reelSize: 20,
 

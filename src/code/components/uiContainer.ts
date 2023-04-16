@@ -25,7 +25,7 @@ export class UIContainer extends Container {
         new Button(
             {
                 x: Manager.Width/2, 
-                y: Manager.Height - spin.height/4.2,
+                y: Manager.Height - spin.height/4.3,
             },
             spin,
             spin,
