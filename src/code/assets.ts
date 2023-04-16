@@ -35,6 +35,7 @@ export const manifest: ResolverManifest = {
             assets: {
                 "background1": "assets/images/background/wall1.jpg",
                 "background2": "assets/images/background/wall2.jpg",
+                "frame": "assets/images/background/frame.jpg",
             }
         }
     ]

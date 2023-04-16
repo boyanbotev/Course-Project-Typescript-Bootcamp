@@ -10,8 +10,10 @@ export class Background extends Sprite {
         super(texture);
         this.width = screenWidth;
         this.height = screenHeight;
+
+        this.anchor.set(0.5, 0.5);
+        this.position.set(screenWidth/2, screenHeight/2);
+        
         container.addChild(this);
-        console.log('background created');
-        console.log(this);
     }
 }
