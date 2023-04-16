@@ -66,7 +66,6 @@ export class FakeAPI {
 
     private checkForWin(reelIndexes: number[]): number {
         const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
-        //console.log(reels);
         reels.forEach((reel) => {
             console.log("");
             reel.forEach((symbol) => {
@@ -75,24 +74,53 @@ export class FakeAPI {
             })
         })
 
-        // Check reels for horizontal matches
+        let totalCount = 0;
         for (let i = 0; i < reels[0].length; i++) {
-            let isFull = true;
+            const symbol = reels[0][i];
+            let count = 0;
+            let fullReelIndex = 0;
 
-            for (let j = 0; j < reels.length; j++) {
-                console.log(reels[j][i]);
-                // TODO: Go over each reel, checking if three are the same in a row
-                if (reels[j][i] !== reels[0][i]) {
-                    isFull = false;
-                    // currently checks if they are all the same
+            let skip = false;
+            for (let k = 0; k < i; k++) {
+                if (reels[0][k] === symbol) {
+                    skip = true;
+                    break;
                 }
             }
-            if (isFull) {
-                console.log("WIN");
-                return 100;
+            if (skip && i > 0) {
+                continue;
             }
-        } 
-        return 0;        
+            
+            for (let j = 0; j < reels.length; j++) {
+                const reel = reels[j];
+                const result = this.checkReel(reel, symbol);
+                if (result > 0) {
+                    count += result;
+                    fullReelIndex = j;
+                } else {
+                    break;
+                }
+            }
+            if (count >= 3 && fullReelIndex >= 2) {
+                console.log("win");
+                totalCount += count;
+            }
+        }
+
+        // TODO: win multiplier depends on reel length and count
+        const winMultiplier = 20 / (this.reelLength + this.reelCount);
+        totalCount *= winMultiplier;
+        console.log(totalCount);
+        return totalCount;        
     }
 
+    private checkReel(reel: number[], symbol: number): number {
+        let count = 0;
+        reel.forEach((reelSymbol) => {
+            if (reelSymbol === symbol) {
+                count++;
+            }
+        })
+        return count;
+    }
 }
