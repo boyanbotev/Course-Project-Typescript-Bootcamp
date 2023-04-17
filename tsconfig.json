@@ -6,6 +6,7 @@
       "target": "ES2017",
       "lib": ["esnext", "dom"],
       "esModuleInterop": true,
+      "resolveJsonModule": true,
       "noImplicitAny": true,
       "sourceMap": true,
       "declaration": true,

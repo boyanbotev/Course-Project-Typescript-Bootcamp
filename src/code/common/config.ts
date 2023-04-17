@@ -1,15 +1,36 @@
-// TODO: json
+import configJSON from './config.json';
 
-export const config = {
-    reelCount: 4, // 5
-    reelLength: 4, // 4
-    reelSize: 20,
+interface Config {
+    reelCount: number;
+    reelLength: number;
+    reelSize: number;
 
-    symbolSize: 165, // default 165
-    topMargin: 65,
+    topMargin: number;
+    initialBalance: number;
+    bet: number;
 
-    initialBalance: 100,
-    bet: 5,
-};
+    symbolSize?: number;
+}
+
+export const config: Config = JSON.parse(JSON.stringify(configJSON));
 
 config.symbolSize = 660/config.reelLength;
+
+if (
+    typeof config.reelCount !== 'number' ||
+    typeof config.reelLength !== 'number' ||
+    typeof config.reelSize !== 'number' ||
+    typeof config.topMargin !== 'number' ||
+    typeof config.initialBalance !== 'number' ||
+    typeof config.bet !== 'number'
+) {
+    throw new Error('Config is invalid');
+}
+
+if (config.symbolSize && typeof config.symbolSize !== 'number') {
+    throw new Error('Config is invalid');
+}
+
+
+
+
