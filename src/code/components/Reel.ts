@@ -42,8 +42,6 @@ export class Reel extends Container {
     }
 
     public createSymbols(): void {
-        // fragile implementation for getting symbols from symbolBundle by id
-
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
             symbol.texture = this.symbolsBundle[this.reels[this.reelXIndex][j]];

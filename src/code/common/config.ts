@@ -31,6 +31,4 @@ if (config.symbolSize && typeof config.symbolSize !== 'number') {
     throw new Error('Config is invalid');
 }
 
-
-
-
+console.log(config);

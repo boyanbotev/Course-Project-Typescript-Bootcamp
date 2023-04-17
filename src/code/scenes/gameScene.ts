@@ -15,14 +15,14 @@ export class GameScene extends Container implements IScene {
     constructor(){
         super();
 
-        new Background(Manager.Width, Manager.Height, Assets.get("background3"), this);
+        new Background(Manager.Width, Manager.Height, Assets.get("background"), this);
         const padding = 165;
         const frame = new Background(config.reelCount * config.symbolSize + padding, Manager.Height + 240, Assets.get("frame"), this);
         frame.x = Manager.Width/2;
         frame.y = Manager.Height/2 -20;
 
         this.api = new FakeAPI();
-        this.slotMachine = new SlotMachine(this, this.api);
+        this.slotMachine = new SlotMachine(this, this.api); // should this be here?
         new UIContainer(this, this.slotMachine);
 
         const ticker = Ticker.shared;

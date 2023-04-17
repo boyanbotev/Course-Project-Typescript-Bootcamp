@@ -7,6 +7,10 @@ export type SlotSymbolMap = {
     [key: number]: SlotSymbol;
 }
 
+export type WinMap = {
+    [key: number]: number;
+}
+
 export type Response = UpdateResponse | InitResponse | ErrorResponse;
 
 export type UpdateResponse = {

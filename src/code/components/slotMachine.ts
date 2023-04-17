@@ -153,3 +153,7 @@ export class SlotMachine extends Container {
         });
     }
 }
+
+// Where to implement highlighting of winning symbols? (and dimming of non-winning symbols)
+
+// where to implement the other UI logic?

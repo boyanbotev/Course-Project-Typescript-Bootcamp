@@ -4,7 +4,7 @@ import { config } from "../common/config"
 
 export class BackendReelCalculator {
     private reelCount: number = config.reelCount;
-    private reelLength: number = config.reelLength; // incorporate into calculations
+    private reelLength: number = config.reelLength;
     private reelSize: number = config.reelSize;
 
     private reels: number[][] = [];
@@ -33,12 +33,17 @@ export class BackendReelCalculator {
             randomIndex = Math.floor(Math.random() * symbolLength +1); // +1 because of 1 indexed keys
             reel.push(randomIndex);
         }
-
         // Add all symbols in random order
-        while (symbolLength > 0) {
-            randomIndex = Math.floor(Math.random() * symbolLength + 1);
-            reel.push(randomIndex);
-            symbolLength--;
+
+        const indexes: number[] = [];
+            for (let i = 1; i <= symbolLength; i++) {
+                indexes.push(i);
+            }
+
+        while (indexes.length > 0) {
+            randomIndex = Math.floor(Math.random() * indexes.length);
+            reel.push(indexes[randomIndex]);
+            indexes.splice(randomIndex, 1);
         }
         return reel;
     }
@@ -53,7 +58,7 @@ export class BackendReelCalculator {
         const visibleReels: number[][] = [];
         for (let i = 0; i < reelIndexes.length; i++) {
             const symbols: number[] = [];
-            for ( let j = 0; j < this.reelLength; j++ ) { // using reelIndexes.length as reelHeight forces the reels to be square
+            for ( let j = 0; j < this.reelLength; j++ ) {
 
                 let index = reelIndexes[i]+j;
 
