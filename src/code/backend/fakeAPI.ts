@@ -1,5 +1,5 @@
 import { BackendReelCalculator } from "./backendReelCalculator";
-import { Request, Response, CheckReelResult, WinResult } from "../common/types";
+import { Request, Response, CheckReelResult, WinResult, SymbolReference } from "../common/types";
 import { config } from "../common/config";
 import { slotSymbolMap, winMultiplierMap } from "../common/consts";
 
@@ -21,7 +21,7 @@ export class FakeAPI {
             case "init":
                 response = {
                     "action": "init",
-                    "symbols": this.reelCalculator.Reels,
+                    "symbols": this.reelCalculator.Reels, // there is now no need to send all the symbols, just the visible ones
                     "balance": this.balance,
                 }
                 break;
@@ -38,12 +38,21 @@ export class FakeAPI {
                     const newBalance = this.balance - request.bet + win.totalCount;
                     this.balance = newBalance;
 
-                    response = { // instead of passing reelIndexes, pass the visible symbols in a 2D array of SymbolReferences, which include symbol and the payline index
+                    const reelSymbols = this.reelCalculator.getVisibleSymbols(reelIndexes);
+                    const reelSymbolsWithWinningLineIndex: SymbolReference[][] = reelSymbols.map((reel) => {
+                        return reel.map((symbol) => {
+                            return {
+                                symbol,
+                                winningLineIndex: undefined,
+                            } satisfies SymbolReference;
+                        });
+                    });
+
+                    response = { 
                         "action": "update",
                         "spin-result": {
-                            "reelIndexes": reelIndexes,
                             "win": win.totalCount > 0 ? win.totalCount : undefined,
-                            "winningSymbolIndexes": win.totalCount > 0 ? win.winningSymbolIndexes : undefined,
+                            "symbols": reelSymbolsWithWinningLineIndex,
                         },
                         "balance": newBalance,
                     }

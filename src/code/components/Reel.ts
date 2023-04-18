@@ -1,6 +1,6 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
-import { SymbolBundle } from "../common/types";
+import { SymbolBundle, SymbolReference } from "../common/types";
 import { ReelState, SymbolState } from "../common/types";
 import { slotSymbolMap } from "../common/consts";
 
@@ -20,7 +20,7 @@ export class Reel extends Container {
     private currentState: ReelState = ReelState.Idle;
     private symbolIndex: number = 0;
 
-    private finalSymbols: number[] = [];
+    private finalSymbols: SymbolReference[] = [];
 
     constructor(
         reelXpos: number,
@@ -41,7 +41,7 @@ export class Reel extends Container {
         this.createSymbols();
     }
 
-    public createSymbols(): void {
+    public createSymbols(): void { // refactor this just to map the symbols passed in to the reel
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
             symbol.texture = this.symbolsBundle[this.reels[this.reelXIndex][j]];
@@ -113,9 +113,9 @@ export class Reel extends Container {
         return this.symbolIndex;
     }
 
-    public spin(finalSymbols: number[]): void {     
+    public spin(finalSymbols: SymbolReference[]): void {    
         this.finalSymbols = finalSymbols;
-        console.log("final symbols:",this.finalSymbols.map(id => slotSymbolMap[id]));
+        console.log("final symbols:",this.finalSymbols.map(symbolRef => slotSymbolMap[symbolRef.symbol]));
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
@@ -150,10 +150,10 @@ export class Reel extends Container {
     }
 
     public get FinalSymbol(): Texture {
-        const id = this.finalSymbols[this.symbolIndex-1];
+        const symbolRef = this.finalSymbols[this.symbolIndex-1];
         if (this.symbolIndex-1 >= this.finalSymbols.length) {
             console.log("unexpected symbol index:", this.symbolIndex-1);
         }
-        return this.symbolsBundle[id];
+        return this.symbolsBundle[symbolRef.symbol];
     }
 }

@@ -17,7 +17,6 @@ export class SlotMachine extends Container {
     private scene: GameScene;
     private api: FakeAPI;
     private reels: Reel[] = [];
-    private reelSymbolMap: number[][] = [];
 
     //private currentState: SlotMachineState = SlotMachineState.Idle;
 
@@ -65,7 +64,6 @@ export class SlotMachine extends Container {
         const response = await this.api.sendRequest(request) as InitResponse;
         console.log(response);
 
-        this.reelSymbolMap = response.symbols;
         return response;
     }
 
@@ -91,67 +89,18 @@ export class SlotMachine extends Container {
  
         const updateResponse = await this.requestSpin();
         const result = updateResponse["spin-result"];
-        const reelIndexes = result.reelIndexes;
-        if (!reelIndexes) {
+
+        if (!result) {
             return;
         }
 
-        const reelSymbols = this.calculateReelSymbols(reelIndexes);
+        const reelSymbols = result.symbols;
 
         // TODO: pass win ammount to UI
 
-        const winningSymbolIndexes = result.winningSymbolIndexes;
-
-        // how to get reel to understand which symbols are winning?
-        // can pass in 2d array with undefined for non winning symbols
-        
-        // have to modify array before passing it to calculateReelSymbols
-
-        // how do you let reel know if there are multiple winning lines?
-        // In that case, the lines need to pulsate in alternation
-        // so they need to be stored separately
-
-        // in that case, you can have a Symbol Class
-        // that has a winning line index
-        // and a winning line index can be undefined
-
-        // type Symbol {
-            // symbol: number;
-            // winningLineIndex: number | undefined;
-        //}
-
-        // you pass reel an array of symbols
-
-
-
-        // for each reel symbol, you check if it is in a winning line
-        // create a new symbol object with the winning line index
-        // push that to the new array
-
-
-        // TODO: pass in winning symbols
         this.reels.forEach((reel, index) => {
             reel.spin(reelSymbols[index]);
         });
-    }
-
-    private calculateReelSymbols(reelIndexes: number[]) {  // test function
-        const reelSymbols: number[][] = [];
-        for (let i = 0; i < this.reelCount; i++) {
-            const symbolsForCurrentReel: number[] = [];
-
-            for (let j = 0; j < this.reelLength; j++) {
-                const addedIndex = reelIndexes[i] + j;
-                const symbolMap = this.reelSymbolMap[i];
-
-                const wrappedIndex = addedIndex > symbolMap.length - 1 ? addedIndex - symbolMap.length : addedIndex;
-
-                const reelSymbol = symbolMap[wrappedIndex];
-                symbolsForCurrentReel.push(reelSymbol);
-            }
-            reelSymbols.push(symbolsForCurrentReel);
-        }
-        return reelSymbols;
     }
 
     private async requestSpin(): Promise<UpdateResponse> {  
@@ -191,9 +140,3 @@ export class SlotMachine extends Container {
 // Where to implement highlighting of winning symbols? (and dimming of non-winning symbols)
 
 // where to implement the other UI logic?
-
-type SymbolReference = {
-    symbol: number;
-    winningLineIndex: number | undefined;
-}
-

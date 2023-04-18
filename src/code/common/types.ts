@@ -16,9 +16,8 @@ export type Response = UpdateResponse | InitResponse | ErrorResponse;
 export type UpdateResponse = {
     "action": "update",
     "spin-result": {
-        "reelIndexes": number[],
         "win"?: number,
-        "winningSymbolIndexes"?: number[][],
+        "symbols": SymbolReference[][],
     },
     "balance": number,
 }
@@ -77,7 +76,7 @@ export type WinResult = {
     winningSymbolIndexes: number[][],
 };
 
-type SymbolReference = {
+export type SymbolReference = {
     symbol: number;
     winningLineIndex: number | undefined;
 }
