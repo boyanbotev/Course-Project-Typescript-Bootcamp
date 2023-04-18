@@ -73,10 +73,11 @@ export type CheckReelResult = {
 
 export type WinResult = {
     totalCount: number,
-    winningSymbolIndexes: number[][],
+    //winningSymbolIndexes: number[][],
+    symbols: SymbolReference[][],
 };
 
 export type SymbolReference = {
-    symbol: number;
+    symbolId: number;
     winningLineIndex: number | undefined;
 }

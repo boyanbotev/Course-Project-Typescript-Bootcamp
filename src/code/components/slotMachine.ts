@@ -50,7 +50,14 @@ export class SlotMachine extends Container {
         }
 
         for (let i = 0; i < this.reelCount; i++) {
-            const reel = new Reel(i, this.addedReelLength, this.symbolSize, symbolsBundle, response.symbols, this);
+            const reel = new Reel(
+                i, 
+                this.addedReelLength, 
+                this.symbolSize, 
+                symbolsBundle, 
+                response.symbols[i], 
+                this
+                );
             this.reels.push(reel);
         }
     }

@@ -9,7 +9,6 @@ export class Reel extends Container {
     private symbolSize: number;
     private reelXIndex: number;
 
-    private reels: number[][];
     private symbolsBundle: SymbolBundle;
     private symbols: Symbol[] = [];
 
@@ -27,7 +26,7 @@ export class Reel extends Container {
         addedReelLength: number,
         symbolSize: number,
         symbolsBundle: SymbolBundle,
-        symbolReferenceOrder: number[][],
+        initialSymbols: number[],
         parent: Container
     ) {
         super();
@@ -35,16 +34,16 @@ export class Reel extends Container {
         this.reelLength = addedReelLength;
         this.symbolSize = symbolSize;
         this.symbolsBundle = symbolsBundle;
-        this.reels = symbolReferenceOrder;
 
         parent.addChild(this);
-        this.createSymbols();
+        this.createSymbols(initialSymbols);
     }
 
-    public createSymbols(): void { // refactor this just to map the symbols passed in to the reel
+    public createSymbols(initialSymbols: number[]): void {
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
-            symbol.texture = this.symbolsBundle[this.reels[this.reelXIndex][j]];
+
+            symbol.texture = this.symbolsBundle[initialSymbols[j]];
             symbol.x = this.symbolSize * this.reelXIndex;
             symbol.y = this.symbolSize * j + this.symbolSize;
             symbol.width = this.symbolSize;
@@ -104,8 +103,8 @@ export class Reel extends Container {
     }
 
     public getRandomTexture(): Texture {
-        const randomIndex = Math.floor(Math.random() * this.reels[this.reelXIndex].length);
-        return this.symbolsBundle[this.reels[this.reelXIndex][randomIndex]];
+       const randomIndex = Math.floor(Math.random() * Object.keys(this.symbolsBundle).length);
+         return this.symbolsBundle[randomIndex +1];
     }
 
     public incrementSymbolIndex(): number {
@@ -115,7 +114,7 @@ export class Reel extends Container {
 
     public spin(finalSymbols: SymbolReference[]): void {    
         this.finalSymbols = finalSymbols;
-        console.log("final symbols:",this.finalSymbols.map(symbolRef => slotSymbolMap[symbolRef.symbol]));
+        console.log("final symbols:",this.finalSymbols.map(symbolRef => slotSymbolMap[symbolRef.symbolId]));
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
@@ -154,6 +153,6 @@ export class Reel extends Container {
         if (this.symbolIndex-1 >= this.finalSymbols.length) {
             console.log("unexpected symbol index:", this.symbolIndex-1);
         }
-        return this.symbolsBundle[symbolRef.symbol];
+        return this.symbolsBundle[symbolRef.symbolId];
     }
 }

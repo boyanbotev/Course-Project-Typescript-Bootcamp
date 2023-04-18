@@ -19,9 +19,11 @@ export class FakeAPI {
 
         switch (request.action) {
             case "init":
+                // Get tops of reels for intial positions
+                const reelIndexes = Array(this.reelCount).fill(0);
                 response = {
                     "action": "init",
-                    "symbols": this.reelCalculator.Reels, // there is now no need to send all the symbols, just the visible ones
+                    "symbols": this.reelCalculator.getVisibleSymbols(reelIndexes),
                     "balance": this.balance,
                 }
                 break;
@@ -42,7 +44,7 @@ export class FakeAPI {
                     const reelSymbolsWithWinningLineIndex: SymbolReference[][] = reelSymbols.map((reel) => {
                         return reel.map((symbol) => {
                             return {
-                                symbol,
+                                symbolId: symbol,
                                 winningLineIndex: undefined,
                             } satisfies SymbolReference;
                         });
@@ -83,7 +85,6 @@ export class FakeAPI {
         return positions;
     }
 
-    // TDO: different symbols have different win multipliers
     private checkForWin(reelIndexes: number[], bet: number): WinResult { // test function
         const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
         reels.forEach((reel) => {
@@ -95,7 +96,16 @@ export class FakeAPI {
         })
 
         let totalCount = 0;
-        let totalWinningSymbolIndexes: number[][] = [];
+        let paylineCount = 0;
+        //let totalWinningSymbolIndexes: number[][] = [];
+        const symbolRefs = reels.map((reel) => {
+            return reel.map((symbol) => {
+                return {
+                    symbolId: symbol,
+                    winningLineIndex: undefined,
+                } satisfies SymbolReference;
+            });
+        });
 
         for (let i = 0; i < reels[0].length; i++) {
             const symbol = reels[0][i];
@@ -121,7 +131,8 @@ export class FakeAPI {
                     count += result.count;
                     fullReelIndex = j;
                     result.symbolIndex.forEach((symbolIndex) => {
-                        winningSymbolIndexes.push([symbolIndex]);
+                        const winningSymbolIndex: number[] = [j, symbolIndex];
+                        winningSymbolIndexes.push(winningSymbolIndex);
                     });
                 } else {
                     break;
@@ -134,10 +145,10 @@ export class FakeAPI {
                 totalCount += count;
                 console.log("count * multiplier:", count);
 
-                totalWinningSymbolIndexes = totalWinningSymbolIndexes.concat(winningSymbolIndexes);
-
-                // TODO: add the winning symbols to 2d array
-                // a 2d array of SymbolReference objects, where the object has a reel index and a payline index
+                winningSymbolIndexes.forEach((winningSymbolIndex) => {
+                    symbolRefs[winningSymbolIndex[0]][winningSymbolIndex[1]].winningLineIndex = paylineCount;
+                });
+                paylineCount++;
             }
         }
 
@@ -145,12 +156,13 @@ export class FakeAPI {
 
         totalCount *= winMultiplier;
         console.log(totalCount);
-        console.log(totalWinningSymbolIndexes);
+        console.log(symbolRefs);
 
         return {
-            totalCount: totalCount,
-            winningSymbolIndexes: totalWinningSymbolIndexes,    
-        } satisfies WinResult;   
+            totalCount: totalCount,  
+            symbols: symbolRefs,
+
+        } satisfies WinResult;
     }
 
     private checkReel(reel: number[], symbol: number): CheckReelResult {
