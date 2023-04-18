@@ -107,14 +107,17 @@ export class Symbol extends Sprite {
     }
 
     public reset() {
+        this.scale.set(0.5);
+
         if (this.anchor.x !== 0) {
             this.anchor.set(0, 0);
             this.x -= this.width/2;
             this.y -= this.height/2;
         }
-        this.scale.set(0.5);
+        
         this.alpha = 1;
         this.tint = 0xFFFFFF;
+
     }
 
     private getFinalSymbol(): Texture {
