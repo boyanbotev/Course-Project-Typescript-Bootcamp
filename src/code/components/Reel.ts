@@ -20,6 +20,7 @@ export class Reel extends Container {
     private symbolIndex: number = 0;
 
     private finalSymbols: SymbolReference[] = [];
+    private isWin: boolean = false;
 
     constructor(
         reelXpos: number,
@@ -44,10 +45,11 @@ export class Reel extends Container {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
 
             symbol.texture = this.symbolsBundle[initialSymbols[j]];
-            symbol.x = this.symbolSize * this.reelXIndex;
-            symbol.y = this.symbolSize * j + this.symbolSize;
+            symbol.x = this.symbolSize * this.reelXIndex + (this.symbolSize/2);
+            symbol.y = this.symbolSize * j + this.symbolSize + (this.symbolSize/2);
             symbol.width = this.symbolSize;
             symbol.height = this.symbolSize;
+            symbol.anchor.set(0.5, 0.5);
 
             this.addChild(symbol);
             this.symbols.push(symbol);
@@ -79,6 +81,9 @@ export class Reel extends Container {
 
                 if (stopped) {
                     this.currentState = ReelState.Idle;
+                    if (this.isWin) {
+                        this.highlightWinningSymbols();
+                    }
                 }
                 break;
         }   
@@ -112,8 +117,9 @@ export class Reel extends Container {
         return this.symbolIndex;
     }
 
-    public spin(finalSymbols: SymbolReference[]): void {    
+    public spin(finalSymbols: SymbolReference[], isWin: boolean): void {    
         this.finalSymbols = finalSymbols;
+        this.isWin = isWin;
         console.log("final symbols:",this.finalSymbols.map(symbolRef => slotSymbolMap[symbolRef.symbolId]));
 
         this.symbolIndex = 0;
@@ -138,6 +144,18 @@ export class Reel extends Container {
 
         const velocity = Math.floor(Math.random() * randomValueMultiplier) + baseVelocity + this.reelXIndex * xPositionMultiplier;
         return velocity;
+    }
+
+    private highlightWinningSymbols() {
+        this.finalSymbols.forEach((symbolRef, index) => {
+            const symbol = this.symbols.find(symbol => symbol.SymbolIndex === index +1);
+
+            if (symbolRef.winningLineIndex !== undefined) {
+                symbol.highlight();
+            } else {
+                symbol.darken();
+            }
+        });
     }
 
     public get State(): ReelState {

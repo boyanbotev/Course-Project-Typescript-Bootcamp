@@ -40,21 +40,11 @@ export class FakeAPI {
                     const newBalance = this.balance - request.bet + win.totalCount;
                     this.balance = newBalance;
 
-                    const reelSymbols = this.reelCalculator.getVisibleSymbols(reelIndexes);
-                    const reelSymbolsWithWinningLineIndex: SymbolReference[][] = reelSymbols.map((reel) => {
-                        return reel.map((symbol) => {
-                            return {
-                                symbolId: symbol,
-                                winningLineIndex: undefined,
-                            } satisfies SymbolReference;
-                        });
-                    });
-
                     response = { 
                         "action": "update",
                         "spin-result": {
                             "win": win.totalCount > 0 ? win.totalCount : undefined,
-                            "symbols": reelSymbolsWithWinningLineIndex,
+                            "symbols": win.symbols,
                         },
                         "balance": newBalance,
                     }
@@ -97,7 +87,6 @@ export class FakeAPI {
 
         let totalCount = 0;
         let paylineCount = 0;
-        //let totalWinningSymbolIndexes: number[][] = [];
         const symbolRefs = reels.map((reel) => {
             return reel.map((symbol) => {
                 return {

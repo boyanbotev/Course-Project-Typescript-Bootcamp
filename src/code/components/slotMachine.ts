@@ -104,9 +104,10 @@ export class SlotMachine extends Container {
         const reelSymbols = result.symbols;
 
         // TODO: pass win ammount to UI
+        const isWin = result.win === undefined ? false : true;
 
         this.reels.forEach((reel, index) => {
-            reel.spin(reelSymbols[index]);
+            reel.spin(reelSymbols[index], isWin);
         });
     }
 

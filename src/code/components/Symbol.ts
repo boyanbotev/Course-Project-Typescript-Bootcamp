@@ -4,7 +4,7 @@ import { SymbolState } from "../common/types";
 import { gsap } from "gsap";
 
 export class Symbol extends Sprite {
-    private startPoint: number = 0;
+    private symbolSize: number = 0;
     private endPoint: number = 500;
     private velocity: number = 0;
     private reel: Reel;
@@ -13,12 +13,16 @@ export class Symbol extends Sprite {
     private symbolIndex: number;
 
     constructor(
-        startPoint: number,
+        symbolSize: number,
         endMargin: number,
         reel: Reel
     ) {
         super();
-        this.startPoint = startPoint;
+        this.width = this.symbolSize;
+        this.height = this.symbolSize;
+        this.anchor.set(0.5, 0.5);
+
+        this.symbolSize = symbolSize;
         this.endPoint = endMargin;
         this.reel = reel;
     }
@@ -74,12 +78,23 @@ export class Symbol extends Sprite {
         const baseDuration = 0.6;
         const xPositionMultiplier = 0.09;
 
-        const duration = baseDuration - (this.symbolIndex * xPositionMultiplier * (this.startPoint / standardSymbolSize));
-        const targetY = this.endPoint - (this.startPoint * this.symbolIndex)
+        const duration = baseDuration - (this.symbolIndex * xPositionMultiplier * (this.symbolSize / standardSymbolSize));
+        const targetY = this.endPoint - (this.symbolSize * this.symbolIndex) + (this.symbolSize/2); // make sure symbol is centred by adding half of its size
 
         gsap.to(this, { y: targetY, duration: duration, onComplete: () => {
             this.currentState = SymbolState.Idle;
         }});
+    }
+
+    public highlight() {
+        this.scale.set(0.55);
+        console.log("highlighted");
+    }
+
+    public darken() {
+        this.alpha = 0.5;
+        this.tint = 0x888888;
+        console.log("darkened");
     }
 
     private getFinalSymbol(): Texture {
@@ -100,6 +115,10 @@ export class Symbol extends Sprite {
 
     public set SymbolIndex(index: number) {
         this.symbolIndex = index;
+    }
+
+    public get SymbolIndex(): number {
+        return this.symbolIndex;
     }
 }
 
