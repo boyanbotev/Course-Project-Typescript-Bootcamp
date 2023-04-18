@@ -50,8 +50,8 @@ export class Reel extends Container {
             console.log(j);
             console.log("intial symbols:", initialSymbols[j]);
     
-            symbol.x = this.symbolSize * this.reelXIndex + (this.symbolSize/2);
-            symbol.y = this.symbolSize * j + this.symbolSize + (this.symbolSize/2);
+            symbol.x = this.symbolSize * this.reelXIndex;
+            symbol.y = this.symbolSize * j + this.symbolSize;
             
             this.symbols.push(symbol);
         }
@@ -132,6 +132,7 @@ export class Reel extends Container {
             const symbol = this.symbols[i];
             symbol.Velocity = this.velocity;
             symbol.State = SymbolState.Spinning;
+            symbol.reset();
         }
     }
 
