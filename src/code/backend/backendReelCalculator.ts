@@ -4,7 +4,6 @@ import { config } from "../common/config"
 
 export class BackendReelCalculator {
     private reelCount: number = config.reelCount;
-    private reelLength: number = config.reelLength;
     private reelSize: number = config.reelSize;
 
     private reels: number[][] = [];
@@ -54,11 +53,11 @@ export class BackendReelCalculator {
      * Should return the symbols on the reels starting at the reelIndexes
      * TODO: Separate visible reelLength (horizontal) from visible reelHeight (vertical)
      */
-    public getVisibleSymbols(reelIndexes: number[]): number[][] {     // test this function?
+    public getVisibleSymbols(reelIndexes: number[], reelLength: number): number[][] {     // test this function?
         const visibleReels: number[][] = [];
         for (let i = 0; i < reelIndexes.length; i++) {
             const symbols: number[] = [];
-            for ( let j = 0; j < this.reelLength; j++ ) {
+            for ( let j = 0; j < reelLength; j++ ) {
 
                 let index = reelIndexes[i]+j;
 

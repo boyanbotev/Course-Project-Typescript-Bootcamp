@@ -19,11 +19,11 @@ export class FakeAPI {
 
         switch (request.action) {
             case "init":
-                // Get tops of reels for intial positions
+                // Get tops of reels for intial positions, with + 1 for extra reel - doesn't work
                 const reelIndexes = Array(this.reelCount).fill(0);
                 response = {
                     "action": "init",
-                    "symbols": this.reelCalculator.getVisibleSymbols(reelIndexes),
+                    "symbols": this.reelCalculator.getVisibleSymbols(reelIndexes, this.reelLength + 1),
                     "balance": this.balance,
                 }
                 break;
@@ -76,7 +76,7 @@ export class FakeAPI {
     }
 
     private checkForWin(reelIndexes: number[], bet: number): WinResult { // test function
-        const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
+        const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes, this.reelLength);
         reels.forEach((reel) => {
             console.log("");
             reel.forEach((symbol) => {
@@ -87,6 +87,7 @@ export class FakeAPI {
 
         let totalCount = 0;
         let paylineCount = 0;
+
         const symbolRefs = reels.map((reel) => {
             return reel.map((symbol) => {
                 return {

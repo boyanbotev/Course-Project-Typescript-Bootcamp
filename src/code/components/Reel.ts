@@ -40,20 +40,22 @@ export class Reel extends Container {
         this.createSymbols(initialSymbols);
     }
 
-    public createSymbols(initialSymbols: number[]): void {
+    public createSymbols(initialSymbols: number[]): void { //what about the fifth reel?
+        console.log("initial symbols:", initialSymbols);
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
 
             symbol.texture = this.symbolsBundle[initialSymbols[j]];
+            console.log("symbol texture:", symbol.texture);
+            console.log(j);
+            console.log("intial symbols:", initialSymbols[j]);
+    
             symbol.x = this.symbolSize * this.reelXIndex + (this.symbolSize/2);
             symbol.y = this.symbolSize * j + this.symbolSize + (this.symbolSize/2);
-            symbol.width = this.symbolSize;
-            symbol.height = this.symbolSize;
-            symbol.anchor.set(0.5, 0.5);
-
-            this.addChild(symbol);
+            
             this.symbols.push(symbol);
         }
+        console.log(this.children);
     }
 
     public updateSymbols(delta: number): void {

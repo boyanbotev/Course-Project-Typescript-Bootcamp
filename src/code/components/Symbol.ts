@@ -18,13 +18,17 @@ export class Symbol extends Sprite {
         reel: Reel
     ) {
         super();
-        this.width = this.symbolSize;
-        this.height = this.symbolSize;
         this.anchor.set(0.5, 0.5);
+        reel.addChild(this);
 
         this.symbolSize = symbolSize;
+        this.width = this.symbolSize;
+        this.height = this.symbolSize;
+        
         this.endPoint = endMargin;
         this.reel = reel;
+
+        // why can't we see the symbols?
     }
 
     public update(delta: number): void {
