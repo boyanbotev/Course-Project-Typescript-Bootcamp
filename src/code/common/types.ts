@@ -17,7 +17,8 @@ export type UpdateResponse = {
     "action": "update",
     "spin-result": {
         "reelIndexes": number[],
-        "win": number,
+        "win"?: number,
+        "winningSymbolIndexes"?: number[][],
     },
     "balance": number,
 }
@@ -64,4 +65,19 @@ export enum SlotMachineState {
 
 export type SymbolBundle = {
     [key: string]: Texture;
+}
+
+export type CheckReelResult = {
+    count: number,
+    symbolIndex: number[],
+};
+
+export type WinResult = {
+    totalCount: number,
+    winningSymbolIndexes: number[][],
+};
+
+type SymbolReference = {
+    symbol: number;
+    winningLineIndex: number | undefined;
 }

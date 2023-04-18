@@ -89,12 +89,47 @@ export class SlotMachine extends Container {
 
         //this.currentState = SlotMachineState.Spinning;
  
-        const reelIndexes = await this.requestSpin();
+        const updateResponse = await this.requestSpin();
+        const result = updateResponse["spin-result"];
+        const reelIndexes = result.reelIndexes;
         if (!reelIndexes) {
             return;
         }
 
         const reelSymbols = this.calculateReelSymbols(reelIndexes);
+
+        // TODO: pass win ammount to UI
+
+        const winningSymbolIndexes = result.winningSymbolIndexes;
+
+        // how to get reel to understand which symbols are winning?
+        // can pass in 2d array with undefined for non winning symbols
+        
+        // have to modify array before passing it to calculateReelSymbols
+
+        // how do you let reel know if there are multiple winning lines?
+        // In that case, the lines need to pulsate in alternation
+        // so they need to be stored separately
+
+        // in that case, you can have a Symbol Class
+        // that has a winning line index
+        // and a winning line index can be undefined
+
+        // type Symbol {
+            // symbol: number;
+            // winningLineIndex: number | undefined;
+        //}
+
+        // you pass reel an array of symbols
+
+
+
+        // for each reel symbol, you check if it is in a winning line
+        // create a new symbol object with the winning line index
+        // push that to the new array
+
+
+        // TODO: pass in winning symbols
         this.reels.forEach((reel, index) => {
             reel.spin(reelSymbols[index]);
         });
@@ -119,7 +154,7 @@ export class SlotMachine extends Container {
         return reelSymbols;
     }
 
-    private async requestSpin(): Promise<number[]> {  
+    private async requestSpin(): Promise<UpdateResponse> {  
         const request: Request = {
             action: "spin",
             "bet": this.bet,
@@ -132,8 +167,7 @@ export class SlotMachine extends Container {
         }
 
         const updateResponse = response as UpdateResponse;
-        const result = updateResponse["spin-result"];
-        return result.reelIndexes;
+        return updateResponse;
     }
 
     private areReelsStopped() {
@@ -157,3 +191,9 @@ export class SlotMachine extends Container {
 // Where to implement highlighting of winning symbols? (and dimming of non-winning symbols)
 
 // where to implement the other UI logic?
+
+type SymbolReference = {
+    symbol: number;
+    winningLineIndex: number | undefined;
+}
+

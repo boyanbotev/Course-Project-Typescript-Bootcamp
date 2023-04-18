@@ -1,5 +1,5 @@
 import { BackendReelCalculator } from "./backendReelCalculator";
-import { Request, Response } from "../common/types";
+import { Request, Response, CheckReelResult, WinResult } from "../common/types";
 import { config } from "../common/config";
 import { slotSymbolMap, winMultiplierMap } from "../common/consts";
 
@@ -35,14 +35,15 @@ export class FakeAPI {
                     const reelIndexes = this.getNewReelPositions();
                     const win = this.checkForWin(reelIndexes, request.bet);
 
-                    const newBalance = this.balance - request.bet + win;
+                    const newBalance = this.balance - request.bet + win.totalCount;
                     this.balance = newBalance;
 
-                    response = {
+                    response = { // instead of passing reelIndexes, pass the visible symbols in a 2D array of SymbolReferences, which include symbol and the payline index
                         "action": "update",
                         "spin-result": {
                             "reelIndexes": reelIndexes,
-                            "win": win,
+                            "win": win.totalCount > 0 ? win.totalCount : undefined,
+                            "winningSymbolIndexes": win.totalCount > 0 ? win.winningSymbolIndexes : undefined,
                         },
                         "balance": newBalance,
                     }
@@ -74,7 +75,7 @@ export class FakeAPI {
     }
 
     // TDO: different symbols have different win multipliers
-    private checkForWin(reelIndexes: number[], bet: number): number { // test function
+    private checkForWin(reelIndexes: number[], bet: number): WinResult { // test function
         const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes);
         reels.forEach((reel) => {
             console.log("");
@@ -85,10 +86,13 @@ export class FakeAPI {
         })
 
         let totalCount = 0;
+        let totalWinningSymbolIndexes: number[][] = [];
+
         for (let i = 0; i < reels[0].length; i++) {
             const symbol = reels[0][i];
             let count = 0;
             let fullReelIndex = 0;
+            let winningSymbolIndexes: number[][] = [];
 
             let skip = false;
             for (let k = 0; k < i; k++) {
@@ -104,9 +108,12 @@ export class FakeAPI {
             for (let j = 0; j < reels.length; j++) {
                 const reel = reels[j];
                 const result = this.checkReel(reel, symbol);
-                if (result > 0) {
-                    count += result;
+                if (result.count > 0) {
+                    count += result.count;
                     fullReelIndex = j;
+                    result.symbolIndex.forEach((symbolIndex) => {
+                        winningSymbolIndexes.push([symbolIndex]);
+                    });
                 } else {
                     break;
                 }
@@ -118,12 +125,10 @@ export class FakeAPI {
                 totalCount += count;
                 console.log("count * multiplier:", count);
 
-                // TODO: add the winning symbols to some array, to highlight them
-                // how are the winning symbols referenced?
+                totalWinningSymbolIndexes = totalWinningSymbolIndexes.concat(winningSymbolIndexes);
 
-                // by the reel and position on that reel?
-                // a 2d array with an array for each reel
-                // eg. [[0], [0], [1], [0, 2,]] would mean that the first reel has a winning symbol at position 0
+                // TODO: add the winning symbols to 2d array
+                // a 2d array of SymbolReference objects, where the object has a reel index and a payline index
             }
         }
 
@@ -131,16 +136,28 @@ export class FakeAPI {
 
         totalCount *= winMultiplier;
         console.log(totalCount);
-        return totalCount;        
+        console.log(totalWinningSymbolIndexes);
+
+        return {
+            totalCount: totalCount,
+            winningSymbolIndexes: totalWinningSymbolIndexes,    
+        } satisfies WinResult;   
     }
 
-    private checkReel(reel: number[], symbol: number): number {
+    private checkReel(reel: number[], symbol: number): CheckReelResult {
         let count = 0;
-        reel.forEach((reelSymbol) => {
-            if (reelSymbol === symbol) {
+        const winningSymbols: number[] = [];
+
+        for (let i = 0; i < reel.length; i++) {
+            if (reel[i] === symbol) {
                 count++;
+                winningSymbols.push(i);
             }
-        })
-        return count;
+        }
+
+        return {
+            count: count,
+            symbolIndex: winningSymbols,
+        } satisfies CheckReelResult;
     }
 }
