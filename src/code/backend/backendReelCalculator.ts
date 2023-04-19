@@ -9,13 +9,20 @@ export class BackendReelCalculator {
     private reels: number[][] = [];
 
     constructor() {
-        this.reels = this.createReels();
+        // this.reels = this.createReels();
+        const testReels = [
+            [1, 2, 2, 2, 1, 2, 6, 1, 6, 2, 1, 6, 2, 7, 6, 1, 7, 1, 2, 2],
+            [1, 1, 6, 2, 2, 6, 6, 6, 1, 7, 6, 1, 1, 6, 1, 2, 2, 6, 2, 7],
+            [7, 1, 6, 2, 6, 2, 7, 6, 2, 2, 6, 1, 2, 2, 6, 6, 1, 1, 6, 1],
+            [10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        ]
+        this.reels = testReels;
     }
 
     /**
      * Randomly create reels of size 20 using each symbol at least once
      */
-    private createReels(): number[][] {
+    private createRandomReels(): number[][] {
 
         const reels: number[][] = [];
         for (let i = 0; i < this.reelCount; i++) {

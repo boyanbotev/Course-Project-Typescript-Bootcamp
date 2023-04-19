@@ -85,6 +85,8 @@ export class Symbol extends Sprite {
         const duration = baseDuration - (this.symbolIndex * xPositionMultiplier * (this.symbolSize / standardSymbolSize));
         const targetY = this.endPoint - (this.symbolSize * this.symbolIndex);
 
+        gsap.registerPlugin(CustomEase);
+
         gsap.to(this, { y: targetY, duration: duration, onComplete: () => {
             this.currentState = SymbolState.Idle;
         }});
@@ -95,19 +97,15 @@ export class Symbol extends Sprite {
         this.x += this.width/2;
         this.y += this.height/2;
 
-        this.alpha = 0.6;
+        const alphaValue = paylineLength > 1 ? 0.2 : 0.6;
+        this.alpha = alphaValue;  
         
         this.currentState = SymbolState.Animating;
 
         const sizeMultiplier = 1.1;
 
-        const duration = 1 + (paylineLength/10);
+        const duration = 1 + (paylineLength/6);
         const startTimeDelay = (payline / paylineLength) * 2;
-
-        console.log(duration);
-        console.log(startTimeDelay);
-
-
 
         this.createHighlightAnimation(duration, sizeMultiplier, startTimeDelay, paylineLength);
     }
@@ -116,16 +114,13 @@ export class Symbol extends Sprite {
         gsap.registerPlugin(CustomEase);
         const customEase = CustomEase.create("custom", "M0,0 C0.29,0.028 0.44,-0.084 0.66,0.182 0.827,0.384 0.756,1.042 1,1 ");
 
-        const isCustom: boolean = paylineLength > 2 && startTimeDelay > 0 ? false : true;
+        const isCustom: boolean = paylineLength > 1 && startTimeDelay > 0 ? false : true;
  
-        const hasYoyoEase: boolean = paylineLength > 2 && startTimeDelay === 0 ? true : false;
+        const hasYoyoEase: boolean = paylineLength > 1 && startTimeDelay === 0 ? true : false;
 
         // TODO: refactor to be more mathematical and less based on if statements?
 
         const ease = !isCustom ? customEase : undefined;
-        
-        console.log(ease);
-        console.log(isCustom);
 
         const animation = gsap.to(
             this, { 
