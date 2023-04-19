@@ -12,6 +12,8 @@ export class Symbol extends Sprite {
     private currentState: SymbolState = SymbolState.Idle;
     private symbolIndex: number;
 
+    private currentAnimation: gsap.core.Tween | null = null;
+
     constructor(
         symbolSize: number,
         endMargin: number,
@@ -83,36 +85,57 @@ export class Symbol extends Sprite {
         const xPositionMultiplier = 0.09;
 
         const duration = baseDuration - (this.symbolIndex * xPositionMultiplier * (this.symbolSize / standardSymbolSize));
-        const targetY = this.endPoint - (this.symbolSize * this.symbolIndex); // make sure symbol is centred by adding half of its size
+        const targetY = this.endPoint - (this.symbolSize * this.symbolIndex);
 
         gsap.to(this, { y: targetY, duration: duration, onComplete: () => {
             this.currentState = SymbolState.Idle;
         }});
     }
 
-    // TODO: Add animations
-
     public highlight() {
         this.anchor.set(0.5, 0.5);
         this.x += this.width/2;
         this.y += this.height/2;
-        this.scale.set(0.55);
-        console.log("highlighted");
+        
+        this.currentState = SymbolState.Animating;
+
+        const animation = gsap.to(this, { width: this.symbolSize * 1.2, height: this.symbolSize * 1.2, duration: 1, yoyo: true, repeat: Infinity, onComplete: () => {
+            this.currentState = SymbolState.Idle;
+        }});
+
+        this.currentAnimation = animation;
+        console.log(this.currentAnimation);
     }
 
     public darken() {
         this.alpha = 0.5;
         this.tint = 0x888888;
-        console.log("darkened");
     }
 
     public reset() {
-        this.scale.set(0.5);
+        this.width = this.symbolSize;
+        this.height = this.symbolSize;
 
+        this.currentAnimation?.kill();
+
+        if (this.currentAnimation) {
+            //console.log(this.currentAnimation);
+            // why is this not working?
+        }
+        
+        // why doesn't this work?
+
+
+        // why is the position not reset?
         if (this.anchor.x !== 0) {
             this.anchor.set(0, 0);
             this.x -= this.width/2;
-            this.y -= this.height/2;
+            this.y -= this.width/2;
+            //console.log(this.symbolSize/2);
+
+            //console.log("reset position");
+            //console.log(this.x, this.y);
+            //console.log(this.anchor.x, this.anchor.y);
         }
         
         this.alpha = 1;

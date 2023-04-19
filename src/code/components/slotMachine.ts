@@ -18,7 +18,8 @@ export class SlotMachine extends Container {
     private api: FakeAPI;
     private reels: Reel[] = [];
 
-    //private currentState: SlotMachineState = SlotMachineState.Idle;
+    private currentState: SlotMachineState = SlotMachineState.Idle;
+    private spinResult: UpdateResponse;
 
     constructor(scene: GameScene, api: FakeAPI) {
         super();
@@ -92,11 +93,13 @@ export class SlotMachine extends Container {
             return;
         }
 
-        //this.currentState = SlotMachineState.Spinning;
+        this.currentState = SlotMachineState.Spinning;
  
         const updateResponse = await this.requestSpin();
-        const result = updateResponse["spin-result"];
+        this.spinResult = updateResponse;
 
+        const result = updateResponse["spin-result"];
+   
         if (!result) {
             return;
         }
@@ -107,7 +110,7 @@ export class SlotMachine extends Container {
         const isWin = result.win === undefined ? false : true;
 
         this.reels.forEach((reel, index) => {
-            reel.spin(reelSymbols[index], isWin);
+            reel.spin(reelSymbols[index]);
         });
     }
 
@@ -126,8 +129,7 @@ export class SlotMachine extends Container {
         const updateResponse = response as UpdateResponse;
         return updateResponse;
     }
-
-    private areReelsStopped() {
+    private areReelsStopped(): boolean {
         let isAllStopped = true;
         this.reels.forEach((reel) => {
             if (reel.State !== ReelState.Idle) {
@@ -137,11 +139,45 @@ export class SlotMachine extends Container {
         return isAllStopped;
     }
 
+    public checkIfReelsStopped() {
+        const isAllStopped = this.areReelsStopped();
+        if (isAllStopped) {
+            this.currentState = SlotMachineState.Idle;
+            console.log("all reels stopped");
+            this.handleReelStopped();
+        }
+        return isAllStopped;
+    }
+
+    private handleReelStopped() {
+        if (!this.spinResult) {
+            return;
+        }
+        const result = this.spinResult["spin-result"];
+        if (!result) {
+            return;
+        }
+        if (result.win) {
+            this.highlightWinningSymbols();
+        }
+    }
+
+    private highlightWinningSymbols() {
+        this.reels.forEach((reel) => {
+            reel.highlightWinningSymbols();
+        });
+    }
+
+
     // TODO: use slot machine state only to update reels when necessary
     public updateReels(delta: number): void {
         this.reels.forEach((reel) => {
             reel.updateSymbols(delta);
         });
+    }
+
+    public get State() {
+        return this.currentState;
     }
 }
 

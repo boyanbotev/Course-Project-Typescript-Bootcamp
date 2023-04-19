@@ -45,21 +45,22 @@ type InitRequest = {
 }
 
 export enum ReelState {
-    Idle,
-    Spinning, // randomly assigning symbols
-    Stopping, // preparing symbols specified by backend
+    Idle = "Idle",
+    Spinning = "Spinning", // randomly assigning symbols
+    Stopping = "Stopping", // preparing symbols specified by backend
 }
 
 export enum SymbolState {
-    Idle,
-    Spinning,
-    PreparingToStop,
-    Stopping
+    Idle = "Idle",
+    Spinning = "Spinning",
+    PreparingToStop = "PreparingToStop",
+    Stopping = "Stopping",
+    Animating = "Animating",
 }
 
 export enum SlotMachineState {
-    Idle,
-    Spinning,
+    Idle = "Idle",
+    Spinning = "Spinning",
 }
 
 export type SymbolBundle = {
@@ -73,7 +74,6 @@ export type CheckReelResult = {
 
 export type WinResult = {
     totalCount: number,
-    //winningSymbolIndexes: number[][],
     symbols: SymbolReference[][],
 };
 

@@ -77,13 +77,13 @@ export class FakeAPI {
 
     private checkForWin(reelIndexes: number[], bet: number): WinResult { // test function
         const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes, this.reelLength);
-        reels.forEach((reel) => {
-            console.log("");
-            reel.forEach((symbol) => {
-                console.log(symbol);
-                console.log(slotSymbolMap[symbol]);
-            })
-        })
+        // reels.forEach((reel) => {
+        //     console.log("");
+        //     reel.forEach((symbol) => {
+        //         console.log(symbol);
+        //         console.log(slotSymbolMap[symbol]);
+        //     })
+        // })
 
         let totalCount = 0;
         let paylineCount = 0;

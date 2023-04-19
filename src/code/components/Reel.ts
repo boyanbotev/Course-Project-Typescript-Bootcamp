@@ -1,8 +1,9 @@
 import { Container, Texture } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SymbolBundle, SymbolReference } from "../common/types";
-import { ReelState, SymbolState } from "../common/types";
+import { ReelState, SymbolState, SlotMachineState } from "../common/types";
 import { slotSymbolMap } from "../common/consts";
+import { SlotMachine } from "./slotMachine";
 
 export class Reel extends Container {
     private reelLength: number;
@@ -20,7 +21,6 @@ export class Reel extends Container {
     private symbolIndex: number = 0;
 
     private finalSymbols: SymbolReference[] = [];
-    private isWin: boolean = false;
 
     constructor(
         reelXpos: number,
@@ -40,22 +40,17 @@ export class Reel extends Container {
         this.createSymbols(initialSymbols);
     }
 
-    public createSymbols(initialSymbols: number[]): void { //what about the fifth reel?
-        console.log("initial symbols:", initialSymbols);
+    public createSymbols(initialSymbols: number[]): void {
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
 
             symbol.texture = this.symbolsBundle[initialSymbols[j]];
-            console.log("symbol texture:", symbol.texture);
-            console.log(j);
-            console.log("intial symbols:", initialSymbols[j]);
     
             symbol.x = this.symbolSize * this.reelXIndex;
             symbol.y = this.symbolSize * j + this.symbolSize;
             
             this.symbols.push(symbol);
         }
-        console.log(this.children);
     }
 
     public updateSymbols(delta: number): void {
@@ -83,8 +78,9 @@ export class Reel extends Container {
 
                 if (stopped) {
                     this.currentState = ReelState.Idle;
-                    if (this.isWin) {
-                        this.highlightWinningSymbols();
+                    const slotMachine = this.parent as SlotMachine;
+                    if (slotMachine.State === SlotMachineState.Spinning) {
+                        slotMachine.checkIfReelsStopped();
                     }
                 }
                 break;
@@ -119,9 +115,8 @@ export class Reel extends Container {
         return this.symbolIndex;
     }
 
-    public spin(finalSymbols: SymbolReference[], isWin: boolean): void {    
+    public spin(finalSymbols: SymbolReference[]): void {    
         this.finalSymbols = finalSymbols;
-        this.isWin = isWin;
         console.log("final symbols:",this.finalSymbols.map(symbolRef => slotSymbolMap[symbolRef.symbolId]));
 
         this.symbolIndex = 0;
@@ -149,7 +144,11 @@ export class Reel extends Container {
         return velocity;
     }
 
-    private highlightWinningSymbols() {
+    // TODO: refactor to make separate paylines animate separately
+    public highlightWinningSymbols() {   // this should be done in slot machine, not reel
+        const paylineLength = this.getHighestWinningLineIndex() + 1;
+        console.log("payline length:", paylineLength);
+
         this.finalSymbols.forEach((symbolRef, index) => {
             const symbol = this.symbols.find(symbol => symbol.SymbolIndex === index +1);
 
@@ -159,6 +158,18 @@ export class Reel extends Container {
                 symbol.darken();
             }
         });
+    }
+
+    private getHighestWinningLineIndex(): number {
+        let highestWinningLineIndex = 0;
+        this.finalSymbols.forEach((symbolRef) => {
+            if (symbolRef.winningLineIndex !== undefined) {
+                if (symbolRef.winningLineIndex > highestWinningLineIndex) {
+                    highestWinningLineIndex = symbolRef.winningLineIndex;
+                }
+            }
+        });
+        return highestWinningLineIndex;
     }
 
     public get State(): ReelState {
