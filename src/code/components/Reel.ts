@@ -1,4 +1,4 @@
-import { Container, Texture } from "pixi.js";
+import { Container, Texture, BlurFilter } from "pixi.js";
 import { Symbol } from "./Symbol";
 import { SymbolBundle, SymbolReference } from "../common/types";
 import { ReelState, SymbolState, SlotMachineState } from "../common/types";
@@ -15,12 +15,14 @@ export class Reel extends Container {
 
     private velocity: number = 0;
     private decreaseRate: number = 0.1;
+    private blurDecreaseRate: number = 0.0017;
     private velocityThreshold: number = 15;
 
     private currentState: ReelState = ReelState.Idle;
     private symbolIndex: number = 0;
 
     private finalSymbols: SymbolReference[] = [];
+    private blurFilter: BlurFilter;
 
     constructor(
         reelXpos: number,
@@ -38,6 +40,8 @@ export class Reel extends Container {
 
         parent.addChild(this);
         this.createSymbols(initialSymbols);
+        this.blurFilter = new BlurFilter(0, 1, 4);
+        this.filters = [this.blurFilter];
     }
 
     public createSymbols(initialSymbols: number[]): void {
@@ -63,6 +67,7 @@ export class Reel extends Container {
                 this.symbols.forEach((symbol) => {
                     symbol.update(delta);
                     symbol.Velocity = this.velocity;
+                    this.setBlur();
                 });
 
                 if (this.velocity < this.velocityThreshold) {          
@@ -72,6 +77,7 @@ export class Reel extends Container {
             case ReelState.Stopping:
                 this.symbols.forEach((symbol) => {
                     symbol.update(delta);
+                    this.decreaseBlur();
                 });
     
                 const stopped = this.areSymbolsStopped();
@@ -87,11 +93,24 @@ export class Reel extends Container {
         }   
     }
 
+    private setBlur() {
+        this.blurFilter.blurY = this.velocity / 3;
+    }
+
+    private decreaseBlur() {
+        if (this.blurFilter.blurY > 0) {
+            this.blurFilter.blurY -= this.blurDecreaseRate;
+        } else {
+            this.blurFilter.blurY = 0;
+        }
+    }
+
     private beginStopping() {
         this.currentState = ReelState.Stopping;
 
         this.symbols.forEach((symbol) => {
             symbol.State = SymbolState.PreparingToStop;
+            this.blurFilter.blurY = 0;
         });
     }
 

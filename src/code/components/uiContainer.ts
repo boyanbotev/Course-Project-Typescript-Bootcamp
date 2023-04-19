@@ -17,7 +17,13 @@ export class UIContainer extends Container {
         this.createUI();
     }
 
-    private async createUI(): Promise<void> {
+    private createUI(): void {
+        this.createBetUI();
+        this.createBalanceUI();
+        this.createButton();
+    }
+
+    private async createButton(): Promise<void> {
         const spinBundle = await Assets.loadBundle("uiBundle");
         const spin = spinBundle["spinButton"] as Texture;
 
@@ -34,5 +40,15 @@ export class UIContainer extends Container {
             this,
             0.5,
         );
-    } 
+    }
+
+    private async createWinText(): Promise<void> {
+    }
+
+    private async createBetUI(): Promise<void> {
+    }
+
+    private async createBalanceUI(): Promise<void> {
+
+    }
 }

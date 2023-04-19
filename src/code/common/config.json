@@ -6,5 +6,7 @@
     "topMargin": 65,
 
     "initialBalance": 100,
-    "bet": 5
+    "bet": 5,
+
+    "testMode": true
 }

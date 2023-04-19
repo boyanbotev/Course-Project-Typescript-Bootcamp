@@ -1,4 +1,4 @@
-import { Sprite, Texture } from "pixi.js";
+import { Sprite, Texture, Filter } from "pixi.js";
 import { Reel } from "./Reel";
 import { SymbolState } from "../common/types";
 import { gsap } from "gsap";
@@ -188,5 +188,3 @@ export class Symbol extends Sprite {
         return this.symbolIndex;
     }
 }
-
-// TODO: Add blur

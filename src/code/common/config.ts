@@ -10,6 +10,8 @@ interface Config {
     bet: number;
 
     symbolSize?: number;
+
+    testMode?: boolean;
 }
 
 export const config: Config = JSON.parse(JSON.stringify(configJSON));
@@ -28,6 +30,10 @@ if (
 }
 
 if (config.symbolSize && typeof config.symbolSize !== 'number') {
+    throw new Error('Config is invalid');
+}
+
+if (config.testMode && typeof config.testMode !== 'boolean') {
     throw new Error('Config is invalid');
 }
 

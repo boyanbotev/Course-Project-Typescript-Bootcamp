@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@pixi/filter-bloom": "^5.1.1",
     "copy-webpack-plugin": "^11.0.0",
     "gsap": "^3.11.5",
     "html-webpack-plugin": "^5.5.0",

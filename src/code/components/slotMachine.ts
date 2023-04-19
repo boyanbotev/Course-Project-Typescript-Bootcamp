@@ -146,7 +146,6 @@ export class SlotMachine extends Container {
             console.log("all reels stopped");
             this.handleReelStopped();
         }
-        return isAllStopped;
     }
 
     private handleReelStopped() {
