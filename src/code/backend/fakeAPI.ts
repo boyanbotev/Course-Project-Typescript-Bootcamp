@@ -40,11 +40,40 @@ export class FakeAPI {
                     const newBalance = this.balance - request.bet + win.totalCount;
                     this.balance = newBalance;
 
+                    // for testing
+                    const testSymbols = [
+                        [4, 6, 4, 6, 4],
+                        [1, 9, 1, 9, 1],
+                        [2, 2, 2, 2, 2],
+                        [3, 3, 3, 3, 3],
+                    ]
+
+                    // get symbols as symbol references, for testing
+                    const symbols: SymbolReference[][] = testSymbols.map((reel, index) => {
+                        return reel.map((symbol) => {
+                            return {
+                                symbolId: symbol,
+                                winningLineIndex: index - 2 >= 0 ? index -2 : undefined,
+                                // winningLineIndex: index - 1 >= 0 ? index -1 : undefined,
+                                // winningLineIndex: index,
+                            } as SymbolReference;
+                        })
+                    });
+
+                    console.log(symbols.map((reel) => {
+                        return reel.map((symbol) => {
+                            return symbol.winningLineIndex;
+                            })
+                        })
+                    )
+
                     response = { 
                         "action": "update",
                         "spin-result": {
                             "win": win.totalCount > 0 ? win.totalCount : undefined,
                             "symbols": win.symbols,
+                            // "win": 100,
+                            // "symbols": symbols,      
                         },
                         "balance": newBalance,
                     }

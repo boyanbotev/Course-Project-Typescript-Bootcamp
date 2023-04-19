@@ -145,31 +145,18 @@ export class Reel extends Container {
     }
 
     // TODO: refactor to make separate paylines animate separately
-    public highlightWinningSymbols() {   // this should be done in slot machine, not reel
-        const paylineLength = this.getHighestWinningLineIndex() + 1;
+    public highlightWinningSymbols(paylineLength: number) { // paylineLength should not be calculated here
         console.log("payline length:", paylineLength);
 
         this.finalSymbols.forEach((symbolRef, index) => {
             const symbol = this.symbols.find(symbol => symbol.SymbolIndex === index +1);
 
             if (symbolRef.winningLineIndex !== undefined) {
-                symbol.highlight();
+                symbol.highlight(symbolRef.winningLineIndex, paylineLength);
             } else {
                 symbol.darken();
             }
         });
-    }
-
-    private getHighestWinningLineIndex(): number {
-        let highestWinningLineIndex = 0;
-        this.finalSymbols.forEach((symbolRef) => {
-            if (symbolRef.winningLineIndex !== undefined) {
-                if (symbolRef.winningLineIndex > highestWinningLineIndex) {
-                    highestWinningLineIndex = symbolRef.winningLineIndex;
-                }
-            }
-        });
-        return highestWinningLineIndex;
     }
 
     public get State(): ReelState {
@@ -183,7 +170,7 @@ export class Reel extends Container {
     public get FinalSymbol(): Texture {
         const symbolRef = this.finalSymbols[this.symbolIndex-1];
         if (this.symbolIndex-1 >= this.finalSymbols.length) {
-            console.log("unexpected symbol index:", this.symbolIndex-1);
+            throw new Error(`unexpected symbol index:  ${this.symbolIndex-1}`);
         }
         return this.symbolsBundle[symbolRef.symbolId];
     }

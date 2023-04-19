@@ -2,6 +2,7 @@ import { Sprite, Texture } from "pixi.js";
 import { Reel } from "./Reel";
 import { SymbolState } from "../common/types";
 import { gsap } from "gsap";
+import { CustomEase } from "gsap/all";
 
 export class Symbol extends Sprite {
     private symbolSize: number = 0;
@@ -20,7 +21,6 @@ export class Symbol extends Sprite {
         reel: Reel
     ) {
         super();
-        // this.anchor.set(0.5, 0.5);
         reel.addChild(this);
 
         this.symbolSize = symbolSize;
@@ -29,8 +29,6 @@ export class Symbol extends Sprite {
 
         this.endPoint = endMargin;
         this.reel = reel;
-
-        // why can't we see the symbols?
     }
 
     public update(delta: number): void {
@@ -92,20 +90,63 @@ export class Symbol extends Sprite {
         }});
     }
 
-    public highlight() {
+    public highlight(payline: number, paylineLength: number) {
         this.anchor.set(0.5, 0.5);
         this.x += this.width/2;
         this.y += this.height/2;
+
+        this.alpha = 0.6;
         
         this.currentState = SymbolState.Animating;
 
-        const animation = gsap.to(this, { width: this.symbolSize * 1.2, height: this.symbolSize * 1.2, duration: 1, yoyo: true, repeat: Infinity, onComplete: () => {
-            this.currentState = SymbolState.Idle;
-        }});
+        const sizeMultiplier = 1.1;
+
+        const duration = 1 + (paylineLength/10);
+        const startTimeDelay = (payline / paylineLength) * 2;
+
+        console.log(duration);
+        console.log(startTimeDelay);
+
+
+
+        this.createHighlightAnimation(duration, sizeMultiplier, startTimeDelay, paylineLength);
+    }
+
+    private createHighlightAnimation(duration: number, sizeMultiplier: number, startTimeDelay: number, paylineLength: number) {
+        gsap.registerPlugin(CustomEase);
+        const customEase = CustomEase.create("custom", "M0,0 C0.29,0.028 0.44,-0.084 0.66,0.182 0.827,0.384 0.756,1.042 1,1 ");
+
+        const isCustom: boolean = paylineLength > 2 && startTimeDelay > 0 ? false : true;
+ 
+        const hasYoyoEase: boolean = paylineLength > 2 && startTimeDelay === 0 ? true : false;
+
+        // TODO: refactor to be more mathematical and less based on if statements?
+
+        const ease = !isCustom ? customEase : undefined;
+        
+        console.log(ease);
+        console.log(isCustom);
+
+        const animation = gsap.to(
+            this, { 
+                width: this.symbolSize * sizeMultiplier, 
+                height: this.symbolSize * sizeMultiplier, 
+                alpha: 1,
+                duration: duration, 
+                yoyo: true, 
+                delay: startTimeDelay,
+                repeat: Infinity, 
+                ease: ease,
+                yoyoEase: hasYoyoEase,
+                onComplete: () => {
+                    this.currentState = SymbolState.Idle;
+                }
+        });
+
 
         this.currentAnimation = animation;
-        console.log(this.currentAnimation);
     }
+
 
     public darken() {
         this.alpha = 0.5;
@@ -118,29 +159,14 @@ export class Symbol extends Sprite {
 
         this.currentAnimation?.kill();
 
-        if (this.currentAnimation) {
-            //console.log(this.currentAnimation);
-            // why is this not working?
-        }
-        
-        // why doesn't this work?
-
-
-        // why is the position not reset?
         if (this.anchor.x !== 0) {
             this.anchor.set(0, 0);
             this.x -= this.width/2;
             this.y -= this.width/2;
-            //console.log(this.symbolSize/2);
-
-            //console.log("reset position");
-            //console.log(this.x, this.y);
-            //console.log(this.anchor.x, this.anchor.y);
         }
         
         this.alpha = 1;
         this.tint = 0xFFFFFF;
-
     }
 
     private getFinalSymbol(): Texture {

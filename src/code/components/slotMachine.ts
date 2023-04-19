@@ -163,14 +163,37 @@ export class SlotMachine extends Container {
     }
 
     private highlightWinningSymbols() {
+        const paylineLength = this.getHighestWinningLineIndex() + 1;
         this.reels.forEach((reel) => {
-            reel.highlightWinningSymbols();
+            reel.highlightWinningSymbols(paylineLength);
         });
     }
 
+    private getHighestWinningLineIndex(): number {
+        const result = this.spinResult["spin-result"];
+        if (!result) {
+            return;
+        }
+        const symbols = result.symbols;
+
+        let highestWinningLineIndex = 0;
+        symbols.forEach((reel) => {
+            reel.forEach((symbolRef) => {
+                if (symbolRef.winningLineIndex !== undefined) {
+                    if (symbolRef.winningLineIndex > highestWinningLineIndex) {
+                        highestWinningLineIndex = symbolRef.winningLineIndex;
+                    }
+                }
+            });
+        });
+        return highestWinningLineIndex;
+    }
 
     // TODO: use slot machine state only to update reels when necessary
     public updateReels(delta: number): void {
+        if (this.currentState !== SlotMachineState.Spinning) {
+            return;
+        }
         this.reels.forEach((reel) => {
             reel.updateSymbols(delta);
         });
