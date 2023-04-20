@@ -80,9 +80,9 @@ export class Symbol extends Sprite {
 
         const standardSymbolSize = 165;
         const baseDuration = 0.6;
-        const xPositionMultiplier = 0.09;
+        const xPosMultiplier = 0.09;
 
-        const duration = baseDuration - (this.symbolIndex * xPositionMultiplier * (this.symbolSize / standardSymbolSize));
+        const duration = baseDuration - (this.symbolIndex * xPosMultiplier * (this.symbolSize / standardSymbolSize));
         const targetY = this.endPoint - (this.symbolSize * this.symbolIndex);
 
         gsap.registerPlugin(CustomEase);
@@ -92,35 +92,50 @@ export class Symbol extends Sprite {
         }});
     }
 
-    public highlight(payline: number, paylineLength: number) {
+    /** 
+     * Center anchor point to make scaling easier, set alpha and start animation
+     * If there are multiple paylines, we want winning symbols to be darker when they are not highlighted
+     */
+    public initializePulse(payline: number, paylineLength: number) {
         this.anchor.set(0.5, 0.5);
         this.x += this.width/2;
         this.y += this.height/2;
 
-        const alphaValue = paylineLength > 1 ? 0.2 : 0.6;
-        this.alpha = alphaValue;  
+        this.alpha = paylineLength > 1 ? 0.2 : 0.6; 
         
-        this.currentState = SymbolState.Animating;
+        this.currentState = SymbolState.Animating; // is this ever used?
 
-        const sizeMultiplier = 1.1;
-
-        const duration = 1 + (paylineLength/6);
-        const startTimeDelay = (payline / paylineLength) * 2;
-
-        this.createHighlightAnimation(duration, sizeMultiplier, startTimeDelay, paylineLength);
+        this.createPulseAnim(payline, paylineLength);
     }
 
-    private createHighlightAnimation(duration: number, sizeMultiplier: number, startTimeDelay: number, paylineLength: number) {
+    private createPulseAnim(payline: number, paylineLength: number) {
         gsap.registerPlugin(CustomEase);
         const customEase = CustomEase.create("custom", "M0,0 C0.29,0.028 0.44,-0.084 0.66,0.182 0.827,0.384 0.756,1.042 1,1 ");
 
-        const isCustom: boolean = paylineLength > 1 && startTimeDelay > 0 ? false : true;
- 
-        const hasYoyoEase: boolean = paylineLength > 1 && startTimeDelay === 0 ? true : false;
+        const sizeMultiplier = 1.1;
+        
+        /*
+        Slightly increase duration of animation when there are more paylines
+        Delay the start of the animation for each payline 
+        so we see each payline one after another
+        */
+        const duration = 1 + (paylineLength/6);
+        const startTimeDelay = (payline / paylineLength) * 2;
 
-        // TODO: refactor to be more mathematical and less based on if statements?
+        /*
+        Choose custom ease function for paylines after the first one
+        It starts slowly and rapidly rises at the end
+        We keep standard ease for the first payline, so the animation can start immediately
+        */
+        const hasStandardEase: boolean = startTimeDelay === 0;
 
-        const ease = !isCustom ? customEase : undefined;
+        /* 
+        We use yoyoEase for the first payline when there are many paylines
+        Yoyo ease makes the animation spend more time on the start value (darkened) 
+        */
+        const hasYoyoEase: boolean = paylineLength > 1 && startTimeDelay === 0;
+
+        const ease = hasStandardEase ? undefined : customEase;
 
         const animation = gsap.to(
             this, { 
@@ -138,10 +153,8 @@ export class Symbol extends Sprite {
                 }
         });
 
-
         this.currentAnimation = animation;
     }
-
 
     public darken() {
         this.alpha = 0.5;

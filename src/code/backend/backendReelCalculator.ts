@@ -37,8 +37,8 @@ export class BackendReelCalculator {
             randomIndex = Math.floor(Math.random() * symbolLength +1); // +1 because of 1 indexed keys
             reel.push(randomIndex);
         }
+        
         // Add all symbols in random order
-
         const indexes: number[] = [];
             for (let i = 1; i <= symbolLength; i++) {
                 indexes.push(i);

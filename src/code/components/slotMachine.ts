@@ -188,7 +188,6 @@ export class SlotMachine extends Container {
         return highestWinningLineIndex;
     }
 
-    // TODO: use slot machine state only to update reels when necessary
     public updateReels(delta: number): void {
         if (this.currentState !== SlotMachineState.Spinning) {
             return;

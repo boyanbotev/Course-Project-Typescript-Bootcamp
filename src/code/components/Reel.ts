@@ -155,11 +155,11 @@ export class Reel extends Container {
      * Further to right, the faster the reel spins
      */
     private getRandomVelocity() {
-        const randomValueMultiplier = 10;
+        const multiplier = 10;
         const baseVelocity = 30;
-        const xPositionMultiplier = 5;
+        const xPosMultiplier = 5;
 
-        const velocity = Math.floor(Math.random() * randomValueMultiplier) + baseVelocity + this.reelXIndex * xPositionMultiplier;
+        const velocity = Math.floor(Math.random() * multiplier) + baseVelocity + this.reelXIndex * xPosMultiplier;
         return velocity;
     }
 
@@ -171,7 +171,7 @@ export class Reel extends Container {
             const symbol = this.symbols.find(symbol => symbol.SymbolIndex === index +1);
 
             if (symbolRef.winningLineIndex !== undefined) {
-                symbol.highlight(symbolRef.winningLineIndex, paylineLength);
+                symbol.initializePulse(symbolRef.winningLineIndex, paylineLength);
             } else {
                 symbol.darken();
             }

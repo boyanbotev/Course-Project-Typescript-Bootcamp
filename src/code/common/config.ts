@@ -39,4 +39,8 @@ if (config.testMode && typeof config.testMode !== 'boolean') {
     throw new Error('Config is invalid');
 }
 
+if (config.testMode && config.reelCount !== 4 || config.reelLength !== 4) {
+    throw new Error('Test mode only works with 4x4 reels');
+}
+
 console.log(config);

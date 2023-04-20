@@ -74,7 +74,7 @@ export type CheckReelResult = {
 
 export type WinResult = {
     totalCount: number,
-    symbols: SymbolReference[][],
+    symbolRefs: SymbolReference[][],
 };
 
 export type SymbolReference = {

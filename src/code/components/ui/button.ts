@@ -1,9 +1,9 @@
 import { Sprite, Texture, Resource, Container } from "pixi.js";
-import { Vector2 } from "../common/vector2";
+import { Vector2 } from "../../common/vector2";
 
 export class Button extends Sprite {
     private activeTexture: Texture;
-    private inactiveTexture: Texture;
+    private inactiveTexture: Texture; // refactor away, add other states for disabled, etc.
 
     constructor(
         position: Vector2, 
@@ -31,6 +31,6 @@ export class Button extends Sprite {
     }
 
     public setActive(isActive: boolean) {
-        this.texture = isActive ? this.activeTexture : this.inactiveTexture;
+        this.texture = isActive ? this.activeTexture : this.inactiveTexture; // change to tint
     }
 }
