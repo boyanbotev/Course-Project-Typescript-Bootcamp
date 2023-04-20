@@ -1,9 +1,9 @@
 import { Sprite, Texture } from "pixi.js";
 import { Reel } from "./reel";
-import { SymbolState } from "../common/types";
+import { SymbolState } from "../../common/types";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/all";
-import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../common/consts";
+import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../../common/consts";
 
 export class Symbol extends Sprite {
     private symbolSize: number = 0;

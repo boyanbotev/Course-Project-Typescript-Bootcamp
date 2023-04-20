@@ -11,7 +11,7 @@ export const standardSymbolSize = 165;
 export const baseTweenDuration = 0.6;
 export const symbolIndexMultiplier = 0.09;
 
-// Reel Class
+// getRandomVelocity
 export const multiplier = 10;
 export const baseVelocity = 30;
 export const xIndexMultiplier = 5;

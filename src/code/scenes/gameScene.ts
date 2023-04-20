@@ -2,12 +2,13 @@ import { Assets, Container, Ticker } from "pixi.js";
 import { Scene } from "../common/types";
 import { FakeAPI } from "../backend/fakeAPI";
 import { UIContainer } from "../components/ui/uiContainer";
-import { SlotMachine } from "../components/slotMachine";
+import { SlotMachine } from "../components/slots/slotMachine";
 import { Background } from "../components/background";
 import { Manager } from "../common/manager";
 import { config } from "../common/config";
 import { framePadding, frameExtraHeight } from "../common/consts";
 import { Frame } from "../components/frame";
+import { Firework } from "../components/firework/firework";
 
 export class GameScene extends Container implements Scene {
 

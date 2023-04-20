@@ -2,7 +2,7 @@ import { Container, Texture, Assets, Text } from "pixi.js";
 import { Manager } from "../../common/manager";
 import { Button } from "./button";
 import { GameScene } from "../../scenes/gameScene";
-import { SlotMachine } from "../slotMachine";
+import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
 

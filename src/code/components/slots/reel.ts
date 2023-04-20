@@ -1,8 +1,8 @@
 import { Container, Texture, BlurFilter } from "pixi.js";
 import { Symbol } from "./symbol";
-import { SymbolBundle, SymbolReference } from "../common/types";
-import { ReelState, SymbolState, SlotMachineState } from "../common/types";
-import { slotSymbolMap, multiplier, xIndexMultiplier, baseVelocity } from "../common/consts";
+import { SymbolBundle, SymbolReference } from "../../common/types";
+import { ReelState, SymbolState, SlotMachineState } from "../../common/types";
+import { slotSymbolMap, multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts";
 import { SlotMachine } from "./slotMachine";
 
 export class Reel extends Container {
@@ -140,7 +140,7 @@ export class Reel extends Container {
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
-        this.velocity = getRandomVelocity();
+        this.velocity = getRandomVelocity(this.reelXIndex);
 
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
@@ -186,6 +186,6 @@ export class Reel extends Container {
  * Returns random velocity multiplied by which reel it is
  * Further to right, the faster the reel spins
  */
-function getRandomVelocity() {
-    return Math.floor(Math.random() * multiplier) + baseVelocity + this.reelXIndex * xIndexMultiplier;
+function getRandomVelocity(reelXIndex: number) {
+    return Math.floor(Math.random() * multiplier) + baseVelocity + reelXIndex * xIndexMultiplier;
 }
