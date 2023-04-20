@@ -1,6 +1,21 @@
 import { SlotSymbolMap, WinMap } from "./types";
 import { TextStyle } from "pixi.js";
 
+export const framePadding = 165;
+export const frameExtraHeight = 240;
+export const frameYAdjust = 20;
+
+// Symbol Class
+export const pulseSizeMultiplier = 1.1;
+export const standardSymbolSize = 165;
+export const baseTweenDuration = 0.6;
+export const symbolIndexMultiplier = 0.09;
+
+// Reel Class
+export const multiplier = 10;
+export const baseVelocity = 30;
+export const xIndexMultiplier = 5;
+
 // For debugging
 export const slotSymbolMap: SlotSymbolMap = {
     1: "princess",
@@ -49,7 +64,7 @@ export const testReels = [
     [10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
 ]
 
-export const textStyle = new TextStyle({ // Technically, not a constant, but it's not going to change
+export const textStyle = new TextStyle({ // Technically not a constant, but it's not going to change
     fontFamily: "Garamond",
     fontSize: 48,
     fill: 0xffee00,

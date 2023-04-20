@@ -1,8 +1,8 @@
 import { Container, Texture, BlurFilter } from "pixi.js";
-import { Symbol } from "./Symbol";
+import { Symbol } from "./symbol";
 import { SymbolBundle, SymbolReference } from "../common/types";
 import { ReelState, SymbolState, SlotMachineState } from "../common/types";
-import { slotSymbolMap } from "../common/consts";
+import { slotSymbolMap, multiplier, xIndexMultiplier, baseVelocity } from "../common/consts";
 import { SlotMachine } from "./slotMachine";
 
 export class Reel extends Container {
@@ -125,8 +125,8 @@ export class Reel extends Container {
     }
 
     public getRandomTexture(): Texture {
-       const randomIndex = Math.floor(Math.random() * Object.keys(this.symbolsBundle).length);
-         return this.symbolsBundle[randomIndex +1];
+        const randomIndex = Math.floor(Math.random() * Object.keys(this.symbolsBundle).length);
+        return this.symbolsBundle[randomIndex +1];
     }
 
     public incrementSymbolIndex(): number {
@@ -140,7 +140,7 @@ export class Reel extends Container {
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
-        this.velocity = this.getRandomVelocity();
+        this.velocity = getRandomVelocity();
 
         for (let i = 0; i < this.symbols.length; i++) {
             const symbol = this.symbols[i];
@@ -148,19 +148,6 @@ export class Reel extends Container {
             symbol.State = SymbolState.Spinning;
             symbol.reset();
         }
-    }
-
-    /**
-     * Returns random velocity multiplied by which reel it is
-     * Further to right, the faster the reel spins
-     */
-    private getRandomVelocity() {
-        const multiplier = 10;
-        const baseVelocity = 30;
-        const xPosMultiplier = 5;
-
-        const velocity = Math.floor(Math.random() * multiplier) + baseVelocity + this.reelXIndex * xPosMultiplier;
-        return velocity;
     }
 
     // TODO: refactor to make separate paylines animate separately
@@ -193,4 +180,12 @@ export class Reel extends Container {
         }
         return this.symbolsBundle[symbolRef.symbolId];
     }
+}
+
+/**
+ * Returns random velocity multiplied by which reel it is
+ * Further to right, the faster the reel spins
+ */
+function getRandomVelocity() {
+    return Math.floor(Math.random() * multiplier) + baseVelocity + this.reelXIndex * xIndexMultiplier;
 }

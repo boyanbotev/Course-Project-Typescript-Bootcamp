@@ -1,5 +1,5 @@
 // TODO: Add d.ts file for types
-import { Texture } from "pixi.js";
+import { Texture, DisplayObject } from "pixi.js";
 
 export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" | "P" | "princess" | "square" | "T" | "warrior" | "X" | "jem" | "dagger" | "и" | "я";
 
@@ -80,4 +80,8 @@ export type WinResult = {
 export type SymbolReference = {
     symbolId: number;
     winningLineIndex: number | undefined;
+}
+
+export interface Scene extends DisplayObject {
+    update(delta: number): void;
 }

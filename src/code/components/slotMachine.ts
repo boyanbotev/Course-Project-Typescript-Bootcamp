@@ -2,7 +2,7 @@ import { Container, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../scenes/gameScene";
 import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse } from "../common/types";
 import { Manager } from "../common/manager";
-import { Reel } from "./Reel";
+import { Reel } from "./reel";
 import { config } from "../common/config";
 import { FakeAPI } from "../backend/fakeAPI";
 

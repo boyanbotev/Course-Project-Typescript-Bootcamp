@@ -1,10 +1,10 @@
 import { Application } from "pixi.js";
-import { IScene } from "./IScene";
+import { Scene } from "./types";
 
 export class Manager {
     private constructor() {}
     private static app: Application;
-    private static currentScene: IScene;
+    private static currentScene: Scene;
 
     private static width: number;
     private static height: number;
@@ -56,7 +56,7 @@ export class Manager {
         view.style.marginTop = view.style.marginBottom = verticalMargin + "px";
     }
 
-    public static changeScene(newScene: IScene): void {
+    public static changeScene(newScene: Scene): void {
 
         if (Manager.currentScene) {
             Manager.app.stage.removeChild(Manager.currentScene);

@@ -1,8 +1,9 @@
 import { Sprite, Texture } from "pixi.js";
-import { Reel } from "./Reel";
+import { Reel } from "./reel";
 import { SymbolState } from "../common/types";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/all";
+import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../common/consts";
 
 export class Symbol extends Sprite {
     private symbolSize: number = 0;
@@ -56,7 +57,7 @@ export class Symbol extends Sprite {
                     this.velocity = 0;
                     this.currentState = SymbolState.Stopping;
     
-                    this.initializeTween();
+                    this.tweenToStop();
     
                     // If symbol is not the last (extra) one, set texture to final symbol
                     if (this.symbolIndex-1 !== this.reel.ReelLength-1){
@@ -75,14 +76,10 @@ export class Symbol extends Sprite {
      * Difference in duration betwen indexes flexible given symbol size
      * Smaller symbolsize means smaller difference in duration 
      */
-    private initializeTween() {
+    private tweenToStop() {
         this.symbolIndex = this.reel.incrementSymbolIndex();
-
-        const standardSymbolSize = 165;
-        const baseDuration = 0.6;
-        const xPosMultiplier = 0.09;
-
-        const duration = baseDuration - (this.symbolIndex * xPosMultiplier * (this.symbolSize / standardSymbolSize));
+        
+        const duration = baseTweenDuration - (this.symbolIndex * symbolIndexMultiplier * (this.symbolSize / standardSymbolSize));
         const targetY = this.endPoint - (this.symbolSize * this.symbolIndex);
 
         gsap.registerPlugin(CustomEase);
@@ -111,8 +108,6 @@ export class Symbol extends Sprite {
     private createPulseAnim(payline: number, paylineLength: number) {
         gsap.registerPlugin(CustomEase);
         const customEase = CustomEase.create("custom", "M0,0 C0.29,0.028 0.44,-0.084 0.66,0.182 0.827,0.384 0.756,1.042 1,1 ");
-
-        const sizeMultiplier = 1.1;
         
         /*
         Slightly increase duration of animation when there are more paylines
@@ -139,8 +134,8 @@ export class Symbol extends Sprite {
 
         const animation = gsap.to(
             this, { 
-                width: this.symbolSize * sizeMultiplier, 
-                height: this.symbolSize * sizeMultiplier, 
+                width: this.symbolSize * pulseSizeMultiplier, 
+                height: this.symbolSize * pulseSizeMultiplier, 
                 alpha: 1,
                 duration: duration, 
                 yoyo: true, 
