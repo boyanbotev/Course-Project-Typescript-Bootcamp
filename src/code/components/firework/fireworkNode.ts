@@ -1,12 +1,14 @@
-import { Sprite, Texture, Ticker, Container, DisplayObject } from "pixi.js";
+import { Sprite, Texture, Ticker, Container, DisplayObject, Assets } from "pixi.js";
 import { Emitter, upgradeConfig } from '@pixi/particle-emitter';
 import fireworkConfig from './emmiter.json';
 import {gsap} from 'gsap';
 import {config} from '../../common/config';
+import {SymbolBundle} from '../../common/types';
 
 export class FireworkNode extends Container{
 
     private delay: number;
+    private sprite: Sprite;
 
     constructor(
         parent: Container,
@@ -19,51 +21,74 @@ export class FireworkNode extends Container{
 
         this.delay = delay;
 
-        const texture = Texture.from('assets/images/symbols/symbol4.png');
+        this.inialize();
+    }
+
+    private async inialize(): Promise<void> {
+        const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
+        // is this the right way?
+
+        const texture = symbolsBundle[4];
     
-        const sprite = new Sprite(texture);
-        sprite.width = 0;
-        sprite.height = 0;
-        sprite.anchor.set(0.5, 0.5);
-        // sprite.visible = false;
-
-        this.addChild(sprite);
-
-        console.log(this.toGlobal(this.position));
-
+        this.createFireworkNodeSprite(texture);
+        
         const emmiter = new Emitter(
             this,
             upgradeConfig(fireworkConfig, texture),
         );
 
-        console.log(emmiter);
-
         const ticker = Ticker.shared;
     
         setTimeout(() => {
-            ticker.add((delta) => {
-                emmiter.update(delta);
-            });
-            emmiter.emit = true;
-            sprite.visible = false;
+            this.startEmitter(ticker, emmiter);
         }, this.delay);
 
-        const randomX = Math.random() * 900 - 450;
-        const randomY = Math.random() * 900 - 450;
+        const { normalisedX, normalisedY, randomX } = getRandomVector();
 
-        // normalise vector of randomX and randomY
-        const magnitude = Math.sqrt(randomX * randomX + randomY * randomY);
-        const normalisedX = randomX / magnitude * 300;
-        const normalisedY = randomY / magnitude * 300;
-        console.log(normalisedX, normalisedY);
-
-        gsap.to(this, { x: normalisedX*6, y: normalisedY*6, duration: 6, ease: 'none' });
-        gsap.to(this, { rotation: randomX/100 - 4, duration: delay/1000, ease: 'none' });
-        gsap.to(sprite, { width: 15, height: 30, duration: delay/1000, ease: 'none' });
+        this.moveNodeTween(normalisedX, normalisedY);
+        this.rotateNodeTween(randomX);
 
         setTimeout(() => {
             this.destroy();
         }, 6100);
     }
 
+    private rotateNodeTween(randomX: number) {
+        gsap.to(this, { rotation: randomX / 100 - 4, duration: this.delay / 1000, ease: 'none' });
+    }
+
+    private moveNodeTween(normalisedX: number, normalisedY: number) {
+        gsap.to(this, { x: normalisedX, y: normalisedY, duration: 6, ease: 'none' });
+    }
+
+    private startEmitter(ticker: Ticker, emmiter: Emitter) {
+        ticker.add((delta) => {
+            emmiter.update(delta);
+        });
+        emmiter.emit = true;
+        this.sprite.visible = false;
+    }
+
+    private createFireworkNodeSprite(texture: Texture): void {
+        const sprite = new Sprite(texture);
+        sprite.width = 0;
+        sprite.height = 0;
+        sprite.anchor.set(0.5, 0.5);
+
+        gsap.to(sprite, { width: 15, height: 30, duration: this.delay/1000, ease: 'none' });
+
+        this.sprite = sprite;
+        this.addChild(sprite);
+    }
+}
+
+function getRandomVector() {
+    const randomX = Math.random() * 900 - 450;
+    const randomY = Math.random() * 900 - 450;
+
+    const magnitude = Math.sqrt(randomX * randomX + randomY * randomY);
+    const multiplier = 1800 / magnitude;
+    const normalisedX = randomX * multiplier;
+    const normalisedY = randomY * multiplier;
+    return { normalisedX, normalisedY, randomX };
 }
