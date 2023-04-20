@@ -83,12 +83,13 @@ export class FireworkNode extends Container{
 }
 
 function getRandomVector() {
-    const randomX = Math.random() * 900 - 450;
-    const randomY = Math.random() * 900 - 450;
+    const multiplier = 900;
+    const randomX = Math.random() * multiplier - multiplier / 2;
+    const randomY = Math.random() * multiplier - multiplier / 2;
 
     const magnitude = Math.sqrt(randomX * randomX + randomY * randomY);
-    const multiplier = 1800 / magnitude;
-    const normalisedX = randomX * multiplier;
-    const normalisedY = randomY * multiplier;
+    const normalizer = 1800 / magnitude;
+    const normalisedX = randomX * normalizer;
+    const normalisedY = randomY * normalizer;
     return { normalisedX, normalisedY, randomX };
 }
