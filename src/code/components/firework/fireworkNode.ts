@@ -6,18 +6,16 @@ import {config} from '../../common/config';
 import {SymbolBundle} from '../../common/types';
 
 export class FireworkNode extends Container{
-
     private delay: number;
     private sprite: Sprite;
+    private currentAnimations: gsap.core.Tween[] = [];
 
     constructor(
         parent: Container,
-        delay: number = 320,
+        delay: number = 320, 
         ) {
         super();
         parent.addChild(this);
-        const width = config.symbolSize * config.reelCount;
-        const height = config.symbolSize * config.reelCount;
 
         this.delay = delay;
 
@@ -35,7 +33,7 @@ export class FireworkNode extends Container{
         this.moveNodeTween();
 
         setTimeout(() => {
-            this.destroy();
+            this.destroySelf();
         }, 6100);
     }
 
@@ -55,7 +53,8 @@ export class FireworkNode extends Container{
     private moveNodeTween() {
         const { normalisedX, normalisedY } = getRandomVector();
 
-        gsap.to(this, { x: normalisedX, y: normalisedY, duration: 6, ease: 'none' });
+        const anim = gsap.to(this, { x: normalisedX, y: normalisedY, duration: 6, ease: 'none' });
+        this.currentAnimations.push(anim);
     }
 
     private startEmitter(ticker: Ticker, emmiter: Emitter) {
@@ -79,7 +78,13 @@ export class FireworkNode extends Container{
     }
 
     private increaseSpriteSize(sprite: Sprite) {
-        gsap.to(sprite, { width: 20, height: 20, duration: this.delay / 1000, ease: 'none' });
+        const anim = gsap.to(sprite, { width: 20, height: 20, duration: this.delay / 1000, ease: 'none' });
+        this.currentAnimations.push(anim);
+    }
+
+    private destroySelf() {
+        this.currentAnimations.forEach(anim => anim.kill());
+        this.destroy();
     }
 }
 
@@ -94,5 +99,3 @@ function getRandomVector() {
     const normalisedY = randomY * normalizer;
     return { normalisedX, normalisedY };
 }
-
-// FIX TWEEN BUG

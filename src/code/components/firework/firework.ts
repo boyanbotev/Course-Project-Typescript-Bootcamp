@@ -23,7 +23,7 @@ export class Firework extends Container {
 
     private createFireworkNodes(): void {
         for (let i = 0; i < 22; i++) { // this number related to win size?
-            new FireworkNode(this, i * 54); // was 150, was 320
+            new FireworkNode(this, i * 54);
         }
     }
-}
+} 

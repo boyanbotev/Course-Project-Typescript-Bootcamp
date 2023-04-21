@@ -5,12 +5,14 @@ import { GameScene } from "../../scenes/gameScene";
 import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
-import { SlotMachineObserver } from "../../common/types";
+import { SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
 
 export class UIContainer extends Container implements SlotMachineObserver{
     private scene: GameScene;
     private slotMachine: SlotMachine;
     private button: Button;
+
+    private observers: UIObserver[] = [];
 
     constructor(scene: GameScene, slotMachine: SlotMachine) {
         super();
@@ -18,6 +20,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
         this.slotMachine = slotMachine;
         this.scene.addChild(this);
         this.slotMachine.addObserver(this);
+        this.addObserver(this.slotMachine);
 
         this.createUI();
     }
@@ -28,7 +31,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
         this.createButton();
     }
 
-    // TODO: tint button when disabled, and disable when balance is 0, and enable when balance is > 0, and tint button on hover, and on click
+    // TODO: disable button when balance is 0, and enable when balance is > 0
     private async createButton(): Promise<void> {
         const spinBundle = await Assets.loadBundle("uiBundle");
         const spinImg = spinBundle["spinButton"] as Texture;
@@ -42,11 +45,32 @@ export class UIContainer extends Container implements SlotMachineObserver{
             spinImg,
             spinHover,
             () => {
-                this.slotMachine.spin();
+                this.onSpinBtnPress();
             },
             this,
             0.5,
         );
+    }
+
+    public addObserver(observer: UIObserver): void {
+        this.observers.push(observer);
+    }
+
+    private notifyObservers(action: UIAction, data?: UIData): void {
+        this.observers.forEach((observer) => {
+            switch (action) {
+                case "spin":
+                    observer.onSpin();
+                    break;
+                case "betChange":
+                    observer.onBetChange(data as number);
+                    break;
+            }
+        });
+    }
+
+    public onSpinBtnPress(): void {
+        this.notifyObservers(UIAction.Spin);
     }
 
     public onSpin(): void {
@@ -91,6 +115,4 @@ export class UIContainer extends Container implements SlotMachineObserver{
     public enableSlotsUI(): void {
         this.button.setActive(true);
     }
-
-
 }

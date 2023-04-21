@@ -93,4 +93,35 @@ export interface SlotMachineObserver {
     onBalanceUpdate(balance: number): void;
 }
 
-export type UpdateAction = "spin" | "stop" | "win" | "balanceUpdate" | "init";
+export enum UpdateAction {
+    Spin = "spin",
+    Stop ="stop",
+    Win = "win",
+    BalanceUpdate = "balanceUpdate",
+};
+export type UpdateData = string | number;
+
+export interface UIObserver {
+    onSpin(): void;
+    onBetChange(bet: number): void;
+}
+
+export enum UIAction {
+    Spin = "spin",
+    BetChange = "betChange",
+};
+export type UIData = number;
+
+// export interface UI {
+//     addObserver(observer: UIObserver): void;
+//     removeObserver(observer: UIObserver): void;
+//     notifyObservers(action: UpdateAction, data?: UpdateData): void;
+// }
+
+// export interface SlotMachine {
+//     addObserver(observer: SlotMachineObserver): void;
+//     removeObserver(observer: SlotMachineObserver): void;
+//     notifyObservers(action: UpdateAction, data?: UpdateData): void;
+//     updateReels(delta: number): void;
+//     State: SlotMachineState;
+// }

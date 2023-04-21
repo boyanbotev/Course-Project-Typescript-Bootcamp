@@ -1,6 +1,6 @@
 import { Container, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../../scenes/gameScene";
-import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse, SlotMachineObserver, UpdateAction } from "../../common/types";
+import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse, SlotMachineObserver, UpdateAction, UIObserver, UpdateData } from "../../common/types";
 import { Manager } from "../../common/manager";
 import { Reel } from "./reel";
 import { config } from "../../common/config";
@@ -8,7 +8,7 @@ import { FakeAPI } from "../../backend/fakeAPI";
 import { Firework } from "../firework/firework";
 import { APIGateway } from "../../common/apiGateway";
 
-export class SlotMachine extends Container {
+export class SlotMachine extends Container implements UIObserver {
     private reelCount: number = config.reelCount;
     private reelLength: number = config.reelLength;
     private addedReelLength: number = config.reelLength +1;
@@ -79,6 +79,14 @@ export class SlotMachine extends Container {
         this.mask = graphics;
     }
 
+    public onSpin(): void {
+        this.spin();
+    }
+
+    public onBetChange(bet: number): void {
+        this.bet = bet;
+    }
+
     /**
      * Get final symbols for each reel and spin reels
      */
@@ -97,7 +105,7 @@ export class SlotMachine extends Container {
         }
 
         this.currentState = SlotMachineState.Spinning;
-        this.notifyObservers("spin");
+        this.notifyObservers(UpdateAction.Spin);
 
         const reelSymbols = result.symbols;
 
@@ -137,7 +145,7 @@ export class SlotMachine extends Container {
             return;
         }
 
-        this.notifyObservers("stop");
+        this.notifyObservers(UpdateAction.Stop);
 
         if (result.win) {
             this.highlightWinningSymbols();
@@ -194,19 +202,19 @@ export class SlotMachine extends Container {
         this.observers = this.observers.filter((obs) => obs !== observer);
     }
 
-    public notifyObservers(action: UpdateAction, data?: string | number) { // TODO: add type for data
+    public notifyObservers(action: UpdateAction, data?: UpdateData) {
         this.observers.forEach((observer) => {
             switch (action) {
-                case "spin":
+                case UpdateAction.Spin:
                     observer.onSpin();
                     break;
-                case "stop":
+                case UpdateAction.Stop:
                     observer.onSpinComplete();
                     break;
-                case "win":
+                case UpdateAction.Win:
                     observer.onWin(data as number);
                     break;
-                case "balanceUpdate":
+                case UpdateAction.BalanceUpdate:
                     observer.onBalanceUpdate(data as number);
                     break;
                 default:
@@ -216,12 +224,10 @@ export class SlotMachine extends Container {
     }
 }
 
-// TODO: Events?
-// Add obsever pattern for UI conainer too?
-
-
 // TODO: Add readonly
 
 // Remove dependency on GameScene by passing app instance, an width and height values in constructor?
 
 // Extract areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
+
+// TODO: Update loading screen
