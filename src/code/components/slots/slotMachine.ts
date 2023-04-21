@@ -1,12 +1,11 @@
 import { Container, Assets, Graphics } from "pixi.js";
 import { GameScene } from "../../scenes/gameScene";
-import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse } from "../../common/types";
+import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse, SlotMachineObserver, UpdateAction } from "../../common/types";
 import { Manager } from "../../common/manager";
 import { Reel } from "./reel";
 import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { Firework } from "../firework/firework";
-import { UIContainer } from "../ui/uiContainer";
 
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
@@ -19,10 +18,11 @@ export class SlotMachine extends Container {
     private scene: GameScene;
     private api: FakeAPI;
     private reels: Reel[] = [];
-    private uiContainer: UIContainer;
 
     private currentState: SlotMachineState = SlotMachineState.Idle;
     private spinResult: UpdateResponse;
+
+    private observers: SlotMachineObserver[] = [];
 
     constructor(scene: GameScene, api: FakeAPI) {
         super();
@@ -106,7 +106,8 @@ export class SlotMachine extends Container {
         }
 
         this.currentState = SlotMachineState.Spinning;
-        this.uiContainer.disableSlotsUI();
+        //this.uiContainer.disableSlotsUI();
+        this.notifyObservers("spin");
 
         const reelSymbols = result.symbols;
 
@@ -160,10 +161,12 @@ export class SlotMachine extends Container {
         if (!result) {
             return;
         }
-        this.uiContainer.enableSlotsUI();
+        //this.uiContainer.enableSlotsUI();
+        this.notifyObservers("stop");
         if (result.win) {
             this.highlightWinningSymbols();
             new Firework(this);
+            // remove dependency on firework by making firework (or a firework manager class) a slotmachine observer?
         }
     }
 
@@ -207,7 +210,46 @@ export class SlotMachine extends Container {
         return this.currentState;
     }
 
-    public set UIContainer(uiContainer: UIContainer) { // TODO: Is there a better way to do this? To create a reference to UIContainer in SlotMachine
-        this.uiContainer = uiContainer;
+    // public set UIContainer(uiContainer: UIContainer) { // TODO: Is there a better way to do this? To create a reference to UIContainer in SlotMachine
+    //     this.uiContainer = uiContainer;
+    // }
+
+    public addObserver(observer: SlotMachineObserver) {
+        this.observers.push(observer);
+    }
+
+    public removeObserver(observer: SlotMachineObserver) {
+        this.observers = this.observers.filter((obs) => obs !== observer);
+    }
+
+    public notifyObservers(action: UpdateAction, data?: string | number) { // TODO: add type for action, and data
+        this.observers.forEach((observer) => {
+            switch (action) {
+                case "spin":
+                    observer.onSpin();
+                    break;
+                case "stop":
+                    observer.onSpinComplete();
+                    break;
+                case "win":
+                    observer.onWin(data as number);
+                    break;
+                case "balanceUpdate":
+                    observer.onBalanceUpdate(data as number);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 }
+
+// TODO: Events?
+// Add obsever pattern for UI conainer too?
+
+
+// TODO: Add readonly
+
+// Remove dependency on GameScene by passing app instance, an width and height values in constructor?
+
+// Extract requestSymbolMap, requestSpin, areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?

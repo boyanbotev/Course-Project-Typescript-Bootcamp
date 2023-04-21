@@ -85,3 +85,12 @@ export type SymbolReference = {
 export interface Scene extends DisplayObject {
     update(delta: number): void;
 }
+
+export interface SlotMachineObserver {
+    onSpin(): void;
+    onSpinComplete(): void;
+    onWin(win: number): void;
+    onBalanceUpdate(balance: number): void;
+}
+
+export type UpdateAction = "spin" | "stop" | "win" | "balanceUpdate" | "init";

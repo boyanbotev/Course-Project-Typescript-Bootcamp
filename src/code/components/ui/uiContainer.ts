@@ -5,8 +5,9 @@ import { GameScene } from "../../scenes/gameScene";
 import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
+import { SlotMachineObserver } from "../../common/types";
 
-export class UIContainer extends Container {
+export class UIContainer extends Container implements SlotMachineObserver{
     private scene: GameScene;
     private slotMachine: SlotMachine;
     private button: Button;
@@ -16,7 +17,8 @@ export class UIContainer extends Container {
         this.scene = scene;
         this.slotMachine = slotMachine;
         this.scene.addChild(this);
-        this.slotMachine.UIContainer = this;
+        //this.slotMachine.UIContainer = this;
+        this.slotMachine.addObserver(this);
 
         this.createUI();
     }
@@ -48,6 +50,20 @@ export class UIContainer extends Container {
         );
     }
 
+    public onSpin(): void {
+        this.disableSlotsUI();
+    }
+
+    public onSpinComplete(): void {
+        this.enableSlotsUI();
+    }
+
+    public onWin(): void {
+    }
+
+    public onBalanceUpdate(): void {
+    }
+
     private async createWinText(): Promise<void> {
     }
 
@@ -76,4 +92,6 @@ export class UIContainer extends Container {
     public enableSlotsUI(): void {
         this.button.setActive(true);
     }
+
+
 }
