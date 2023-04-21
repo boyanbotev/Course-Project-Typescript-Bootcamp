@@ -6,6 +6,7 @@ import { Reel } from "./reel";
 import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { Firework } from "../firework/firework";
+import { UIContainer } from "../ui/uiContainer";
 
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
@@ -18,6 +19,7 @@ export class SlotMachine extends Container {
     private scene: GameScene;
     private api: FakeAPI;
     private reels: Reel[] = [];
+    private uiContainer: UIContainer;
 
     private currentState: SlotMachineState = SlotMachineState.Idle;
     private spinResult: UpdateResponse;
@@ -93,8 +95,6 @@ export class SlotMachine extends Container {
         if (!this.areReelsStopped()) {
             return;
         }
-
-        this.currentState = SlotMachineState.Spinning;
  
         const updateResponse = await this.requestSpin();
         this.spinResult = updateResponse;
@@ -104,6 +104,9 @@ export class SlotMachine extends Container {
         if (!result) {
             return;
         }
+
+        this.currentState = SlotMachineState.Spinning;
+        this.uiContainer.disableSlotsUI();
 
         const reelSymbols = result.symbols;
 
@@ -157,6 +160,7 @@ export class SlotMachine extends Container {
         if (!result) {
             return;
         }
+        this.uiContainer.enableSlotsUI();
         if (result.win) {
             this.highlightWinningSymbols();
             new Firework(this);
@@ -202,6 +206,8 @@ export class SlotMachine extends Container {
     public get State() {
         return this.currentState;
     }
-}
 
-// TODO: Tint button on hover, press, and disable
+    public set UIContainer(uiContainer: UIContainer) { // TODO: Is there a better way to do this? To create a reference to UIContainer in SlotMachine
+        this.uiContainer = uiContainer;
+    }
+}

@@ -25,39 +25,36 @@ export class FireworkNode extends Container{
     }
 
     private async inialize(): Promise<void> {
-        const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
-        // is this the right way?
-
-        const texture = symbolsBundle[4];
+        const particleBundle = await Assets.loadBundle("particlesBundle"); //type safety??
+        const texture = particleBundle["particle"];
     
         this.createFireworkNodeSprite(texture);
         
-        const emmiter = new Emitter(
-            this,
-            upgradeConfig(fireworkConfig, texture),
-        );
+        this.createEmmiter(texture);
 
-        const ticker = Ticker.shared;
-    
-        setTimeout(() => {
-            this.startEmitter(ticker, emmiter);
-        }, this.delay);
-
-        const { normalisedX, normalisedY, randomX } = getRandomVector();
-
-        this.moveNodeTween(normalisedX, normalisedY);
-        this.rotateNodeTween(randomX);
+        this.moveNodeTween();
 
         setTimeout(() => {
             this.destroy();
         }, 6100);
     }
 
-    private rotateNodeTween(randomX: number) {
-        gsap.to(this, { rotation: randomX / 100 - 4, duration: this.delay / 1000, ease: 'none' });
+    private createEmmiter(texture: any) {
+        const emmiter = new Emitter(
+            this,
+            upgradeConfig(fireworkConfig, texture)
+        );
+
+        const ticker = Ticker.shared;
+
+        setTimeout(() => {
+            this.startEmitter(ticker, emmiter);
+        }, this.delay);
     }
 
-    private moveNodeTween(normalisedX: number, normalisedY: number) {
+    private moveNodeTween() {
+        const { normalisedX, normalisedY } = getRandomVector();
+
         gsap.to(this, { x: normalisedX, y: normalisedY, duration: 6, ease: 'none' });
     }
 
@@ -75,10 +72,14 @@ export class FireworkNode extends Container{
         sprite.height = 0;
         sprite.anchor.set(0.5, 0.5);
 
-        gsap.to(sprite, { width: 15, height: 30, duration: this.delay/1000, ease: 'none' });
+        this.increaseSpriteSize(sprite);
 
         this.sprite = sprite;
         this.addChild(sprite);
+    }
+
+    private increaseSpriteSize(sprite: Sprite) {
+        gsap.to(sprite, { width: 20, height: 20, duration: this.delay / 1000, ease: 'none' });
     }
 }
 
@@ -91,5 +92,7 @@ function getRandomVector() {
     const normalizer = 1800 / magnitude;
     const normalisedX = randomX * normalizer;
     const normalisedY = randomY * normalizer;
-    return { normalisedX, normalisedY, randomX };
+    return { normalisedX, normalisedY };
 }
+
+// FIX TWEEN BUG

@@ -9,12 +9,14 @@ import { BetUIContainer } from "./betUIContainer";
 export class UIContainer extends Container {
     private scene: GameScene;
     private slotMachine: SlotMachine;
+    private button: Button;
 
     constructor(scene: GameScene, slotMachine: SlotMachine) {
         super();
         this.scene = scene;
         this.slotMachine = slotMachine;
         this.scene.addChild(this);
+        this.slotMachine.UIContainer = this;
 
         this.createUI();
     }
@@ -29,14 +31,15 @@ export class UIContainer extends Container {
     private async createButton(): Promise<void> {
         const spinBundle = await Assets.loadBundle("uiBundle");
         const spinImg = spinBundle["spinButton"] as Texture;
+        const spinHover = spinBundle["spinButtonHover"] as Texture;
 
-        new Button(
+        this.button = new Button(
             {
                 x: Manager.Width/2, 
                 y: Manager.Height - spinImg.height/4.3,
             },
             spinImg,
-            spinImg,
+            spinHover,
             () => {
                 this.slotMachine.spin();
             },
@@ -65,4 +68,12 @@ export class UIContainer extends Container {
         this.addChild(balanceText);
     }
     // TODO: update balance
+
+    public disableSlotsUI(): void {
+        this.button.setActive(false);
+    }
+
+    public enableSlotsUI(): void {
+        this.button.setActive(true);
+    }
 }
