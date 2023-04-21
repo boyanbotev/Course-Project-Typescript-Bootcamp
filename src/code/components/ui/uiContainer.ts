@@ -17,7 +17,6 @@ export class UIContainer extends Container implements SlotMachineObserver{
         this.scene = scene;
         this.slotMachine = slotMachine;
         this.scene.addChild(this);
-        //this.slotMachine.UIContainer = this;
         this.slotMachine.addObserver(this);
 
         this.createUI();

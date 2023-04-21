@@ -9,8 +9,6 @@ enum ButtonState {
 export class Button extends Sprite {
     private activeTintColor: number = 0xffffff;
     private inactiveTintColor: number = 0xccaacc;
-    private activeAlpha: number = 1;
-    private inactiveAlpha: number = 0.8;
 
     private standardTexture: Texture<Resource>;
     private hoverTexture: Texture<Resource>;
@@ -53,7 +51,6 @@ export class Button extends Sprite {
 
     public setActive(isActive: boolean) {
         this.tint = isActive ? this.activeTintColor : this.inactiveTintColor;
-        this.alpha = isActive ? this.activeAlpha : this.inactiveAlpha;
         this.currentState = isActive ? ButtonState.Active : ButtonState.Inactive;
         this.eventMode = isActive ? "static" : "none";
 

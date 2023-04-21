@@ -20,5 +20,4 @@ export class BetUIContainer extends Container {
 
         this.addChild(betText);
     }
-
 }

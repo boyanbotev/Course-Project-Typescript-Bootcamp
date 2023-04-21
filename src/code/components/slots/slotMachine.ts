@@ -6,6 +6,7 @@ import { Reel } from "./reel";
 import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { Firework } from "../firework/firework";
+import { APIGateway } from "../../common/apiGateway";
 
 export class SlotMachine extends Container {
     private reelCount: number = config.reelCount;
@@ -17,6 +18,7 @@ export class SlotMachine extends Container {
 
     private scene: GameScene;
     private api: FakeAPI;
+    private apiGateway: APIGateway;
     private reels: Reel[] = [];
 
     private currentState: SlotMachineState = SlotMachineState.Idle;
@@ -29,6 +31,7 @@ export class SlotMachine extends Container {
         this.scene = scene;
         this.scene.addChild(this);
         this.api = api;
+        this.apiGateway = new APIGateway(this.api);
 
         const containerWidth = this.reelCount * this.symbolSize;
         this.pivot.x = containerWidth / 2;
@@ -46,7 +49,7 @@ export class SlotMachine extends Container {
      * Get reel symbol map from server and create reel objects
      */
     public async createReels(): Promise<void> {
-        const response = await this.requestSymbolMap();
+        const response = await this.apiGateway.requestInitalSymbols();
         const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
 
         if (!symbolsBundle) {
@@ -64,18 +67,6 @@ export class SlotMachine extends Container {
                 );
             this.reels.push(reel);
         }
-    }
-
-    // TODO: add error handling?
-    private async requestSymbolMap() {
-        const request: Request = {
-            action: "init",
-        };
-
-        const response = await this.api.sendRequest(request) as InitResponse;
-        console.log(response);
-
-        return response;
     }
 
     private createMask() {
@@ -96,7 +87,7 @@ export class SlotMachine extends Container {
             return;
         }
  
-        const updateResponse = await this.requestSpin();
+        const updateResponse = await this.apiGateway.requestSpin(this.bet);
         this.spinResult = updateResponse;
 
         const result = updateResponse["spin-result"];
@@ -106,7 +97,6 @@ export class SlotMachine extends Container {
         }
 
         this.currentState = SlotMachineState.Spinning;
-        //this.uiContainer.disableSlotsUI();
         this.notifyObservers("spin");
 
         const reelSymbols = result.symbols;
@@ -119,21 +109,6 @@ export class SlotMachine extends Container {
         });
     }
 
-    private async requestSpin(): Promise<UpdateResponse> {  
-        const request: Request = {
-            action: "spin",
-            "bet": this.bet,
-        }
-        const response = await this.api.sendRequest(request);
-        console.log(response);
-
-        if (response.action === "error") {
-            throw new Error(response.error);
-        }
-
-        const updateResponse = response as UpdateResponse;
-        return updateResponse;
-    }
     private areReelsStopped(): boolean {
         let isAllStopped = true;
         this.reels.forEach((reel) => {
@@ -161,12 +136,13 @@ export class SlotMachine extends Container {
         if (!result) {
             return;
         }
-        //this.uiContainer.enableSlotsUI();
+
         this.notifyObservers("stop");
+
         if (result.win) {
             this.highlightWinningSymbols();
             new Firework(this);
-            // remove dependency on firework by making firework (or a firework manager class) a slotmachine observer?
+            // remove dependency on firework by making firework (or a firework manager class) a slotmachine observer? or a WinManager
         }
     }
 
@@ -210,10 +186,6 @@ export class SlotMachine extends Container {
         return this.currentState;
     }
 
-    // public set UIContainer(uiContainer: UIContainer) { // TODO: Is there a better way to do this? To create a reference to UIContainer in SlotMachine
-    //     this.uiContainer = uiContainer;
-    // }
-
     public addObserver(observer: SlotMachineObserver) {
         this.observers.push(observer);
     }
@@ -222,7 +194,7 @@ export class SlotMachine extends Container {
         this.observers = this.observers.filter((obs) => obs !== observer);
     }
 
-    public notifyObservers(action: UpdateAction, data?: string | number) { // TODO: add type for action, and data
+    public notifyObservers(action: UpdateAction, data?: string | number) { // TODO: add type for data
         this.observers.forEach((observer) => {
             switch (action) {
                 case "spin":
@@ -252,4 +224,4 @@ export class SlotMachine extends Container {
 
 // Remove dependency on GameScene by passing app instance, an width and height values in constructor?
 
-// Extract requestSymbolMap, requestSpin, areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
+// Extract areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
