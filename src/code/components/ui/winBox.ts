@@ -20,14 +20,6 @@ export class WinBox extends Container {
         this.setVisible(false);
 
         this.winText = new WinText(this);
-
-        // create box shape 
-        // const m =  new Graphics();
-        // m.beginFill(0x000000);
-        // m.drawRect(-this.width/2, -this.height/2, this.width, this.height);
-        // m.endFill();
-        // this.addChild(m);
-
     }
 
     public setWin(win: number): void {

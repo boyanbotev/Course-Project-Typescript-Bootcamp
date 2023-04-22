@@ -4,7 +4,7 @@ export const textStyle = new TextStyle({
     fontFamily: "Arial",
     fontSize: 30,
     dropShadow: true,
-    dropShadowColor: "#a54d4d", //"#c56d6d",
+    dropShadowColor: "#a54d4d",
     dropShadowDistance: 0.2,
     dropShadowBlur: 1,
     fill: 0xffee99,
@@ -30,6 +30,7 @@ export const bigTextStyle = new TextStyle({
     fillGradientStops: [
         0.2,
         0.4,
+        0.5,
         0.6
     ],
     fontWeight: "900",

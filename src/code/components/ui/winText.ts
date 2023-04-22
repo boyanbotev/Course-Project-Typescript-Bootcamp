@@ -8,7 +8,6 @@ export class WinText extends Text {
         this.anchor.set(0.5, 0.5);
         parent.addChild(this);
 
-        this.text = "W I N";
         this.style = bigTextStyle;
     }
 }
