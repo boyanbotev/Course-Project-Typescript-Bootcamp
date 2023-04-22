@@ -7,12 +7,14 @@ import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
 import { SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
 import { Balance } from "./balance";
+import { WinBox } from "./winBox";
 
 export class UIContainer extends Container implements SlotMachineObserver{
     private scene: GameScene;
     private slotMachine: SlotMachine;
     private button: Button;
     private balanceText: Balance;
+    private winBox: WinBox;
 
     private observers: UIObserver[] = [];
 
@@ -31,6 +33,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
         new BetUIContainer(this);
         this.balanceText = new Balance(this);
         this.createButton();
+        this.createWinText();
     }
 
     // TODO: disable button when balance is 0, and enable when balance is > 0
@@ -77,6 +80,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
 
     public onSpin(): void {
         this.disableSlotsUI();
+        this.winBox.setVisible(false);
     }
 
     public onSpinComplete(): void {
@@ -84,7 +88,9 @@ export class UIContainer extends Container implements SlotMachineObserver{
         this.enableSlotsUI();
     }
 
-    public onWin(): void {
+    public onWin(win: number): void {
+        console.log("onWin");
+        this.winBox.setWin(win);
     }
 
     public onBalanceUpdate(balance: number): void {
@@ -96,11 +102,8 @@ export class UIContainer extends Container implements SlotMachineObserver{
         }
     }
 
-    public onError(error: string): void {
-        
-    }
-
     private async createWinText(): Promise<void> {
+        this.winBox = new WinBox(this);
     }
 
     public disableSlotsUI(): void {
