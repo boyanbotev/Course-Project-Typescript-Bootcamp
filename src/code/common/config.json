@@ -1,12 +1,12 @@
 {
-    "reelCount": 4,
-    "reelLength": 4,
+    "reelCount": 12,
+    "reelLength": 12,
     "reelSize": 20,
 
     "topMargin": 65,
 
-    "initialBalance": 100,
-    "bet": 5,
+    "initialBalance": 10,
+    "bet": 10,
 
     "testMode": false
 }

@@ -135,14 +135,16 @@ export class FakeAPI {
             }
         }
 
-        const winMultiplier = (bet * 1.4) / (this.reelLength + this.reelCount * 2);
+        const boardSize = this.reelLength * this.reelCount;
 
-        totalCount *= winMultiplier;
-        console.log(totalCount);
+        const winMultiplier = (bet * (Math.max(10 + (35-boardSize)), 10)) / (boardSize * 9.5); // put stuff into consts
+
+        const finalCount = roundToTwoDecimalPlaces(totalCount * winMultiplier);
+        console.log(finalCount);
         console.log(symbolRefs);
 
         return {
-            totalCount: totalCount,  
+            totalCount: finalCount,  
             symbolRefs: symbolRefs,
 
         } satisfies WinResult;
@@ -164,4 +166,8 @@ export class FakeAPI {
             symbolIndex: winningSymbols,
         } satisfies CheckReelResult;
     }
+}
+
+function roundToTwoDecimalPlaces(num: number): number {
+    return Math.round(num * 100) / 100;
 }

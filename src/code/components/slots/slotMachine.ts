@@ -15,6 +15,7 @@ export class SlotMachine extends Container implements UIObserver {
     private symbolSize: number = config.symbolSize;
     private topMargin: number = config.topMargin;
     private bet: number = config.bet;
+    private balance: number = config.initialBalance;
 
     private scene: GameScene;
     private api: FakeAPI;
@@ -106,11 +107,9 @@ export class SlotMachine extends Container implements UIObserver {
 
         this.currentState = SlotMachineState.Spinning;
         this.notifyObservers(UpdateAction.Spin);
+        this.setBalance(this.balance - this.bet);
 
         const reelSymbols = result.symbols;
-
-        // TODO: pass win ammount to UI
-        const isWin = result.win === undefined ? false : true;
 
         this.reels.forEach((reel, index) => {
             reel.spin(reelSymbols[index]);
@@ -151,7 +150,11 @@ export class SlotMachine extends Container implements UIObserver {
             this.highlightWinningSymbols();
             new Firework(this);
             // remove dependency on firework by making firework (or a firework manager class) a slotmachine observer? or a WinManager
+            this.notifyObservers(UpdateAction.Win, result.win);
         }
+
+        const win = result.win || 0;
+        this.setBalance(this.balance + win);
     }
 
     private highlightWinningSymbols() {
@@ -221,6 +224,11 @@ export class SlotMachine extends Container implements UIObserver {
                     break;
             }
         });
+    }
+
+    private setBalance(balance: number) {
+        this.balance = balance;
+        this.notifyObservers(UpdateAction.BalanceUpdate, balance);
     }
 }
 

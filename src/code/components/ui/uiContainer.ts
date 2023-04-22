@@ -6,11 +6,13 @@ import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
 import { SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
+import { Balance } from "./balance";
 
 export class UIContainer extends Container implements SlotMachineObserver{
     private scene: GameScene;
     private slotMachine: SlotMachine;
     private button: Button;
+    private balanceText: Balance;
 
     private observers: UIObserver[] = [];
 
@@ -27,7 +29,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
 
     private createUI(): void {
         new BetUIContainer(this);
-        this.createBalanceUI();
+        this.balanceText = new Balance(this);
         this.createButton();
     }
 
@@ -78,35 +80,28 @@ export class UIContainer extends Container implements SlotMachineObserver{
     }
 
     public onSpinComplete(): void {
+        console.log("onSpinComplete");
         this.enableSlotsUI();
     }
 
     public onWin(): void {
     }
 
-    public onBalanceUpdate(): void {
+    public onBalanceUpdate(balance: number): void {
+        this.balanceText.updateBalance(balance);
+
+        console.log("balance: ", balance, "bet: ", config.bet);
+        if (balance < config.bet) { // TODO: get bet from elsewhere
+            this.disableSlotsUI();
+        }
+    }
+
+    public onError(error: string): void {
+        
     }
 
     private async createWinText(): Promise<void> {
     }
-
-    private async createBalanceUI(): Promise<void> {
-        const balanceText = new Text(`${config.initialBalance}`, {
-            fontFamily: "Garamond",
-            fontSize: 48,
-            fill: 0xffee00,
-            align: "center",
-            fontWeight: "bold",
-        });
-
-        balanceText.anchor.set(0.5, 0.5);
-
-        balanceText.x = (Manager.Width/2) + ((config.symbolSize * config.reelCount) / 4) + balanceText.width/2;
-        balanceText.y = Manager.Height - 100;
-
-        this.addChild(balanceText);
-    }
-    // TODO: update balance
 
     public disableSlotsUI(): void {
         this.button.setActive(false);

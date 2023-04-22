@@ -91,6 +91,7 @@ export interface SlotMachineObserver {
     onSpinComplete(): void;
     onWin(win: number): void;
     onBalanceUpdate(balance: number): void;
+    onError(error: string): void; // maybe don't need this
 }
 
 export enum UpdateAction {
@@ -98,6 +99,7 @@ export enum UpdateAction {
     Stop ="stop",
     Win = "win",
     BalanceUpdate = "balanceUpdate",
+    Error = "error",
 };
 export type UpdateData = string | number;
 
