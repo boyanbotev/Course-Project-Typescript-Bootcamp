@@ -239,3 +239,6 @@ export class SlotMachine extends Container implements UIObserver {
 // Extract areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
 
 // TODO: Update loading screen
+
+
+// investigate symbol mystery

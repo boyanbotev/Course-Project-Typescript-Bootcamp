@@ -1,5 +1,4 @@
 import { SlotSymbolMap, WinMap } from "./types";
-import { TextStyle } from "pixi.js";
 
 export const framePadding = 165;
 export const frameExtraHeight = 240;
@@ -62,12 +61,4 @@ export const testReels = [
     [1, 1, 6, 2, 2, 6, 6, 6, 1, 7, 6, 1, 1, 6, 1, 2, 2, 6, 2, 7],
     [7, 1, 6, 2, 6, 2, 7, 6, 2, 2, 6, 1, 2, 2, 6, 6, 1, 1, 6, 1],
     [10, 11, 12, 13, 14, 15, 16, 17, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-]
-
-export const textStyle = new TextStyle({ // Technically not a constant, but it's not going to change
-    fontFamily: "Garamond",
-    fontSize: 48,
-    fill: 0xffee00,
-    align: "center",
-    fontWeight: "bold",
-});
+];

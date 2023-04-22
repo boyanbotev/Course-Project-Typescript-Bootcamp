@@ -1,5 +1,5 @@
 import { Text, Container } from "pixi.js";
-import { textStyle } from "../../common/consts";
+import { bigTextStyle } from "../../common/textStyle";
 
 export class WinText extends Text {
     constructor(parent: Container) {
@@ -9,6 +9,6 @@ export class WinText extends Text {
         parent.addChild(this);
 
         this.text = "W I N";
-        this.style = textStyle;
+        this.style = bigTextStyle;
     }
 }

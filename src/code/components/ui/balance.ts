@@ -1,7 +1,8 @@
 import { Text, Container } from "pixi.js";
 import { config } from "../../common/config";
-import { textStyle } from "../../common/consts";
+import { textStyle } from "../../common/textStyle";
 import { Manager } from "../../common/manager";
+import { formatAsEuros } from "../../common/formatAsEuros";
 
 export class Balance extends Text {
     constructor(parent: Container) {
@@ -23,6 +24,3 @@ export class Balance extends Text {
     }
 }
 
-function formatAsEuros(amount: number): string {
-    return amount.toLocaleString("en-GB", { style: "currency", currency: "EUR" });
-}

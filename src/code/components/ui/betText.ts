@@ -1,6 +1,6 @@
 import { Text, TextStyle } from "pixi.js";
 import { config } from "../../common/config";
-import { textStyle } from "../../common/consts";
+import { textStyle } from "../../common/textStyle";
 
 export class BetText extends Text {
     constructor() {   

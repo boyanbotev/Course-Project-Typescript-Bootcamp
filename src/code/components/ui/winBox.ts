@@ -1,6 +1,8 @@
-import { Container } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { WinText } from "./winText";
 import { Manager } from "../../common/manager";
+import { formatAsEuros } from "../../common/formatAsEuros";
+import { config } from "../../common/config";
 
 export class WinBox extends Container {
     private winText: WinText;
@@ -13,15 +15,23 @@ export class WinBox extends Container {
         this.pivot.set(this.width/2, this.height/2);
 
         this.x = Manager.Width/2;
-        this.y = Manager.Height/2;
+        this.y = (config.symbolSize * config.reelCount)/2 + config.topMargin;
 
         this.setVisible(false);
 
         this.winText = new WinText(this);
+
+        // create box shape 
+        // const m =  new Graphics();
+        // m.beginFill(0x000000);
+        // m.drawRect(-this.width/2, -this.height/2, this.width, this.height);
+        // m.endFill();
+        // this.addChild(m);
+
     }
 
     public setWin(win: number): void {
-        this.winText.text = "WIN: " + win.toString();
+        this.winText.text = formatAsEuros(win);
         this.setVisible(true);
     }
 
