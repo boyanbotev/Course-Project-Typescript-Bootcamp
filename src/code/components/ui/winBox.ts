@@ -1,11 +1,11 @@
 import { Container } from "pixi.js";
-import { GoldText } from "./goldText";
+import { BigText } from "./text/bigText";
 import { Manager } from "../../common/manager";
 import { formatAsEuros } from "../../common/formatAsEuros";
 import { config } from "../../common/config";
 
 export class WinBox extends Container {
-    private winText: GoldText;
+    private winText: BigText;
 
     constructor(parent: Container) {
         super();
@@ -19,7 +19,7 @@ export class WinBox extends Container {
 
         this.setVisible(false);
 
-        this.winText = new GoldText(this);
+        this.winText = new BigText(this);
     }
 
     public setWin(win: number): void {

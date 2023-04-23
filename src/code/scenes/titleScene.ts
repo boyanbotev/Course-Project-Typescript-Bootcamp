@@ -3,11 +3,10 @@ import { Scene, SymbolBundle } from "../common/types";
 import { Manager } from "../common/manager";
 import { GameScene } from "./gameScene";
 import { Background } from "../components/background";
-import { GoldText } from "../components/ui/goldText";
+import { BigText } from "../components/ui/text/bigText";
 import { Button } from "../components/ui/button";
 import { Vector2 } from "../common/vector2";
-import { titleTextStyle } from "../common/textStyle";
-import { SmallText } from "../components/ui/betText";
+import { SmallText } from "../components/ui/text/smallText";
 import { gsap } from "gsap"
 import { config } from "../common/config";
 
@@ -18,7 +17,7 @@ export class TitleScene extends Container implements Scene {
 
         new Background(Manager.Width, Manager.Height, Assets.get("background"), this);
 
-        const title = new GoldText(this);
+        const title = new BigText(this);
         title.position.x = Manager.Width / 2;
         title.position.y = Manager.Height / 7;
         title.text = "ANCIENT\nTREASURES";
@@ -40,7 +39,7 @@ export class TitleScene extends Container implements Scene {
     public async createSymbols(){
         const yBasis = Manager.Height / 2.5;
         const size = config.symbolSize + 45;
-        
+
         const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
         const symbol1 = new Background(size, size, symbolsBundle[14], this);
         symbol1.position.x = Manager.Width / 2 - 200;

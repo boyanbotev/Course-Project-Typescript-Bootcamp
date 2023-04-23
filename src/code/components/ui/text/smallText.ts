@@ -1,12 +1,10 @@
-import { Text, TextStyle } from "pixi.js";
-import { config } from "../../common/config";
-import { textStyle } from "../../common/textStyle";
+import { Text } from "pixi.js";
+import { textStyle } from "./textStyle";
 
 export class SmallText extends Text {
     constructor() {   
         super();
 
-        this.text =`BET: ${config.bet}`;
         this.style = textStyle;
 
         this.anchor.set(0.5, 0.5);

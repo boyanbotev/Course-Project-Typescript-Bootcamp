@@ -35,23 +35,3 @@ export const bigTextStyle = new TextStyle({
     ],
     fontWeight: "900",
 });
-
-export const titleTextStyle = new TextStyle({
-    ...bigTextStyle,
-    fontSize: 72,
-    dropShadowDistance: 5,
-    letterSpacing: 10,
-    fill: [
-        0xffff99,
-        0xffff99,
-        0x662233,
-        0xffcc66
-    ],
-    fillGradientStops: [
-        0.2,
-        0.4,
-        0.5,
-        0.6
-    ],
-    fontWeight: "900",
-});

@@ -1,10 +1,10 @@
 import { Text, Container } from "pixi.js";
-import { config } from "../../common/config";
-import { textStyle } from "../../common/textStyle";
-import { Manager } from "../../common/manager";
-import { formatAsEuros } from "../../common/formatAsEuros";
+import { config } from "../../../common/config";
+import { textStyle } from "./textStyle";
+import { Manager } from "../../../common/manager";
+import { formatAsEuros } from "../../../common/formatAsEuros";
 
-export class Balance extends Text {
+export class BalanceText extends Text {
     constructor(parent: Container) {
         super();
         parent.addChild(this);

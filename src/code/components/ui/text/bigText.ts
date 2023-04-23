@@ -1,7 +1,7 @@
 import { Text, Container } from "pixi.js";
-import { bigTextStyle } from "../../common/textStyle";
+import { bigTextStyle } from "./textStyle";
 
-export class GoldText extends Text {
+export class BigText extends Text {
     constructor(parent: Container) {
         super();
 

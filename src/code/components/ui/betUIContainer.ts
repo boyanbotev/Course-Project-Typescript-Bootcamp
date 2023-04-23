@@ -1,21 +1,22 @@
 import { Container} from "pixi.js";
 import { Manager } from "../../common/manager";
 import { config } from "../../common/config";
-import { SmallText } from "./betText";
+import { SmallText } from "./text/smallText";
 
 export class BetUIContainer extends Container {
     constructor(parent: Container) {
         super();
         parent.addChild(this);
-        this.width = 200;
-        this.height = 100;
+        const width = 100;
+        const height = 50;
 
-        this.pivot.set(this.width/2, this.height/2);
+        this.pivot.set(width/2, 0); // adjust pivot to take into account height?
 
-        this.x = (Manager.Width/2) - (config.symbolSize * config.reelCount) / 4 - this.width/2;
+        this.x = (Manager.Width/2) - (config.symbolSize * config.reelCount) / 4;
         this.y = Manager.Height - 100;
 
         const betText = new SmallText();
+        betText.text = `BET: ${config.bet}`;
 
         this.addChild(betText);
     }

@@ -5,14 +5,14 @@ import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
 import { SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
-import { Balance } from "./balance";
+import { BalanceText } from "./text/balanceText";
 import { WinBox } from "./winBox";
 
 export class UIContainer extends Container implements SlotMachineObserver{
     private readonly scene: Container;
     private readonly slotMachine: SlotMachine;
     private button: Button;
-    private balanceText: Balance;
+    private balanceText: BalanceText;
     private winBox: WinBox;
 
     private observers: UIObserver[] = [];
@@ -30,12 +30,11 @@ export class UIContainer extends Container implements SlotMachineObserver{
 
     private createUI(): void {
         new BetUIContainer(this);
-        this.balanceText = new Balance(this);
+        this.balanceText = new BalanceText(this);
         this.createButton();
         this.createWinText();
     }
 
-    // TODO: disable button when balance is 0, and enable when balance is > 0
     private async createButton(): Promise<void> {
         const spinBundle = await Assets.loadBundle("uiBundle");
         const spinImg = spinBundle["spinButton"] as Texture;
