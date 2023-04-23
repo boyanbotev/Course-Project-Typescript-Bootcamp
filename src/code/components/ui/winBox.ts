@@ -15,7 +15,7 @@ export class WinBox extends Container {
         this.pivot.set(this.width/2, this.height/2);
 
         this.x = Manager.Width/2;
-        this.y = (config.symbolSize * config.reelCount)/2 + config.topMargin;
+        this.y = (config.symbolSize * config.reelLength)/2 + config.topMargin;
 
         this.setVisible(false);
 

@@ -49,7 +49,7 @@ export class Symbol extends Sprite {
      * Swap texture to wrap around reel
      */
     private handleWrap() {
-        const wrapThreshold = 16;
+        const wrapThreshold = 70; // was 25, was 16
         if (this.y <= wrapThreshold) {
 
             switch (this.currentState) {
