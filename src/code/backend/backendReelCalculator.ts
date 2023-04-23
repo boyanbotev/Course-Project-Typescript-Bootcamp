@@ -2,10 +2,10 @@ import { config } from "../common/config";
 import { testReels } from "../common/consts";
 
 export class BackendReelCalculator {
-    private reelCount: number = config.reelCount;
-    private reelSize: number = config.reelSize;
+    private readonly reelCount: number = config.reelCount;
+    private readonly reelSize: number = config.reelSize;
 
-    private reels: number[][] = [];
+    private readonly reels: number[][] = [];
 
     constructor() {
         if (!config.testMode) {

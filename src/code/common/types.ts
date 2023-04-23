@@ -67,6 +67,10 @@ export type SymbolBundle = {
     [key: string]: Texture;
 }
 
+export type ParticleBundle = {
+    particle: Texture;
+}
+
 export type CheckReelResult = {
     count: number,
     symbolIndex: number[],

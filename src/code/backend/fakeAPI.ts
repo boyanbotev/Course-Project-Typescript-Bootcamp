@@ -4,10 +4,10 @@ import { config } from "../common/config";
 import { winMultiplierMap } from "../common/consts";
 
 export class FakeAPI {
-    private reelCount: number = config.reelCount;
-    private reelLength: number = config.reelLength;
-    private reelSize: number = config.reelSize;
-    private reelCalculator: BackendReelCalculator;
+    private readonly reelCount: number = config.reelCount;
+    private readonly reelLength: number = config.reelLength;
+    private readonly reelSize: number = config.reelSize;
+    private readonly reelCalculator: BackendReelCalculator;
     private balance: number = config.initialBalance;
 
     constructor() {
@@ -122,11 +122,8 @@ export class FakeAPI {
                 }
             }
             if (count >= 3 && fullReelIndex >= 2) {
-                console.log("win");
-                console.log("count:", count);
                 count *= winMultiplierMap[symbol];
                 totalCount += count;
-                console.log("count * multiplier:", count);
 
                 winningSymbolIndexes.forEach((winningSymbolIndex) => {
                     symbolRefs[winningSymbolIndex[0]][winningSymbolIndex[1]].winningLineIndex = paylineCount;
@@ -137,11 +134,9 @@ export class FakeAPI {
 
         const boardSize = this.reelLength * this.reelCount;
 
-        const winMultiplier = (bet * (Math.max(10 + (35-boardSize)), 10)) / (boardSize * 9.5); // put stuff into consts
+        const winMultiplier = (bet * (Math.max(10 + (35-boardSize)), 10)) / (boardSize * 9.5); // put stuff into consts ?
 
         const finalCount = roundToTwoDecimalPlaces(totalCount * winMultiplier);
-        console.log(finalCount);
-        console.log(symbolRefs);
 
         return {
             totalCount: finalCount,  

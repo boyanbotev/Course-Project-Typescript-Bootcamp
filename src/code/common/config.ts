@@ -45,5 +45,3 @@ if (config.testMode === true) {
         throw new Error('Test mode only works with 4x4 reels');
     }
 }
-
-console.log(config);

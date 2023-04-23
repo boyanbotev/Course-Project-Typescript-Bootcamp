@@ -4,7 +4,7 @@ import { UpdateResponse, InitResponse, Request } from "../common/types";
 // TODO: use interface APIGateway to define the methods that the class APIGateway should have?
 
 export class APIGateway {
-    private api: FakeAPI;
+    private readonly api: FakeAPI;
 
     constructor(api: FakeAPI) {
         this.api = api;

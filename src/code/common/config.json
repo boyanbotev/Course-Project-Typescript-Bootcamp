@@ -8,5 +8,5 @@
     "initialBalance": 100,
     "bet": 2,
 
-    "testMode": true
+    "testMode": false
 }

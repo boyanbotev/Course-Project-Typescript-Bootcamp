@@ -7,7 +7,6 @@ import { formatAsEuros } from "../../common/formatAsEuros";
 export class Balance extends Text {
     constructor(parent: Container) {
         super();
-        console.log("Balance created")
         parent.addChild(this);
 
         this.text = formatAsEuros(config.initialBalance);

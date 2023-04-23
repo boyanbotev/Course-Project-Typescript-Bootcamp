@@ -1,6 +1,5 @@
 import { Container, Assets, Graphics } from "pixi.js";
-import { GameScene } from "../../scenes/gameScene";
-import { ReelState, UpdateResponse, SymbolBundle, Request, SlotMachineState, InitResponse, SlotMachineObserver, UpdateAction, UIObserver, UpdateData } from "../../common/types";
+import { ReelState, UpdateResponse, SymbolBundle, SlotMachineState, SlotMachineObserver, UpdateAction, UIObserver, UpdateData } from "../../common/types";
 import { Manager } from "../../common/manager";
 import { Reel } from "./reel";
 import { config } from "../../common/config";
@@ -130,7 +129,6 @@ export class SlotMachine extends Container implements UIObserver {
         const isAllStopped = this.areReelsStopped();
         if (isAllStopped) {
             this.currentState = SlotMachineState.Idle;
-            console.log("all reels stopped");
             this.handleReelStopped();
         }
     }
@@ -236,7 +234,6 @@ export class SlotMachine extends Container implements UIObserver {
 
 // TODO: Update loading screen
 
-
 // investigate symbol mystery
 
 // TODO: Add sound effects
@@ -247,4 +244,14 @@ export class SlotMachine extends Container implements UIObserver {
 
 // TODO: sort out web.yml
 
+// remove dependency on firework by making firework (or a firework manager class) a slotmachine observer? or a WinManager
 
+// types.d.ts
+
+// think about reel and symbol responsibilities
+
+// remove unecessary console logs
+
+// flexible bet?
+
+// deploy online

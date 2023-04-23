@@ -1,7 +1,6 @@
-import { Container, Texture, Assets, Text } from "pixi.js";
+import { Container, Texture, Assets } from "pixi.js";
 import { Manager } from "../../common/manager";
 import { Button } from "./button";
-import { GameScene } from "../../scenes/gameScene";
 import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
@@ -84,20 +83,17 @@ export class UIContainer extends Container implements SlotMachineObserver{
     }
 
     public onSpinComplete(): void {
-        console.log("onSpinComplete");
         this.enableSlotsUI();
     }
 
     public onWin(win: number): void {
-        console.log("onWin");
         this.winBox.setWin(win);
     }
 
     public onBalanceUpdate(balance: number): void {
         this.balanceText.updateBalance(balance);
 
-        console.log("balance: ", balance, "bet: ", config.bet);
-        if (balance < config.bet) { // TODO: get bet from elsewhere
+        if (balance < config.bet) { // TODO: get bet from elsewhere???
             this.disableSlotsUI();
         }
     }

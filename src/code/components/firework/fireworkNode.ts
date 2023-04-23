@@ -1,9 +1,8 @@
-import { Sprite, Texture, Ticker, Container, DisplayObject, Assets } from "pixi.js";
+import { Sprite, Texture, Ticker, Container, Assets } from "pixi.js";
 import { Emitter, upgradeConfig } from '@pixi/particle-emitter';
 import fireworkConfig from './emmiter.json';
 import {gsap} from 'gsap';
-import {config} from '../../common/config';
-import {SymbolBundle} from '../../common/types';
+import { ParticleBundle } from "../../common/types";
 
 export class FireworkNode extends Container{
     private delay: number;
@@ -23,7 +22,7 @@ export class FireworkNode extends Container{
     }
 
     private async inialize(): Promise<void> {
-        const particleBundle = await Assets.loadBundle("particlesBundle"); //type safety??
+        const particleBundle = await Assets.loadBundle("particlesBundle") as ParticleBundle;
         const texture = particleBundle["particle"];
     
         this.createFireworkNodeSprite(texture);

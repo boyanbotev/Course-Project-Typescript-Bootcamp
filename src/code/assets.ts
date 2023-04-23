@@ -29,6 +29,7 @@ export const manifest: ResolverManifest = {
             assets: {
                 "spinButton": "assets/images/ui/spin.png",
                 "spinButtonHover": "assets/images/ui/spin_hover2.png",
+                "startButton": "assets/images/ui/start.jpg",
             }
         },
         {

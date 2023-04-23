@@ -2,10 +2,9 @@ import { Text, TextStyle } from "pixi.js";
 import { config } from "../../common/config";
 import { textStyle } from "../../common/textStyle";
 
-export class BetText extends Text {
+export class SmallText extends Text {
     constructor() {   
         super();
-        console.log("BetText created")
 
         this.text =`BET: ${config.bet}`;
         this.style = textStyle;

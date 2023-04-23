@@ -2,7 +2,7 @@ import { Container, Texture, BlurFilter } from "pixi.js";
 import { Symbol } from "./symbol";
 import { SymbolBundle, SymbolReference } from "../../common/types";
 import { ReelState, SymbolState, SlotMachineState } from "../../common/types";
-import { slotSymbolMap, multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts";
+import { multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts";
 import { SlotMachine } from "./slotMachine";
 
 export class Reel extends Container {
@@ -136,7 +136,6 @@ export class Reel extends Container {
 
     public spin(finalSymbols: SymbolReference[]): void {    
         this.finalSymbols = finalSymbols;
-        console.log("final symbols:",this.finalSymbols.map(symbolRef => slotSymbolMap[symbolRef.symbolId]));
 
         this.symbolIndex = 0;
         this.currentState = ReelState.Spinning;
@@ -150,10 +149,7 @@ export class Reel extends Container {
         }
     }
 
-    // TODO: refactor to make separate paylines animate separately
-    public highlightWinningSymbols(paylineLength: number) { // paylineLength should not be calculated here
-        console.log("payline length:", paylineLength);
-
+    public highlightWinningSymbols(paylineLength: number) {
         this.finalSymbols.forEach((symbolRef, index) => {
             const symbol = this.symbols.find(symbol => symbol.SymbolIndex === index +1);
 
