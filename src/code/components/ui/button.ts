@@ -7,8 +7,8 @@ enum ButtonState {
 }
 
 export class Button extends Sprite {
-    private activeTintColor: number = 0xffffff;
-    private inactiveTintColor: number = 0xccaacc;
+    private readonly activeTintColor: number = 0xffffff;
+    private readonly inactiveTintColor: number = 0xccaacc;
 
     private standardTexture: Texture<Resource>;
     private hoverTexture: Texture<Resource>;

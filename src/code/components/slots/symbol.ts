@@ -6,10 +6,10 @@ import { CustomEase } from "gsap/all";
 import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../../common/consts";
 
 export class Symbol extends Sprite {
-    private symbolSize: number = 0;
-    private endPoint: number = 500;
+    private readonly symbolSize: number = 0;
+    private readonly endPoint: number = 500;
     private velocity: number = 0;
-    private reel: Reel;
+    private readonly reel: Reel;
 
     private currentState: SymbolState = SymbolState.Idle;
     private symbolIndex: number;
@@ -49,7 +49,7 @@ export class Symbol extends Sprite {
      * Swap texture to wrap around reel
      */
     private handleWrap() {
-        const wrapThreshold = 70; // was 25, was 16
+        const wrapThreshold = 70;
         if (this.y <= wrapThreshold) {
 
             switch (this.currentState) {
@@ -195,4 +195,8 @@ export class Symbol extends Sprite {
     public get SymbolIndex(): number {
         return this.symbolIndex;
     }
+}
+
+function differenceBetweenValues(value1: number, value2: number): number {
+    return Math.abs(value1 - value2);
 }

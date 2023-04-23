@@ -3,6 +3,7 @@ import { Manager } from "../common/manager";
 import { Scene } from "../common/types";
 import { manifest } from "../assets";
 import { GameScene } from "./gameScene";
+import { TitleScene } from "./titleScene";
 
 export class LoaderScene extends Container implements Scene {
 
@@ -51,7 +52,7 @@ export class LoaderScene extends Container implements Scene {
     }
 
     private gameLoaded(): void {
-        Manager.changeScene(new GameScene());
+        Manager.changeScene(new TitleScene());
     }
 
     public update(delta: number): void {

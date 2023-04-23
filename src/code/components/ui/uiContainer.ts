@@ -10,15 +10,15 @@ import { Balance } from "./balance";
 import { WinBox } from "./winBox";
 
 export class UIContainer extends Container implements SlotMachineObserver{
-    private scene: GameScene;
-    private slotMachine: SlotMachine;
+    private readonly scene: Container;
+    private readonly slotMachine: SlotMachine;
     private button: Button;
     private balanceText: Balance;
     private winBox: WinBox;
 
     private observers: UIObserver[] = [];
 
-    constructor(scene: GameScene, slotMachine: SlotMachine) {
+    constructor(scene: Container, slotMachine: SlotMachine) {
         super();
         this.scene = scene;
         this.slotMachine = slotMachine;

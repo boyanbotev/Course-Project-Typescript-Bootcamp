@@ -9,17 +9,17 @@ import { Firework } from "../firework/firework";
 import { APIGateway } from "../../common/apiGateway";
 
 export class SlotMachine extends Container implements UIObserver {
-    private reelCount: number = config.reelCount;
-    private reelLength: number = config.reelLength;
-    private addedReelLength: number = config.reelLength +1;
-    private symbolSize: number = config.symbolSize;
-    private topMargin: number = config.topMargin;
+    private readonly reelCount: number = config.reelCount;
+    private readonly reelLength: number = config.reelLength;
+    private readonly addedReelLength: number = config.reelLength +1;
+    private readonly symbolSize: number = config.symbolSize;
+    private readonly topMargin: number = config.topMargin;
     private bet: number = config.bet;
     private balance: number = config.initialBalance;
 
-    private scene: GameScene;
-    private api: FakeAPI;
-    private apiGateway: APIGateway;
+    private readonly scene: Container;
+    private readonly api: FakeAPI;
+    private readonly apiGateway: APIGateway;
     private reels: Reel[] = [];
 
     private currentState: SlotMachineState = SlotMachineState.Idle;
@@ -27,7 +27,7 @@ export class SlotMachine extends Container implements UIObserver {
 
     private observers: SlotMachineObserver[] = [];
 
-    constructor(scene: GameScene, api: FakeAPI) {
+    constructor(scene: Container, api: FakeAPI) {
         super();
         this.scene = scene;
         this.scene.addChild(this);
@@ -232,13 +232,19 @@ export class SlotMachine extends Container implements UIObserver {
     }
 }
 
-// TODO: Add readonly
-
-// Remove dependency on GameScene by passing app instance, an width and height values in constructor?
-
 // Extract areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
 
 // TODO: Update loading screen
 
 
 // investigate symbol mystery
+
+// TODO: Add sound effects
+
+// TODO: Add music
+
+// TODO: Add tests
+
+// TODO: sort out web.yml
+
+

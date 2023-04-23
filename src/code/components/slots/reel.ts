@@ -6,17 +6,17 @@ import { slotSymbolMap, multiplier, xIndexMultiplier, baseVelocity } from "../..
 import { SlotMachine } from "./slotMachine";
 
 export class Reel extends Container {
-    private reelLength: number;
-    private symbolSize: number;
-    private reelXIndex: number;
+    private readonly reelLength: number;
+    private readonly symbolSize: number;
+    private readonly reelXIndex: number;
 
-    private symbolsBundle: SymbolBundle;
-    private symbols: Symbol[] = [];
+    private readonly symbolsBundle: SymbolBundle;
+    private readonly symbols: Symbol[] = [];
 
     private velocity: number = 0;
-    private decreaseRate: number = 0.1;
-    private blurDecreaseRate: number = 0.0017;
-    private velocityThreshold: number = 15;
+    private readonly decreaseRate: number = 0.1;
+    private readonly blurDecreaseRate: number = 0.0017;
+    private readonly velocityThreshold: number = 15;
 
     private currentState: ReelState = ReelState.Idle;
     private symbolIndex: number = 0;
