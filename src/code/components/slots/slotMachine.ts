@@ -243,10 +243,6 @@ export class SlotMachine extends Container implements UIObserver {
 
 // TODO: sort out web.yml
 
-// remove dependency on firework by making firework (or a firework manager class) a slotmachine observer? or a WinManager
-
-// types.d.ts
-
 // think about reel and symbol responsibilities
 
 // flexible bet?

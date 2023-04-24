@@ -4,12 +4,13 @@ import { SymbolState } from "../../common/types";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/all";
 import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../../common/consts";
+import { ReelInterface } from "../../common/types";
 
 export class Symbol extends Sprite {
     private readonly symbolSize: number = 0;
     private readonly endPoint: number = 500;
     private velocity: number = 0;
-    private readonly reel: Reel;
+    private readonly reel: ReelInterface;
 
     private currentState: SymbolState = SymbolState.Idle;
     private symbolIndex: number;

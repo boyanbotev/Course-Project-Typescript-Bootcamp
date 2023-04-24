@@ -9,7 +9,7 @@
       "resolveJsonModule": true,
       "noImplicitAny": true,
       "sourceMap": true,
-      "declaration": true,
+      "declaration": false,
       "maxNodeModuleJsDepth": 1
     },
     "include": [

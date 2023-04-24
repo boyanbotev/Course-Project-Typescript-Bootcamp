@@ -130,3 +130,13 @@ export type UIData = number;
 //     updateReels(delta: number): void;
 //     State: SlotMachineState;
 // }
+
+export interface ReelInterface {
+    updateSymbols(delta: number): void;
+    highlightWinningSymbols(paylineLength: number): void;
+    spin(finalSymbols: SymbolReference[]): void;
+    getRandomTexture(): Texture;
+    incrementSymbolIndex(): number;
+    get FinalSymbol(): Texture;
+    get ReelLength(): number;
+}

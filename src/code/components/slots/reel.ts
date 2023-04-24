@@ -4,8 +4,9 @@ import { SymbolBundle, SymbolReference } from "../../common/types";
 import { ReelState, SymbolState, SlotMachineState } from "../../common/types";
 import { multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts";
 import { SlotMachine } from "./slotMachine";
+import { ReelInterface } from "../../common/types";
 
-export class Reel extends Container {
+export class Reel extends Container implements ReelInterface {
     private readonly reelLength: number;
     private readonly symbolSize: number;
     private readonly reelXIndex: number;

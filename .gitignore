@@ -62,3 +62,7 @@ typings/
 
 #IntelliJ
 .idea
+
+#Dist and cjs folders
+dist
+cjs
