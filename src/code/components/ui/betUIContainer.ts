@@ -2,6 +2,7 @@ import { Container} from "pixi.js";
 import { Manager } from "../../common/manager";
 import { config } from "../../common/config";
 import { SmallText } from "./text/smallText";
+import { formatAsEuros } from "../../common/formatAsEuros";
 
 export class BetUIContainer extends Container {
     constructor(parent: Container) {
@@ -16,7 +17,7 @@ export class BetUIContainer extends Container {
         this.y = Manager.Height - 100;
 
         const betText = new SmallText();
-        betText.text = `BET: ${config.bet}`;
+        betText.text = `BET: ${formatAsEuros(config.bet)}`;
 
         this.addChild(betText);
     }

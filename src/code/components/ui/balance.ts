@@ -28,4 +28,3 @@ export class BalanceContainer extends Container {
         this.balanceText.text = formatAsEuros(balance);
     }
 }
-// TODO: refactor to be SmallText ? In a balanceContainer?

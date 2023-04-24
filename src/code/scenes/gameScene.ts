@@ -8,7 +8,6 @@ import { Manager } from "../common/manager";
 import { config } from "../common/config";
 import { framePadding, frameExtraHeight } from "../common/consts";
 import { Frame } from "../components/frame";
-import { Firework } from "../components/firework/firework";
 
 export class GameScene extends Container implements Scene {
 
@@ -33,3 +32,10 @@ export class GameScene extends Container implements Scene {
         this.slotMachine.updateReels(delta);
     }
 }
+
+
+// // Now, we use 'tick' from gsap
+// gsap.ticker.add(() => {
+//     app.ticker.update();
+// });
+
