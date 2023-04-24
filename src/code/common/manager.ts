@@ -1,5 +1,6 @@
 import { Application } from "pixi.js";
 import { Scene } from "./types";
+import gsap from "gsap";
 
 export class Manager {
     private constructor() {}
@@ -28,6 +29,13 @@ export class Manager {
             height: height,
             autoDensity: true,
             backgroundColor: backgroundColor,
+        });
+
+        this.app.ticker.stop();
+
+        // Now, we use 'tick' from gsap
+        gsap.ticker.add(() => {
+            this.app.ticker.update();
         });
 
         Manager.app.ticker.add(Manager.update);

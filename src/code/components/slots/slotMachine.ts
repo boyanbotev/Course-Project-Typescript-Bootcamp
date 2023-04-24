@@ -146,8 +146,7 @@ export class SlotMachine extends Container implements UIObserver {
 
         if (result.win) {
             this.highlightWinningSymbols();
-            new Firework(this);
-            // remove dependency on firework by making firework (or a firework manager class) a slotmachine observer? or a WinManager
+
             this.notifyObservers(UpdateAction.Win, result.win);
         }
 
@@ -253,3 +252,5 @@ export class SlotMachine extends Container implements UIObserver {
 // flexible bet?
 
 // deploy online
+
+// TODO: text size responsive to ratio of reelCount to reelLength?

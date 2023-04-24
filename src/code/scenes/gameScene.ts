@@ -8,6 +8,7 @@ import { Manager } from "../common/manager";
 import { config } from "../common/config";
 import { framePadding, frameExtraHeight } from "../common/consts";
 import { Frame } from "../components/frame";
+import { FireWorkContainer } from "../components/firework/fireworkContainer";
 
 export class GameScene extends Container implements Scene {
 
@@ -23,6 +24,7 @@ export class GameScene extends Container implements Scene {
         this.api = new FakeAPI();
         this.slotMachine = new SlotMachine(this, this.api); // should this be here? dependency injection
         new UIContainer(this, this.slotMachine);
+        new FireWorkContainer(this, this.slotMachine);
 
         const ticker = Ticker.shared;
         ticker.add(this.update.bind(this));
@@ -32,10 +34,3 @@ export class GameScene extends Container implements Scene {
         this.slotMachine.updateReels(delta);
     }
 }
-
-
-// // Now, we use 'tick' from gsap
-// gsap.ticker.add(() => {
-//     app.ticker.update();
-// });
-
