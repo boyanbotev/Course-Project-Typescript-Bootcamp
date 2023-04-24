@@ -5,14 +5,14 @@ import { SlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
 import { SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
-import { BalanceText } from "./text/balanceText";
+import { BalanceContainer } from "./balance";
 import { WinBox } from "./winBox";
 
 export class UIContainer extends Container implements SlotMachineObserver{
     private readonly scene: Container;
     private readonly slotMachine: SlotMachine;
     private button: Button;
-    private balanceText: BalanceText;
+    private balanceText: BalanceContainer;
     private winBox: WinBox;
 
     private observers: UIObserver[] = [];
@@ -30,7 +30,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
 
     private createUI(): void {
         new BetUIContainer(this);
-        this.balanceText = new BalanceText(this);
+        this.balanceText = new BalanceContainer(this);
         this.createButton();
         this.createWinText();
     }

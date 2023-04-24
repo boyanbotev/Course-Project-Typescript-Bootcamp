@@ -250,8 +250,6 @@ export class SlotMachine extends Container implements UIObserver {
 
 // think about reel and symbol responsibilities
 
-// remove unecessary console logs
-
 // flexible bet?
 
 // deploy online

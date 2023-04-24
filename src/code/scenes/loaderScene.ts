@@ -1,8 +1,7 @@
 import { Container, Graphics, Assets } from "pixi.js";
 import { Manager } from "../common/manager";
 import { Scene } from "../common/types";
-import { manifest } from "../assets";
-import { GameScene } from "./gameScene";
+import { manifest } from "../common/assets";
 import { TitleScene } from "./titleScene";
 
 export class LoaderScene extends Container implements Scene {
