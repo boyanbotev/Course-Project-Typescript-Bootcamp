@@ -9,6 +9,7 @@ import { Vector2 } from "../common/vector2";
 import { SmallText } from "../components/ui/text/smallText";
 import { gsap } from "gsap"
 import { config } from "../common/config";
+import { PIXISlotMachine } from "../components/slots/slotMachine";
 
 export class TitleScene extends Container implements Scene {
 

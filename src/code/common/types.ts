@@ -123,15 +123,19 @@ export type UIData = number;
 //     notifyObservers(action: UpdateAction, data?: UpdateData): void;
 // }
 
-// export interface SlotMachine {
-//     addObserver(observer: SlotMachineObserver): void;
-//     removeObserver(observer: SlotMachineObserver): void;
-//     notifyObservers(action: UpdateAction, data?: UpdateData): void;
-//     updateReels(delta: number): void;
-//     State: SlotMachineState;
-// }
+export interface SlotMachine {
+    spin(): Promise<void>;
+    checkIfReelsStopped(): void;
+    addObserver(observer: SlotMachineObserver): void;
+    removeObserver(observer: SlotMachineObserver): void;
+    notifyObservers(action: UpdateAction, data?: UpdateData): void;
+    updateReels(delta: number): void;
+    get State(): SlotMachineState;
+    onSpin(): void;
+    onBetChange(bet: number): void;
+}
 
-export interface ReelInterface {
+export interface Reel { // TODO: Change to Reel
     updateSymbols(delta: number): void;
     highlightWinningSymbols(paylineLength: number): void;
     spin(finalSymbols: SymbolReference[]): void;
@@ -139,4 +143,16 @@ export interface ReelInterface {
     incrementSymbolIndex(): number;
     get FinalSymbol(): Texture;
     get ReelLength(): number;
+}
+
+export interface Symbol {
+    update(delta: number): void;
+    initializePulse(payline: number, paylineLength: number): void;
+    darken(): void;
+    reset(): void;
+    set Velocity(velocity: number);
+    get State(): SymbolState;
+    set State(state: SymbolState);
+    get SymbolIndex(): number;
+    set SymbolIndex(index: number);
 }

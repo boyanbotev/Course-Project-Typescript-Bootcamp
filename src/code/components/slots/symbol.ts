@@ -1,16 +1,16 @@
-import { Sprite, Texture } from "pixi.js";
-import { Reel } from "./reel";
-import { SymbolState } from "../../common/types";
+import { Container, Sprite, Texture } from "pixi.js";
+import { PIXIReel } from "./reel";
+import { Symbol, SymbolState } from "../../common/types";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/all";
 import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../../common/consts";
-import { ReelInterface } from "../../common/types";
+import { Reel } from "../../common/types";
 
-export class Symbol extends Sprite {
+export class PIXISymbol extends Sprite implements Symbol {
     private readonly symbolSize: number = 0;
     private readonly endPoint: number = 500;
     private velocity: number = 0;
-    private readonly reel: ReelInterface;
+    private readonly reel: Reel;
 
     private currentState: SymbolState = SymbolState.Idle;
     private symbolIndex: number;
@@ -23,7 +23,6 @@ export class Symbol extends Sprite {
         reel: Reel
     ) {
         super();
-        reel.addChild(this);
 
         this.symbolSize = symbolSize;
         this.width = this.symbolSize;
@@ -78,7 +77,7 @@ export class Symbol extends Sprite {
      * Smaller symbolsize means smaller difference in duration 
      */
     private tweenToStop() {
-        this.symbolIndex = this.reel.incrementSymbolIndex();
+        this.symbolIndex = this.reel.incrementSymbolIndex(); // is there another way of cooridnating reel and symbol?
         
         const duration = baseTweenDuration - (this.symbolIndex * symbolIndexMultiplier * (this.symbolSize / standardSymbolSize));
         const targetY = this.endPoint - (this.symbolSize * this.symbolIndex);
@@ -174,7 +173,7 @@ export class Symbol extends Sprite {
     }
 
     private getFinalSymbol(): Texture {
-        return this.reel.FinalSymbol;
+        return this.reel.FinalSymbol; // could this be given to the symbol somehow? like a set instead of a get?
     }
     
     public set Velocity(velocity: number) {
@@ -198,6 +197,6 @@ export class Symbol extends Sprite {
     }
 }
 
-function differenceBetweenValues(value1: number, value2: number): number {
+function differenceBetweenValues(value1: number, value2: number): number { // TODO: remove
     return Math.abs(value1 - value2);
 }

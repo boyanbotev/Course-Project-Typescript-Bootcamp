@@ -1,8 +1,8 @@
 import { Assets, Container, Ticker } from "pixi.js";
-import { Scene } from "../common/types";
+import { Scene, SlotMachine } from "../common/types";
 import { FakeAPI } from "../backend/fakeAPI";
 import { UIContainer } from "../components/ui/uiContainer";
-import { SlotMachine } from "../components/slots/slotMachine";
+import { PIXISlotMachine } from "../components/slots/slotMachine";
 import { Background } from "../components/background";
 import { Manager } from "../common/manager";
 import { config } from "../common/config";
@@ -15,14 +15,14 @@ export class GameScene extends Container implements Scene {
     private api: FakeAPI;
     private slotMachine: SlotMachine;
 
-    constructor(){
+    constructor() {
         super();
 
         new Background(Manager.Width, Manager.Height, Assets.get("background"), this);
         new Frame(config.reelCount * config.symbolSize + framePadding, Manager.Height + frameExtraHeight, Assets.get("frame"), this);
 
         this.api = new FakeAPI();
-        this.slotMachine = new SlotMachine(this, this.api); // should this be here? dependency injection
+        this.slotMachine = new PIXISlotMachine(this, this.api); // should this be here? dependency injection
         new UIContainer(this, this.slotMachine);
         new FireWorkContainer(this, this.slotMachine);
 

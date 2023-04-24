@@ -28,8 +28,7 @@ export const manifest: ResolverManifest = {
             name: "uiBundle",
             assets: {
                 "spinButton": "assets/images/ui/spin.png",
-                "spinButtonHover": "assets/images/ui/spin_hover3.png",
-                "startButton": "assets/images/ui/start.jpg",
+                "spinButtonHover": "assets/images/ui/spin_hover.png",
             }
         },
         {

@@ -1,18 +1,18 @@
 import { Container, Texture, BlurFilter } from "pixi.js";
-import { Symbol } from "./symbol";
+import { PIXISymbol } from "./symbol";
 import { SymbolBundle, SymbolReference } from "../../common/types";
 import { ReelState, SymbolState, SlotMachineState } from "../../common/types";
 import { multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts";
-import { SlotMachine } from "./slotMachine";
-import { ReelInterface } from "../../common/types";
+import { PIXISlotMachine } from "./slotMachine";
+import { Reel } from "../../common/types";
 
-export class Reel extends Container implements ReelInterface {
+export class PIXIReel extends Container implements Reel {
     private readonly reelLength: number;
     private readonly symbolSize: number;
     private readonly reelXIndex: number;
 
     private readonly symbolsBundle: SymbolBundle;
-    private readonly symbols: Symbol[] = [];
+    private readonly symbols: PIXISymbol[] = [];
 
     private velocity: number = 0;
     private readonly decreaseRate: number = 0.1;
@@ -47,7 +47,7 @@ export class Reel extends Container implements ReelInterface {
 
     public createSymbols(initialSymbols: number[]): void {
         for (let j = 0; j < this.reelLength; j++) {
-            const symbol = new Symbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
+            const symbol = new PIXISymbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
 
             symbol.texture = this.symbolsBundle[initialSymbols[j]];
     
@@ -55,6 +55,7 @@ export class Reel extends Container implements ReelInterface {
             symbol.y = this.symbolSize * j + this.symbolSize;
             
             this.symbols.push(symbol);
+            this.addChild(symbol);
         }
     }
 
@@ -85,7 +86,7 @@ export class Reel extends Container implements ReelInterface {
 
                 if (stopped) {
                     this.currentState = ReelState.Idle;
-                    const slotMachine = this.parent as SlotMachine;
+                    const slotMachine = this.parent as PIXISlotMachine;
                     if (slotMachine.State === SlotMachineState.Spinning) {
                         slotMachine.checkIfReelsStopped();
                     }

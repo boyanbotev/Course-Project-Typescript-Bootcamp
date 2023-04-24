@@ -1,13 +1,12 @@
 import { Container, Assets, Graphics } from "pixi.js";
-import { ReelState, UpdateResponse, SymbolBundle, SlotMachineState, SlotMachineObserver, UpdateAction, UIObserver, UpdateData } from "../../common/types";
+import { ReelState, UpdateResponse, SymbolBundle, SlotMachineState, SlotMachineObserver, UpdateAction, UIObserver, UpdateData, SlotMachine } from "../../common/types";
 import { Manager } from "../../common/manager";
-import { Reel } from "./reel";
+import { PIXIReel } from "./reel";
 import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
-import { Firework } from "../firework/firework";
 import { APIGateway } from "../../common/apiGateway";
 
-export class SlotMachine extends Container implements UIObserver {
+export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {
     private readonly reelCount: number = config.reelCount;
     private readonly reelLength: number = config.reelLength;
     private readonly addedReelLength: number = config.reelLength +1;
@@ -19,7 +18,7 @@ export class SlotMachine extends Container implements UIObserver {
     private readonly scene: Container;
     private readonly api: FakeAPI;
     private readonly apiGateway: APIGateway;
-    private reels: Reel[] = [];
+    private reels: PIXIReel[] = [];
 
     private currentState: SlotMachineState = SlotMachineState.Idle;
     private spinResult: UpdateResponse;
@@ -57,7 +56,7 @@ export class SlotMachine extends Container implements UIObserver {
         }
 
         for (let i = 0; i < this.reelCount; i++) {
-            const reel = new Reel(
+            const reel = new PIXIReel(
                 i, 
                 this.addedReelLength, 
                 this.symbolSize, 
@@ -250,3 +249,7 @@ export class SlotMachine extends Container implements UIObserver {
 // deploy online
 
 // TODO: text size responsive to ratio of reelCount to reelLength?
+
+// drawelements calls above 8000 when particles
+// around 1980 when no particles
+// drawing triangles

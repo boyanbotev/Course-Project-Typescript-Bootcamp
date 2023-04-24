@@ -1,14 +1,14 @@
 import { Container, Texture, Assets } from "pixi.js";
 import { Manager } from "../../common/manager";
 import { Button } from "./button";
-import { SlotMachine } from "../slots/slotMachine";
+import { PIXISlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
-import { SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
+import { SlotMachine, SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
 import { BalanceContainer } from "./balance";
 import { WinBox } from "./winBox";
 
-export class UIContainer extends Container implements SlotMachineObserver{
+export class UIContainer extends Container implements SlotMachineObserver {
     private readonly scene: Container;
     private readonly slotMachine: SlotMachine;
     private button: Button;
@@ -17,7 +17,7 @@ export class UIContainer extends Container implements SlotMachineObserver{
 
     private observers: UIObserver[] = [];
 
-    constructor(scene: Container, slotMachine: SlotMachine) {
+    constructor(scene: Container, slotMachine: SlotMachine ) {
         super();
         this.scene = scene;
         this.slotMachine = slotMachine;
