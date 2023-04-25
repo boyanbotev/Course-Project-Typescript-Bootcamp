@@ -238,7 +238,7 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
 
 // TODO: Add music
 
-// TODO: Add tests
+// TODO: Use Spritesheet for symbols
 
 // TODO: sort out web.yml
 
@@ -249,7 +249,3 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
 // deploy online
 
 // TODO: text size responsive to ratio of reelCount to reelLength?
-
-// drawelements calls above 8000 when particles
-// around 1980 when no particles
-// drawing triangles

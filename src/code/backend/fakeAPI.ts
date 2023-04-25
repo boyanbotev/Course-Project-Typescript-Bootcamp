@@ -33,7 +33,12 @@ export class FakeAPI {
                         "action": "error",
                         "error": "Not enough money",
                     }
-                } else {
+                } else if (request.bet <= 0) {
+                    response = {
+                        "action": "error",
+                        "error": "Bet must be greater than 0",
+                    }
+                }   else {
                     const reelIndexes = this.getNewReelPositions();
                     const win = this.checkForWin(reelIndexes, request.bet);
 
@@ -75,7 +80,7 @@ export class FakeAPI {
         return positions;
     }
 
-    private checkForWin(reelIndexes: number[], bet: number): WinResult { // test function
+    private checkForWin(reelIndexes: number[], bet: number): WinResult {
         const reels: number[][] = this.reelCalculator.getVisibleSymbols(reelIndexes, this.reelLength);
 
         let totalCount = 0;

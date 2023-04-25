@@ -1,5 +1,4 @@
-import { Container, Sprite, Texture } from "pixi.js";
-import { PIXIReel } from "./reel";
+import { Sprite, Texture } from "pixi.js";
 import { Symbol, SymbolState } from "../../common/types";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/all";

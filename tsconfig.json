@@ -14,7 +14,7 @@
     },
     "include": [
       "./src/code/**/*.ts"
-, "src/code/backend/backendReelCalculator.ts"    ]
+, "src/code/backend/backendReelCalculator.ts", "src/code/_tests_/fakeAPI.spec.ts"    ]
   }
   
   

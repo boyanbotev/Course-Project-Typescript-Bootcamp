@@ -1,4 +1,3 @@
-// TODO: Add d.ts file for types
 import { Texture, DisplayObject } from "pixi.js";
 
 export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" | "P" | "princess" | "square" | "T" | "warrior" | "X" | "jem" | "dagger" | "и" | "я";
@@ -135,7 +134,7 @@ export interface SlotMachine {
     onBetChange(bet: number): void;
 }
 
-export interface Reel { // TODO: Change to Reel
+export interface Reel {
     updateSymbols(delta: number): void;
     highlightWinningSymbols(paylineLength: number): void;
     spin(finalSymbols: SymbolReference[]): void;

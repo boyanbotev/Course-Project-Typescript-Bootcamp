@@ -5,7 +5,7 @@ export class BackendReelCalculator {
     private readonly reelCount: number = config.reelCount;
     private readonly reelSize: number = config.reelSize;
 
-    private readonly reels: number[][] = [];
+    private reels: number[][] = [];
 
     constructor() {
         if (!config.testMode) {
@@ -56,7 +56,7 @@ export class BackendReelCalculator {
      * Should return the symbols on the reels starting at the reelIndexes
      * TODO: Separate visible reelLength (horizontal) from visible reelHeight (vertical)
      */
-    public getVisibleSymbols(reelIndexes: number[], reelLength: number): number[][] {     // test this function?
+    public getVisibleSymbols(reelIndexes: number[], reelLength: number): number[][] {
         const visibleReels: number[][] = [];
         for (let i = 0; i < reelIndexes.length; i++) {
             const symbols: number[] = [];
