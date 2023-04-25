@@ -20,6 +20,7 @@ export class GameScene extends Container implements Scene {
 
         new Background(Manager.Width, Manager.Height, Assets.get("background"), this);
         new Frame(config.reelCount * config.symbolSize + framePadding, Manager.Height + frameExtraHeight, Assets.get("frame"), this);
+        // TODO: fade in frame, fade in slot machine
 
         this.api = new FakeAPI();
         this.slotMachine = new PIXISlotMachine(this, this.api); // should this be here? dependency injection
