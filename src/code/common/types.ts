@@ -132,6 +132,7 @@ export interface SlotMachine {
     get State(): SlotMachineState;
     onSpin(): void;
     onBetChange(bet: number): void;
+    fadeIn(duration: number): void;
 }
 
 export interface Reel {

@@ -5,6 +5,7 @@ import { PIXIReel } from "./reel";
 import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { APIGateway } from "../../common/apiGateway";
+import { gsap } from "gsap";
 
 export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {
     private readonly reelCount: number = config.reelCount;
@@ -220,6 +221,11 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
                     break;
             }
         });
+    }
+
+    public fadeIn(duration: number): void {
+        this.alpha = 0;
+        gsap.to(this, {alpha: 1, duration: duration});
     }
 
     private setBalance(balance: number) {
