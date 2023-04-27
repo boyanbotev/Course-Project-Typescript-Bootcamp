@@ -25,6 +25,13 @@ export const manifest: ResolverManifest = {
             }
         },
         {
+            name: "spritesheetBundle",
+            assets: {
+                "spritesheet": "assets/images/spritesheet/symbols_and_ui_spritesheet.png",
+                // "spritesheetData": "assets\images\spritesheet\symbols_and_ui_spritesheet.json",
+            }
+        },
+        {
             name: "uiBundle",
             assets: {
                 "spinButton": "assets/images/ui/spin.png",

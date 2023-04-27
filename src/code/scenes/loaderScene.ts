@@ -1,8 +1,9 @@
-import { Container, Graphics, Assets } from "pixi.js";
+import { Container, Graphics, Assets, Spritesheet } from "pixi.js";
 import { Manager } from "../common/manager";
 import { Scene } from "../common/types";
-import { manifest } from "../common/assets";
+import { manifest } from "../common/assets/assets";
 import { TitleScene } from "./titleScene";
+import { SpriteSheetLoader } from "../common/assets/spritesheet";
 
 export class LoaderScene extends Container implements Scene {
     private readonly loaderBar: Container;
@@ -42,7 +43,10 @@ export class LoaderScene extends Container implements Scene {
 
         const bundleIds = manifest.bundles.map((bundle) => bundle.name);
 
-        await Assets.loadBundle(bundleIds, this.downloadProgress.bind(this));
+        await Promise.all([
+            Assets.loadBundle(bundleIds, this.downloadProgress.bind(this)),
+            SpriteSheetLoader.loadSpritesheet(),
+        ]);
     }
 
     private downloadProgress(progress: number): void {

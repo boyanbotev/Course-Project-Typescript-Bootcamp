@@ -1,4 +1,4 @@
-import { Container, Assets, Graphics } from "pixi.js";
+import { Container, Assets, Graphics, Texture, Resource } from "pixi.js";
 import { ReelState, UpdateResponse, SymbolBundle, SlotMachineState, SlotMachineObserver, UpdateAction, UIObserver, UpdateData, SlotMachine } from "../../common/types";
 import { Manager } from "../../common/manager";
 import { PIXIReel } from "./reel";
@@ -6,6 +6,8 @@ import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { APIGateway } from "../../common/apiGateway";
 import { gsap } from "gsap";
+import { SpriteSheetLoader } from "../../common/assets/spritesheet";
+import { Dict } from "@pixi/utils";
 
 export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {    
     private readonly reelCount: number = config.reelCount;
@@ -53,18 +55,45 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
      */
     public async createReels(): Promise<void> {
         const response = await this.apiGateway.requestInitalSymbols();
-        const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
+        //const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
 
-        if (!symbolsBundle) {
-            throw new Error("symbolsBundle not loaded");
-        }
+        const sprites = SpriteSheetLoader.spritesheet;
+
+        // filter out all sprites that don't have "symbol" in their name
+        const symbolKeys = Object.keys(sprites).filter((key) => {
+            return key.includes("symbol");
+        });
+
+        const symbols: Dict<Texture<Resource>> = {};
+
+        // create dict of textures from filtered sprites
+        symbolKeys.forEach((key) => {
+            symbols[key] = sprites[key];
+        });
+
+        // go through sprites dictionary and create a new dictionary with only symbols
+        // const symbols = Object.keys(sprites).reduce((acc, key) => {
+        //     console.log("key", key);
+        //     console.log(acc);
+        //     if (key.includes("symbol")) {
+        //         console.log("key", key);
+        //         return sprites[key];
+        //     }
+        // }, {});
+
+        console.log("symbols", symbols);
+        // if (!symbolsBundle) {
+        //     throw new Error("symbolsBundle not loaded");
+        // }
 
         for (let i = 0; i < this.reelCount; i++) {
             const reel = new PIXIReel(
                 i, 
                 this.addedReelLength, 
                 this.symbolSize, 
-                symbolsBundle, 
+                symbols,
+                //sprites,
+                //symbolsBundle, 
                 response.symbols[i], 
                 this
                 );
