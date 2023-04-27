@@ -9,6 +9,7 @@ import { config } from "../common/config";
 import { framePadding, frameExtraHeight } from "../common/consts";
 import { Frame } from "../components/background/frame";
 import { FireWorkContainer } from "../components/firework/fireworkContainer";
+import { MusicManager } from "../music/musicManager";
 
 export class GameScene extends Container implements Scene {
 
@@ -21,12 +22,14 @@ export class GameScene extends Container implements Scene {
 
         new Background(Manager.Width, Manager.Height, Assets.get("background"), this);
         this.frame = new Frame(config.reelCount * config.symbolSize + framePadding, Manager.Height + frameExtraHeight, Assets.get("frame"), this);
-        // TODO: fade in frame, fade in slot machine
 
         this.api = new FakeAPI();
         this.slotMachine = new PIXISlotMachine(this, this.api); // should this be here? dependency injection
         new UIContainer(this, this.slotMachine);
         new FireWorkContainer(this, this.slotMachine);
+
+        const musicManager = new MusicManager();
+        musicManager.playMusic();
 
         const ticker = Ticker.shared;
         ticker.add(this.update.bind(this));

@@ -8,6 +8,6 @@
     "initialBalance": 100,
     "bet": 2,
 
-    "testMode": false
+    "testMode": true
     
 }

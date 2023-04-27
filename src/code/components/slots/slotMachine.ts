@@ -255,8 +255,3 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
 // deploy online
 
 // TODO: text size responsive to ratio of reelCount to reelLength?
-
-// Add transition from title screen to game screen
-// fade in reel container
-
-// fade out from title screen to game screen

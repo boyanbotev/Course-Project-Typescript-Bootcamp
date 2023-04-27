@@ -4,8 +4,8 @@ import { Manager } from "../../common/manager";
 import { gsap } from "gsap";
 
 export class Title extends BigText {
-
     private ticker: Ticker; 
+    
     constructor(parent: Container, text: string) {
         super(parent);
 
@@ -16,8 +16,13 @@ export class Title extends BigText {
     }
 
     public animateTitleDown(finalYOffset: number, ease: any, duration: number) {
-        gsap.to(this, { y: Manager.Height + finalYOffset, ease: ease, duration: duration*1.1 });
-        gsap.to(this, { alpha: 0, ease: ease, duration: duration * 1.5  });
+        const moveDuration = duration * 1.1;
+        const targetPosition = Manager.Height + finalYOffset;
+        
+        gsap.to(this, { y: targetPosition, ease: ease, duration: moveDuration });
+
+        const fadeDuration = duration * 1.5;
+        gsap.to(this, { alpha: 0, ease: ease, duration: fadeDuration  });
 
         this.ticker = Ticker.shared;
         this.ticker.add(this.updateGradientText, this);

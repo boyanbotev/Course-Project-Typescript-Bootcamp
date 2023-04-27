@@ -1,5 +1,8 @@
 import { Sprite, Texture, Resource, Container } from "pixi.js";
 import { Vector2 } from "../../common/vector2";
+import { SmallText } from "./text/smallText";
+import { BigText } from "./text/bigText";
+import { bigTextStyle } from "./text/textStyle";
 
 enum ButtonState {
     Active,
@@ -17,11 +20,12 @@ export class Button extends Sprite {
 
     constructor(
         position: Vector2, 
-        texture: Texture<Resource>,
-        hoverTexture: Texture<Resource>,
         callback: () => void,
         container: Container,
+        texture?: Texture<Resource>,
+        hoverTexture?: Texture<Resource>,
         scale: number = 1,
+        text?: string,
     ) {
         super();
         this.texture = texture;
@@ -47,6 +51,26 @@ export class Button extends Sprite {
         });
 
         container.addChild(this);
+
+        if (text) {
+            this.addText(text);
+        }
+    }
+
+    private addText(text: string) {
+        const txtObj = new BigText(this);
+        txtObj.text = text;
+        txtObj.style = ({
+            ...bigTextStyle,
+            dropShadowColor: 0x331116,
+            strokeThickness: 10,
+            stroke: 0x331116, 
+            fontSize: 128,
+        });
+
+        txtObj.anchor.set(0.5, 0.6);
+        
+        this.addChild(txtObj);     
     }
 
     public setActive(isActive: boolean) {
@@ -64,3 +88,4 @@ export class Button extends Sprite {
         this.texture = isActive ? this.hoverTexture : this.standardTexture;
     }
 }
+// Add optional overloads typescript

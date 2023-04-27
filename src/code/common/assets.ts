@@ -44,6 +44,12 @@ export const manifest: ResolverManifest = {
                 "particle": "assets/images/particle/particle.png",
             }
         },
+        {
+            name: "musicBundle",
+            assets: {
+                "music": "assets/audio/music.mp3",
+            }
+        }
 
     ]
 };

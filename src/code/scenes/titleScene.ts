@@ -20,7 +20,6 @@ export class TitleScene extends Container implements Scene {
 
     private isStarted: boolean = false;
 
-
     constructor(){
         super();
 
@@ -30,7 +29,6 @@ export class TitleScene extends Container implements Scene {
         this.title = new Title(this, "ANCIENT\nTREASURES");
         
         this.createText();
-
         this.createButton();
     }
 
@@ -49,10 +47,12 @@ export class TitleScene extends Container implements Scene {
         this.startButton = new Button(
             new Vector2(Manager.Width / 2,
                 Manager.Height / 1.25),
+            this.startGame.bind(this),
+            this,
             buttonTexture,
             btnHoverTexture,
-            this.startGame.bind(this),
-            this
+            0.5,
+            "START"
         );
         this.startButton.scale.set(0.5);
 
@@ -60,8 +60,7 @@ export class TitleScene extends Container implements Scene {
     }
 
     private makeButtonPulse() {
-        this.startButton.alpha = 0.8;
-        gsap.to(this.startButton.scale, { alpha: 1, x: 0.54, y: 0.54, duration: 0.7, repeat: -1, yoyo: true, yoyoEase: true });
+        gsap.to(this.startButton.scale, { x: 0.54, y: 0.54, duration: 0.7, repeat: -1, yoyo: true, yoyoEase: true });
     }
 
     public update(delta: number): void {
@@ -91,22 +90,29 @@ export class TitleScene extends Container implements Scene {
     private animateElements(duration: number): void {
         const finalYOffset = 100;
 
-        const ease = CustomEase.create("custom", "M0,0,C0.672,0.054,0.74,0.31,0.792,0.388,0.846,0.469,0.896,0.668,1,1");
+        const ease = CustomEase.create(
+            "custom", "M0,0,C0.672,0.054,0.74,0.31,0.792,0.388,0.846,0.469,0.896,0.668,1,1"
+        );
 
         this.title.animateTitleDown(finalYOffset, ease, duration);
-
         this.moveTextDown(finalYOffset, ease, duration);
-
         this.moveButtonIntoPosition(duration);
     }
 
     private moveButtonIntoPosition(duration: number) {
-        gsap.to(this.startButton, { y: Manager.Height - this.startButton.texture.height / 4.3, duration: duration / 2 });
+        const targetHeight = Manager.Height - this.startButton.texture.height / 4.3;
+        const moveDuration = duration / 2;
+
+        gsap.to(this.startButton, { y: targetHeight, duration: moveDuration });
     }
 
     private moveTextDown(finalYOffset: number, ease: any, duration: number) {
-        gsap.to(this.text, { y: Manager.Height + finalYOffset * 4.7, ease: ease, duration: duration * 1.1 });
+        const targetPosition = Manager.Height + finalYOffset * 4.7;
+        const moveDuration = duration * 1.1;
 
-        gsap.to(this.text, { alpha: 0, ease: ease, duration: duration / 1.5 });
+        gsap.to(this.text, { y: targetPosition, ease: ease, duration: moveDuration });
+
+        const fadeDuration = duration * 1.1;
+        gsap.to(this.text, { alpha: 0, ease: ease, duration: fadeDuration });
     }
 }
