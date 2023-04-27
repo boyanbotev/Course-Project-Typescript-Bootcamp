@@ -27,9 +27,7 @@ export class GameScene extends Container implements Scene {
         this.slotMachine = new PIXISlotMachine(this, this.api); // should this be here? dependency injection
         new UIContainer(this, this.slotMachine);
         new FireWorkContainer(this, this.slotMachine);
-
-        const musicManager = new MusicManager(this.slotMachine);
-        musicManager.playMusic();
+        new MusicManager(this.slotMachine);
 
         const ticker = Ticker.shared;
         ticker.add(this.update.bind(this));
