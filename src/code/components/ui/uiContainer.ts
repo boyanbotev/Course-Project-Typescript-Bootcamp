@@ -1,4 +1,4 @@
-import { Container, Texture, Assets } from "pixi.js";
+import { Container, Texture } from "pixi.js";
 import { Manager } from "../../common/manager";
 import { Button } from "./button";
 import { config } from "../../common/config";
@@ -6,6 +6,7 @@ import { BetUIContainer } from "./betUIContainer";
 import { SlotMachine, SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
 import { BalanceContainer } from "./balance";
 import { WinBox } from "./winBox";
+import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
 
 export class UIContainer extends Container implements SlotMachineObserver {   
     private readonly scene: Container;
@@ -35,9 +36,9 @@ export class UIContainer extends Container implements SlotMachineObserver {
     }
 
     private async createButton(): Promise<void> {
-        const spinBundle = await Assets.loadBundle("uiBundle");
-        const spinImg = spinBundle["spinButton"] as Texture;
-        const spinHover = spinBundle["spinButtonHover"] as Texture;
+        const spritesheet = SpriteSheetLoader.spritesheet;
+        const spinImg = spritesheet["spinButton"] as Texture;
+        const spinHover = spritesheet["spinButtonHover"] as Texture;
 
         this.button = new Button(
             {

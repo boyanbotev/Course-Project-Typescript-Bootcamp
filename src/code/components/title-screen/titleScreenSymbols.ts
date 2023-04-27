@@ -1,9 +1,10 @@
-import { Container, Assets, BlurFilter } from "pixi.js";
+import { Container, Texture, BlurFilter } from "pixi.js";
 import { Background } from "../background/background";
 import { Manager } from "../../common/manager";
 import { gsap } from "gsap";
 import { SymbolBundle } from "../../common/types";
 import { CustomEase } from "gsap/all";
+import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
 
 export class TitleScreenSymbols extends Container { 
     private readonly symbols: Background[] = [];
@@ -19,9 +20,13 @@ export class TitleScreenSymbols extends Container {
         const yBasis = Manager.Height / 2.5;  
         const size = 210;
         const spacing = 200;
-    
-        const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
-        const textures = [symbolsBundle[14], symbolsBundle[1], symbolsBundle[4]];
+
+        const spritesheet = SpriteSheetLoader.spritesheet;
+        const textures = [
+            spritesheet["symbol14"] as Texture,
+            spritesheet["symbol1"] as Texture,
+            spritesheet["symbol4"] as Texture,
+        ];
 
         for (let i = 0; i < 3; i++) {
             const symbol = new Background(size, size, textures[i], this);

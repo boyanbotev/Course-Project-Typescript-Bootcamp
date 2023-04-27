@@ -2,7 +2,7 @@ import { Container} from "pixi.js";
 import { Manager } from "../../common/manager";
 import { config } from "../../common/config";
 import { SmallText } from "./text/smallText";
-import { formatAsEuros } from "../../common/formatAsEuros";
+import { formatAsEuros } from "../../common/utils/formatAsEuros";
 
 export class BetUIContainer extends Container {  
     constructor(parent: Container) {

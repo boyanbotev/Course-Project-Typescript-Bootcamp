@@ -15,7 +15,7 @@ export class Button extends Sprite {
 
     private standardTexture: Texture<Resource>;
     private hoverTexture: Texture<Resource>;
-    private text: BigText;
+    public text: BigText;
 
     private currentState: ButtonState = ButtonState.Active;
 
@@ -36,6 +36,7 @@ export class Button extends Sprite {
         }
 
         if (options.scale) {
+            console.log(options.scale)
             this.scale.set(options.scale, options.scale);
         }
 
@@ -68,8 +69,9 @@ export class Button extends Sprite {
         this.text.style = ({
             ...bigTextStyle,
             dropShadowColor: 0x331116,
-            strokeThickness: 10,
-            stroke: 0x331116, 
+            dropShadowDistance: 5,
+            strokeThickness: 8,
+            stroke: 0x331116,
             fontSize: 128,
         });
 

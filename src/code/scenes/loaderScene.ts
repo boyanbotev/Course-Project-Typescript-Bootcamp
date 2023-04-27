@@ -1,9 +1,9 @@
-import { Container, Graphics, Assets, Spritesheet } from "pixi.js";
+import { Container, Graphics, Assets } from "pixi.js";
 import { Manager } from "../common/manager";
 import { Scene } from "../common/types";
-import { manifest } from "../common/assets/assets";
+import { manifest } from "../common/assets/manifest";
 import { TitleScene } from "./titleScene";
-import { SpriteSheetLoader } from "../common/assets/spritesheet";
+import { SpriteSheetLoader } from "../common/assets/spriteSheetLoader";
 
 export class LoaderScene extends Container implements Scene {
     private readonly loaderBar: Container;

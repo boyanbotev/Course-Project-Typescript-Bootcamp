@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { config } from "../../common/config";
 import { Manager } from "../../common/manager";
-import { formatAsEuros } from "../../common/formatAsEuros";
+import { formatAsEuros } from "../../common/utils/formatAsEuros";
 import { SmallText } from "./text/smallText";
 
 export class BalanceContainer extends Container {   

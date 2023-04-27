@@ -1,4 +1,4 @@
-import { formatAsEuros } from "../common/formatAsEuros";
+import { formatAsEuros } from "../common/utils/formatAsEuros";
 
 describe("formatAsEuros", () => {
     it("should format a number as euros", () => {

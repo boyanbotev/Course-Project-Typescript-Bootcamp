@@ -1,4 +1,4 @@
-import { Container, Assets, } from "pixi.js";
+import { Container, Assets, Texture } from "pixi.js";
 import { Scene } from "../common/types";
 import { Manager } from "../common/manager";
 import { GameScene } from "./gameScene";
@@ -10,12 +10,15 @@ import { gsap } from "gsap"
 import { CustomEase } from "gsap/all";
 import { Title } from "../components/title-screen/title";
 import { TitleScreenSymbols } from "../components/title-screen/titleScreenSymbols";
+import { SpriteSheetLoader } from "../common/assets/spriteSheetLoader"
 
 export class TitleScene extends Container implements Scene { 
     private readonly symbols: TitleScreenSymbols;
     private readonly title: Title;
+
     private text: SmallText;
     private startButton: Button;
+    private buttonAnimation: gsap.core.Tween;
 
     private isStarted: boolean = false;
 
@@ -40,8 +43,9 @@ export class TitleScene extends Container implements Scene {
     }
 
     private createButton() {
-        const buttonTexture = Assets.get("spinButton");
-        const btnHoverTexture = Assets.get("spinButtonHover");
+        const spritesheet = SpriteSheetLoader.spritesheet;
+        const buttonTexture = spritesheet["spinButton"] as Texture;
+        const hoverTexture = spritesheet["spinButtonHover"] as Texture;
 
         this.startButton = new Button(
             new Vector2(Manager.Width / 2,
@@ -50,18 +54,17 @@ export class TitleScene extends Container implements Scene {
             this,
             { 
                 texture: buttonTexture, 
-                hoverTexture: btnHoverTexture, 
-                scale: 0.5, 
+                hoverTexture: hoverTexture, 
+                scale: 0.68, 
                 text: "START" 
             },
         );
-        this.startButton.scale.set(0.5);
 
         this.makeButtonPulse();
     }
 
     private makeButtonPulse() {
-        gsap.to(this.startButton.scale, { x: 0.54, y: 0.54, duration: 0.7, repeat: -1, yoyo: true, yoyoEase: true });
+        this.buttonAnimation = gsap.to(this.startButton.scale, { x: 0.60, y: 0.60, duration: 0.7, repeat: -1, yoyo: true, yoyoEase: true });
     }
 
     public update(delta: number): void {
@@ -101,10 +104,15 @@ export class TitleScene extends Container implements Scene {
     }
 
     private moveButtonIntoPosition(duration: number) {
+        this.buttonAnimation.kill();
+
         const targetHeight = Manager.Height - this.startButton.texture.height / 4.3;
         const moveDuration = duration / 2;
+        const textFadeDuration = duration * 1.4;
 
         gsap.to(this.startButton, { y: targetHeight, duration: moveDuration });
+        gsap.to(this.startButton.scale, { x: 0.5, y: 0.5, duration: moveDuration })
+        gsap.to(this.startButton.text, { alpha: 0, duration: textFadeDuration })
     }
 
     private moveTextDown(finalYOffset: number, ease: any, duration: number) {

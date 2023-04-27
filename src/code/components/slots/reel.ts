@@ -50,7 +50,7 @@ export class PIXIReel extends Container implements Reel {
             const symbol = new PIXISymbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
 
             //symbol.texture = this.symbolsBundle[initialSymbols[j]];
-            symbol.texture = this.symbolsBundle[getFileName(initialSymbols[j])];
+            symbol.texture = this.symbolsBundle[initialSymbols[j]];
     
             symbol.x = this.symbolSize * this.reelXIndex;
             symbol.y = this.symbolSize * j + this.symbolSize;
@@ -128,9 +128,9 @@ export class PIXIReel extends Container implements Reel {
     }
 
     public getRandomTexture(): Texture {
-        const randomIndex = Math.floor(Math.random() * Object.keys(this.symbolsBundle).length); // doesn't work as this now includes the ui files
+        const randomIndex = Math.floor(Math.random() * Object.keys(this.symbolsBundle).length);
         console.log('randomIndex: ', randomIndex);
-        return this.symbolsBundle[getFileName(randomIndex + 1)]; //was +1 when no getFileName
+        return this.symbolsBundle[randomIndex + 1];
     }
 
     public incrementSymbolIndex(): number {
@@ -178,7 +178,7 @@ export class PIXIReel extends Container implements Reel {
         if (this.symbolIndex-1 >= this.finalSymbols.length) {
             throw new Error(`unexpected symbol index:  ${this.symbolIndex-1}`);
         }
-        return this.symbolsBundle[getFileName(symbolRef.symbolId)];
+        return this.symbolsBundle[symbolRef.symbolId];
     }
 }
 
@@ -188,8 +188,4 @@ export class PIXIReel extends Container implements Reel {
  */
 function getRandomVelocity(reelXIndex: number) {
     return Math.floor(Math.random() * multiplier) + baseVelocity + reelXIndex * xIndexMultiplier;
-}
-
-function getFileName(id: number) {
-    return "symbol" + id.toString() + ".png";
 }

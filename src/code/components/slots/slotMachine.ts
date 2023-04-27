@@ -6,8 +6,9 @@ import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { APIGateway } from "../../common/apiGateway";
 import { gsap } from "gsap";
-import { SpriteSheetLoader } from "../../common/assets/spritesheet";
+import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
 import { Dict } from "@pixi/utils";
+import { getSymbols } from "../../common/utils/getSymbols";
 
 export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {    
     private readonly reelCount: number = config.reelCount;
@@ -55,36 +56,11 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
      */
     public async createReels(): Promise<void> {
         const response = await this.apiGateway.requestInitalSymbols();
-        //const symbolsBundle = await Assets.loadBundle("symbolsBundle") as SymbolBundle;
 
         const sprites = SpriteSheetLoader.spritesheet;
-
-        // filter out all sprites that don't have "symbol" in their name
-        const symbolKeys = Object.keys(sprites).filter((key) => {
-            return key.includes("symbol");
-        });
-
-        const symbols: Dict<Texture<Resource>> = {};
-
-        // create dict of textures from filtered sprites
-        symbolKeys.forEach((key) => {
-            symbols[key] = sprites[key];
-        });
-
-        // go through sprites dictionary and create a new dictionary with only symbols
-        // const symbols = Object.keys(sprites).reduce((acc, key) => {
-        //     console.log("key", key);
-        //     console.log(acc);
-        //     if (key.includes("symbol")) {
-        //         console.log("key", key);
-        //         return sprites[key];
-        //     }
-        // }, {});
+        const symbols: Dict<Texture<Resource>> = getSymbols(sprites);
 
         console.log("symbols", symbols);
-        // if (!symbolsBundle) {
-        //     throw new Error("symbolsBundle not loaded");
-        // }
 
         for (let i = 0; i < this.reelCount; i++) {
             const reel = new PIXIReel(
@@ -92,8 +68,6 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
                 this.addedReelLength, 
                 this.symbolSize, 
                 symbols,
-                //sprites,
-                //symbolsBundle, 
                 response.symbols[i], 
                 this
                 );
@@ -267,8 +241,6 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
 }
 
 // Extract areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
-
-// TODO: Update loading screen
 
 // investigate symbol mystery
 

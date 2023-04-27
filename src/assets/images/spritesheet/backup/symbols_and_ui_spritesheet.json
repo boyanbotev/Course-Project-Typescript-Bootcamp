@@ -1,6 +1,6 @@
 {"frames": {
 
-"particle":
+"particle.png":
 {
 	"frame": {"x":0,"y":0,"w":128,"h":128},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
 	"sourceSize": {"w":128,"h":128}
 },
-"spinButton":
+"spin.png":
 {
 	"frame": {"x":688,"y":0,"w":333,"h":333},
 	"rotated": false,
@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":333,"h":333},
 	"sourceSize": {"w":333,"h":333}
 },
-"spinButtonHover":
+"spin_hover.png":
 {
 	"frame": {"x":1021,"y":0,"w":333,"h":333},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":333,"h":333},
 	"sourceSize": {"w":333,"h":333}
 },
-"symbol1":
+"symbol1.png":
 {
 	"frame": {"x":1354,"y":0,"w":351,"h":351},
 	"rotated": false,
@@ -32,7 +32,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol2":
+"symbol2.png":
 {
 	"frame": {"x":0,"y":351,"w":351,"h":351},
 	"rotated": false,
@@ -40,7 +40,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol3":
+"symbol3.png":
 {
 	"frame": {"x":351,"y":351,"w":351,"h":351},
 	"rotated": false,
@@ -48,7 +48,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol4":
+"symbol4.png":
 {
 	"frame": {"x":702,"y":351,"w":351,"h":351},
 	"rotated": false,
@@ -56,7 +56,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol5":
+"symbol5.png":
 {
 	"frame": {"x":128,"y":0,"w":260,"h":260},
 	"rotated": false,
@@ -64,7 +64,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":260,"h":260},
 	"sourceSize": {"w":260,"h":260}
 },
-"symbol6":
+"symbol6.png":
 {
 	"frame": {"x":1053,"y":1053,"w":500,"h":500},
 	"rotated": false,
@@ -72,7 +72,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":500,"h":500},
 	"sourceSize": {"w":500,"h":500}
 },
-"symbol7":
+"symbol7.png":
 {
 	"frame": {"x":1053,"y":351,"w":351,"h":351},
 	"rotated": false,
@@ -80,7 +80,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol8":
+"symbol8.png":
 {
 	"frame": {"x":1404,"y":351,"w":351,"h":351},
 	"rotated": false,
@@ -88,7 +88,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol9":
+"symbol9.png":
 {
 	"frame": {"x":0,"y":702,"w":351,"h":351},
 	"rotated": false,
@@ -96,7 +96,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol10":
+"symbol10.png":
 {
 	"frame": {"x":351,"y":702,"w":351,"h":351},
 	"rotated": false,
@@ -104,7 +104,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol11":
+"symbol11.png":
 {
 	"frame": {"x":702,"y":702,"w":351,"h":351},
 	"rotated": false,
@@ -112,7 +112,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol12":
+"symbol12.png":
 {
 	"frame": {"x":1053,"y":702,"w":351,"h":351},
 	"rotated": false,
@@ -120,7 +120,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol13":
+"symbol13.png":
 {
 	"frame": {"x":1404,"y":702,"w":351,"h":351},
 	"rotated": false,
@@ -128,7 +128,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol14":
+"symbol14.png":
 {
 	"frame": {"x":0,"y":1053,"w":351,"h":351},
 	"rotated": false,
@@ -136,7 +136,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol15":
+"symbol15.png":
 {
 	"frame": {"x":388,"y":0,"w":300,"h":300},
 	"rotated": false,
@@ -144,7 +144,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":300,"h":300},
 	"sourceSize": {"w":300,"h":300}
 },
-"symbol16":
+"symbol16.png":
 {
 	"frame": {"x":351,"y":1053,"w":351,"h":351},
 	"rotated": false,
@@ -152,7 +152,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 },
-"symbol17":
+"symbol17.png":
 {
 	"frame": {"x":702,"y":1053,"w":351,"h":351},
 	"rotated": false,
@@ -160,6 +160,9 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":351,"h":351},
 	"sourceSize": {"w":351,"h":351}
 }},
+"animations": {
+	"symbol": ["symbol1.png","symbol2.png","symbol3.png","symbol4.png","symbol5.png","symbol6.png","symbol7.png","symbol8.png","symbol9.png","symbol10.png","symbol11.png","symbol12.png","symbol13.png","symbol14.png","symbol15.png","symbol16.png","symbol17.png"]
+},
 "meta": {
 	"app": "https://www.codeandweb.com/texturepacker",
 	"version": "1.1",

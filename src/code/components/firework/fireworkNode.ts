@@ -3,6 +3,7 @@ import { Emitter, upgradeConfig } from '@pixi/particle-emitter';
 import fireworkConfig from './emmiter.json';
 import { gsap } from 'gsap';
 import { ParticleBundle } from "../../common/types";
+import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
 
 export class FireworkNode extends Container{
     private readonly delay: number;
@@ -22,8 +23,8 @@ export class FireworkNode extends Container{
     }
 
     private async inialize(): Promise<void> {
-        const particleBundle = await Assets.loadBundle("particlesBundle") as ParticleBundle;
-        const texture = particleBundle["particle"];
+        const spritesheet = SpriteSheetLoader.spritesheet;
+        const texture = spritesheet["particle"];
     
         this.createFireworkNodeSprite(texture);
         

@@ -1,7 +1,7 @@
 import { Container } from "pixi.js";
 import { BigText } from "./text/bigText";
 import { Manager } from "../../common/manager";
-import { formatAsEuros } from "../../common/formatAsEuros";
+import { formatAsEuros } from "../../common/utils/formatAsEuros";
 import { config } from "../../common/config";
 
 export class WinBox extends Container {    
