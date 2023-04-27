@@ -1,6 +1,6 @@
 import { Sound, filters } from "@pixi/sound";
 import { Assets } from "pixi.js";
-import { SlotMachineObserver } from "../common/types";
+import { SlotMachineObserver, SlotMachine } from "../common/types";
 import { gsap } from "gsap";
 
 type MusicBundle = {
@@ -10,7 +10,10 @@ type MusicBundle = {
 export class MusicManager implements SlotMachineObserver { // you also have to add this to the slot machine
     private music: Sound;
 
-    constructor() {
+    constructor(
+        slotMachine: SlotMachine,
+    ) {
+        slotMachine.addObserver(this);
     }
 
     public async playMusic(): Promise<void> {
@@ -23,13 +26,9 @@ export class MusicManager implements SlotMachineObserver { // you also have to a
             this.music.loop = true;
             // add low pass filter
             this.music.filters = [
-                new filters.EqualizerFilter(25, 25, 17, 19, 17, -2, -20, -40, -40, -26),
+                new filters.EqualizerFilter(0, 0, 0, 0, 0, -2, -20, -40, -40, -26),
             ];
         }); // WHY does this work? I don't understand why I can't just use the music from the manifest
-
-        setTimeout(() => {
-            this.fadeOutFilters();
-        }, 10000);
     }
 
     onWin() {
@@ -41,7 +40,8 @@ export class MusicManager implements SlotMachineObserver { // you also have to a
     }
 
     onSpinComplete(): void {
-        
+        console.log("spin complete");
+        this.fadeInFilters();
     }
 
     onSpin() {
@@ -49,7 +49,14 @@ export class MusicManager implements SlotMachineObserver { // you also have to a
         this.fadeOutFilters();
     }
 
-    public fadeOutFilters(): void {
-        
+    private fadeOutFilters(): void {
+        const filter = this.music.filters[0] as filters.EqualizerFilter;
+        gsap.to(filter, { f32: 0, f64: 0, f125: 0, f250: 0, f500: 0, f1k: 0, f2k: 0, f4k: 0, f8k: 0, f16k: 0, duration: 1 });
     }
+
+    private fadeInFilters(): void {
+        const filter = this.music.filters[0] as filters.EqualizerFilter;
+        gsap.to(filter, { f32: 0, f64: 0, f125: 0, f250: 0, f500: 0, f1k: -2, f2k: -20, f4k: -40, f8k: -40, f16k: -26, delay: 1, duration: 4 });
+    }
+
 }

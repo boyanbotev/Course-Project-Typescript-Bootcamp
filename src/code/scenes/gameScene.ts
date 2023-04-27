@@ -28,7 +28,7 @@ export class GameScene extends Container implements Scene {
         new UIContainer(this, this.slotMachine);
         new FireWorkContainer(this, this.slotMachine);
 
-        const musicManager = new MusicManager();
+        const musicManager = new MusicManager(this.slotMachine);
         musicManager.playMusic();
 
         const ticker = Ticker.shared;
