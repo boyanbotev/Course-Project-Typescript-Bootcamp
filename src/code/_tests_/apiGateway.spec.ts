@@ -16,7 +16,6 @@ describe("apiGateway", () => {
             
             const initResponse = value as InitResponse;
 
-            expect(initResponse.symbols).toBeDefined();
             expect(initResponse.symbols.length).toBeGreaterThan(0);
             expect(initResponse.symbols[0].length).toBeGreaterThan(0);
 
@@ -45,7 +44,6 @@ describe("apiGateway", () => {
             expect(updateResponse["spin-result"]).toBeDefined();
 
             const spinResult = updateResponse["spin-result"];
-            expect(spinResult.symbols).toBeDefined();
             expect(spinResult.symbols.length).toBeGreaterThan(0);
             expect(spinResult.symbols[0].length).toBeGreaterThan(0);
 

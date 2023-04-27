@@ -12,18 +12,23 @@ import { FireWorkContainer } from "../components/firework/fireworkContainer";
 import { MusicManager } from "../music/musicManager";
 
 export class GameScene extends Container implements Scene {
-    private api: FakeAPI;
-    private slotMachine: SlotMachine;
-    private frame: Frame;
+    private readonly api: FakeAPI;
+    private readonly slotMachine: SlotMachine;
+    private readonly frame: Frame;
 
     constructor() {
         super();
 
         new Background(Manager.Width, Manager.Height, Assets.get("background"), this);
-        this.frame = new Frame(config.reelCount * config.symbolSize + framePadding, Manager.Height + frameExtraHeight, Assets.get("frame"), this);
+        this.frame = new Frame(
+            config.reelCount * config.symbolSize + framePadding, 
+            Manager.Height + frameExtraHeight, 
+            Assets.get("frame"), 
+            this
+        );
 
         this.api = new FakeAPI();
-        this.slotMachine = new PIXISlotMachine(this, this.api); // should this be here? dependency injection
+        this.slotMachine = new PIXISlotMachine(this, this.api); // Should this be here? Dependency injection preferable?
         new UIContainer(this, this.slotMachine);
         new FireWorkContainer(this, this.slotMachine);
         new MusicManager(this.slotMachine);

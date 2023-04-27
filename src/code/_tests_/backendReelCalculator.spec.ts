@@ -24,7 +24,6 @@ describe("BackendReelCalculator", () => {
         const visibleSymbols = backendReelCalculator.getVisibleSymbols([0, 0, 0, 0], visibleReelLength);
         console.log(visibleSymbols);
 
-        expect(visibleSymbols).toBeDefined();
         expect(visibleSymbols.length).toBe(visibleReelLength);
 
         expect(visibleSymbols[0][0]).toBe(1);

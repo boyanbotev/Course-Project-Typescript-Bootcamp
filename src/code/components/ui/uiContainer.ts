@@ -43,10 +43,8 @@ export class UIContainer extends Container implements SlotMachineObserver {
             {
                 x: Manager.Width/2,
                 y: Manager.Height - spinImg.height/4.3,
-            },
-            () => {
-                this.onSpinBtnPress();
-            },
+            },      
+                this.onSpinBtnPress.bind(this),
             this,
             { texture: spinImg, hoverTexture: spinHover, scale: 0.5 }
         );

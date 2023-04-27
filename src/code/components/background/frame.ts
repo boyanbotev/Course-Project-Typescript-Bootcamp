@@ -6,12 +6,12 @@ import { gsap } from "gsap";
 
 export class Frame extends Background {
     constructor(
-        screenWidth: number,
-        screenHeight: number,
+        imgWidth: number,
+        imgHeight: number,
         texture: Texture,
         container: Container,
     ) {
-        super(screenWidth, screenHeight, texture, container);
+        super(imgWidth, imgHeight, texture, container);
 
         this.x = Manager.Width/2;
         this.y = Manager.Height/2 -frameYAdjust;

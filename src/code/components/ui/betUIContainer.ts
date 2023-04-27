@@ -9,7 +9,6 @@ export class BetUIContainer extends Container {
         super();
         parent.addChild(this);
         const width = 100;
-        const height = 50;
 
         this.pivot.set(width/2, 0);
 

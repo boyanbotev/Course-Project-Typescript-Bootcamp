@@ -28,7 +28,6 @@ describe("FakeAPI", () => {
             
             const initResponse = value as InitResponse;
 
-            expect(initResponse.symbols).toBeDefined();
             expect(initResponse.symbols.length).toBeGreaterThan(0);
             expect(initResponse.symbols[0].length).toBeGreaterThan(0);
 
@@ -55,7 +54,6 @@ describe("FakeAPI", () => {
             expect(updateResponse["spin-result"]).toBeDefined();
 
             const spinResult = updateResponse["spin-result"];
-            expect(spinResult.symbols).toBeDefined();
             expect(spinResult.symbols.length).toBeGreaterThan(0);
             expect(spinResult.symbols[0].length).toBeGreaterThan(0);
 
@@ -145,7 +143,6 @@ describe("FakeAPI", () => {
                 const bet = 2;
                 const win = api["checkForWin"](reelIndexes, bet);
     
-                expect(win.symbolRefs).toBeDefined();
                 expect(win.symbolRefs.length).toBeGreaterThan(0);
                 expect(win.symbolRefs[0].length).toBeGreaterThan(0);
 
