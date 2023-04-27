@@ -98,8 +98,6 @@ export class PIXISymbol extends Sprite implements Symbol {
         this.y += this.height/2;
 
         this.alpha = paylineLength > 1 ? 0.2 : 0.6; 
-        
-        this.currentState = SymbolState.Animating; // is this ever used?
 
         this.createPulseAnim(payline, paylineLength);
     }
@@ -194,8 +192,4 @@ export class PIXISymbol extends Sprite implements Symbol {
     public get SymbolIndex(): number {
         return this.symbolIndex;
     }
-}
-
-function differenceBetweenValues(value1: number, value2: number): number { // TODO: remove
-    return Math.abs(value1 - value2);
 }

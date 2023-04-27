@@ -3,7 +3,7 @@ import { Assets } from "pixi.js";
 import { SlotMachineObserver, SlotMachine } from "../common/types";
 import { gsap } from "gsap";
 
-export class MusicManager implements SlotMachineObserver {
+export class MusicManager implements SlotMachineObserver {   
     private music: Sound;
     private currentTransition: gsap.core.Tween;
 
@@ -34,17 +34,15 @@ export class MusicManager implements SlotMachineObserver {
     }
 
     onSpinComplete(): void {
-        console.log("onSpinComplete");
         this.fadeInFilters();
     }
 
     onSpin() {
-        console.log("onSpin");
         this.fadeOutFilters();
     }
 
     private fadeOutFilters(): void {
-        if (this.currentTransition) { this.currentTransition.kill(); }
+        if (this.currentTransition) this.currentTransition.kill();
         const filter = this.music.filters[0] as filters.EqualizerFilter;
         this.currentTransition = gsap.to(filter, { f32: 0, f64: 0, f125: 0, f250: 0, f500: 0, f1k: 0, f2k: 0, f4k: 0, f8k: 0, f16k: 0, duration: 1 });
     }

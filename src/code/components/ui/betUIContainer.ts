@@ -4,14 +4,14 @@ import { config } from "../../common/config";
 import { SmallText } from "./text/smallText";
 import { formatAsEuros } from "../../common/formatAsEuros";
 
-export class BetUIContainer extends Container {
+export class BetUIContainer extends Container {  
     constructor(parent: Container) {
         super();
         parent.addChild(this);
         const width = 100;
         const height = 50;
 
-        this.pivot.set(width/2, 0); // adjust pivot to take into account height?
+        this.pivot.set(width/2, 0);
 
         this.x = (Manager.Width/2) - (config.symbolSize * config.reelCount) / 4;
         this.y = Manager.Height - 100;

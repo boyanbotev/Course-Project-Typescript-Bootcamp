@@ -1,14 +1,13 @@
 import { Container, Texture, Assets } from "pixi.js";
 import { Manager } from "../../common/manager";
 import { Button } from "./button";
-import { PIXISlotMachine } from "../slots/slotMachine";
 import { config } from "../../common/config";
 import { BetUIContainer } from "./betUIContainer";
 import { SlotMachine, SlotMachineObserver, UIAction, UIData, UIObserver } from "../../common/types";
 import { BalanceContainer } from "./balance";
 import { WinBox } from "./winBox";
 
-export class UIContainer extends Container implements SlotMachineObserver {
+export class UIContainer extends Container implements SlotMachineObserver {   
     private readonly scene: Container;
     private readonly slotMachine: SlotMachine;
     private button: Button;
@@ -42,16 +41,14 @@ export class UIContainer extends Container implements SlotMachineObserver {
 
         this.button = new Button(
             {
-                x: Manager.Width/2, 
+                x: Manager.Width/2,
                 y: Manager.Height - spinImg.height/4.3,
             },
             () => {
                 this.onSpinBtnPress();
             },
             this,
-            spinImg,
-            spinHover,
-            0.5,
+            { texture: spinImg, hoverTexture: spinHover, scale: 0.5 }
         );
     }
 
@@ -92,7 +89,7 @@ export class UIContainer extends Container implements SlotMachineObserver {
     public onBalanceUpdate(balance: number): void {
         this.balanceText.updateBalance(balance);
 
-        if (balance < config.bet) { // TODO: get bet from elsewhere???
+        if (balance < config.bet) {
             this.disableSlotsUI();
         }
     }

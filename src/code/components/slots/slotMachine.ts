@@ -7,7 +7,7 @@ import { FakeAPI } from "../../backend/fakeAPI";
 import { APIGateway } from "../../common/apiGateway";
 import { gsap } from "gsap";
 
-export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {
+export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {    
     private readonly reelCount: number = config.reelCount;
     private readonly reelLength: number = config.reelLength;
     private readonly addedReelLength: number = config.reelLength +1;
@@ -38,7 +38,10 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
 
         this.x = Manager.Width/2;
 
-        // Move reel container upwards to ensure symbols are created off screen to avoid them popping in
+        /*
+        Move reel container upwards to ensure symbols are created off screen 
+        To avoid them popping in
+        */
         this.y = -(this.symbolSize-this.topMargin);
 
         this.createMask();
@@ -240,18 +243,10 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
 
 // investigate symbol mystery
 
-// TODO: Add sound effects
-
-// TODO: Add music
-
 // TODO: Use Spritesheet for symbols
 
 // TODO: sort out web.yml
 
 // think about reel and symbol responsibilities
-
-// flexible bet?
-
-// deploy online
 
 // TODO: text size responsive to ratio of reelCount to reelLength?

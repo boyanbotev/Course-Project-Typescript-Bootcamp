@@ -1,11 +1,11 @@
 import { Sprite, Texture, Ticker, Container, Assets } from "pixi.js";
 import { Emitter, upgradeConfig } from '@pixi/particle-emitter';
 import fireworkConfig from './emmiter.json';
-import {gsap} from 'gsap';
+import { gsap } from 'gsap';
 import { ParticleBundle } from "../../common/types";
 
 export class FireworkNode extends Container{
-    private delay: number;
+    private readonly delay: number;
     private sprite: Sprite;
     private currentAnimations: gsap.core.Tween[] = [];
 

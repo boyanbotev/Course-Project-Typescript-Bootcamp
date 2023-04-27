@@ -12,7 +12,6 @@ import { FireWorkContainer } from "../components/firework/fireworkContainer";
 import { MusicManager } from "../music/musicManager";
 
 export class GameScene extends Container implements Scene {
-
     private api: FakeAPI;
     private slotMachine: SlotMachine;
     private frame: Frame;

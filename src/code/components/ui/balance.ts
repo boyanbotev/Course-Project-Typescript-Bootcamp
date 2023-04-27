@@ -4,14 +4,13 @@ import { Manager } from "../../common/manager";
 import { formatAsEuros } from "../../common/formatAsEuros";
 import { SmallText } from "./text/smallText";
 
-export class BalanceContainer extends Container {
+export class BalanceContainer extends Container {   
     private balanceText: SmallText;
 
     constructor(parent: Container) {
         super();
         parent.addChild(this);
         const width = 100;
-        const height = 50; // do something with this?
 
         this.balanceText = new SmallText();
         this.addChild(this.balanceText);

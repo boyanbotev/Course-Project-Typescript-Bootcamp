@@ -4,7 +4,7 @@ import { Manager } from "../../common/manager";
 import { formatAsEuros } from "../../common/formatAsEuros";
 import { config } from "../../common/config";
 
-export class WinBox extends Container {
+export class WinBox extends Container {    
     private winText: BigText;
 
     constructor(parent: Container) {

@@ -5,7 +5,6 @@ import { manifest } from "../common/assets";
 import { TitleScene } from "./titleScene";
 
 export class LoaderScene extends Container implements Scene {
-
     private loaderBar: Container;
     private loaderBarBoder: Graphics;
     private loaderBarFill: Graphics;

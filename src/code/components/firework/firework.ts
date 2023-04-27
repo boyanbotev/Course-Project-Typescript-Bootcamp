@@ -5,7 +5,6 @@ import { Manager } from '../../common/manager';
 import { framePadding } from '../../common/consts';
 
 export class Firework extends Container {
-
     constructor(
         parent: Container,
     ) {
@@ -23,8 +22,11 @@ export class Firework extends Container {
     }
 
     private createFireworkNodes(): void {
-        for (let i = 0; i < 22; i++) { // this number related to win size?
-            new FireworkNode(this, i * 54);
+        const nodeCount = 22;
+        const delayMutiplier = 54;
+
+        for (let i = 0; i < nodeCount; i++) {
+            new FireworkNode(this, i * delayMutiplier);
         }
     }
 } 

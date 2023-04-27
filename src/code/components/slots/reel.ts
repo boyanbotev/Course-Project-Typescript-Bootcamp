@@ -6,7 +6,7 @@ import { multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts"
 import { PIXISlotMachine } from "./slotMachine";
 import { Reel } from "../../common/types";
 
-export class PIXIReel extends Container implements Reel {
+export class PIXIReel extends Container implements Reel {  
     private readonly reelLength: number;
     private readonly symbolSize: number;
     private readonly reelXIndex: number;

@@ -11,10 +11,9 @@ import { CustomEase } from "gsap/all";
 import { Title } from "../components/title-screen/title";
 import { TitleScreenSymbols } from "../components/title-screen/titleScreenSymbols";
 
-export class TitleScene extends Container implements Scene {
-
-    private symbols: TitleScreenSymbols;
-    private title: Title;
+export class TitleScene extends Container implements Scene { 
+    private readonly symbols: TitleScreenSymbols;
+    private readonly title: Title;
     private text: SmallText;
     private startButton: Button;
 
@@ -49,10 +48,12 @@ export class TitleScene extends Container implements Scene {
                 Manager.Height / 1.25),
             this.startGame.bind(this),
             this,
-            buttonTexture,
-            btnHoverTexture,
-            0.5,
-            "START"
+            { 
+                texture: buttonTexture, 
+                hoverTexture: btnHoverTexture, 
+                scale: 0.5, 
+                text: "START" 
+            },
         );
         this.startButton.scale.set(0.5);
 

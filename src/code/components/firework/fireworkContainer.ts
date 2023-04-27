@@ -1,11 +1,9 @@
-import { Container } from "pixi.js";
+import { Container, Graphics } from "pixi.js";
 import { config } from "../../common/config";
 import { framePadding } from "../../common/consts";
 import { Manager } from "../../common/manager";
 import { SlotMachine, SlotMachineObserver } from "../../common/types";
 import { Firework } from "./firework";
-import { PIXISlotMachine } from "../slots/slotMachine";
-import { Graphics } from "pixi.js";
 
 export class FireWorkContainer extends Container implements SlotMachineObserver {
     constructor(parent: Container, slotMachine: SlotMachine ) {

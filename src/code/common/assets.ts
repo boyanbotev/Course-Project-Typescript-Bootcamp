@@ -50,6 +50,5 @@ export const manifest: ResolverManifest = {
                 "music": "assets/audio/music.mp3",
             }
         }
-
     ]
 };

@@ -1,7 +1,7 @@
 import { Text } from "pixi.js";
 import { textStyle } from "./textStyle";
 
-export class SmallText extends Text {
+export class SmallText extends Text {   
     constructor() {   
         super();
 

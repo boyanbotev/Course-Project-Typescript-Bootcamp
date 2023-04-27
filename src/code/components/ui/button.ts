@@ -1,8 +1,8 @@
 import { Sprite, Texture, Resource, Container } from "pixi.js";
 import { Vector2 } from "../../common/vector2";
-import { SmallText } from "./text/smallText";
 import { BigText } from "./text/bigText";
 import { bigTextStyle } from "./text/textStyle";
+import { ButtonOptions } from "../../common/types";
 
 enum ButtonState {
     Active,
@@ -23,19 +23,29 @@ export class Button extends Sprite {
         position: Vector2, 
         callback: () => void,
         container: Container,
-        texture?: Texture<Resource>,
-        hoverTexture?: Texture<Resource>,
-        scale: number = 1,
-        text?: string,
+        options?: ButtonOptions,
     ) {
         super();
-        this.texture = texture;
-        this.standardTexture = texture;
-        this.hoverTexture = hoverTexture;
+        if (options.texture) {
+            this.texture = options.texture;
+            this.standardTexture = options.texture;
+        }
+
+        if (options.hoverTexture) {
+            this.hoverTexture = options.hoverTexture;
+        }
+
+        if (options.scale) {
+            this.scale.set(options.scale, options.scale);
+        }
+
+        if (options.text) {
+            this.addText(options.text);
+        }
         
         this.position.set(position.x, position.y);
         this.anchor.set(0.5, 0.5);
-        this.scale.set(scale, scale);
+        container.addChild(this);
 
         this.eventMode = "static";
 
@@ -50,12 +60,6 @@ export class Button extends Sprite {
         this.on("pointerout", () => {
             this.setHoverActive(false);
         });
-
-        container.addChild(this);
-
-        if (text) {
-            this.addText(text);
-        }
     }
 
     private addText(text: string) {

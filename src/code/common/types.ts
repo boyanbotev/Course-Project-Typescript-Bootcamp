@@ -1,4 +1,4 @@
-import { Texture, DisplayObject } from "pixi.js";
+import { Texture, DisplayObject, Resource } from "pixi.js";
 
 export type SlotSymbol = "axe" | "B" | "C" | "emerald" | "H" | "horns" | "king" | "P" | "princess" | "square" | "T" | "warrior" | "X" | "jem" | "dagger" | "и" | "я";
 
@@ -54,7 +54,6 @@ export enum SymbolState {
     Spinning = "Spinning",
     PreparingToStop = "PreparingToStop",
     Stopping = "Stopping",
-    Animating = "Animating",
 }
 
 export enum SlotMachineState {
@@ -116,12 +115,6 @@ export enum UIAction {
 };
 export type UIData = number;
 
-// export interface UI {
-//     addObserver(observer: UIObserver): void;
-//     removeObserver(observer: UIObserver): void;
-//     notifyObservers(action: UpdateAction, data?: UpdateData): void;
-// }
-
 export interface SlotMachine {
     spin(): Promise<void>;
     checkIfReelsStopped(): void;
@@ -155,4 +148,11 @@ export interface Symbol {
     set State(state: SymbolState);
     get SymbolIndex(): number;
     set SymbolIndex(index: number);
+}
+
+export type ButtonOptions = {
+    texture?: Texture<Resource>,
+    hoverTexture?: Texture<Resource>,
+    scale?: number,
+    text?: string,
 }

@@ -5,7 +5,7 @@ import { gsap } from "gsap";
 import { SymbolBundle } from "../../common/types";
 import { CustomEase } from "gsap/all";
 
-export class TitleScreenSymbols extends Container {
+export class TitleScreenSymbols extends Container { 
     private readonly symbols: Background[] = [];
     private symbolAnimation: gsap.core.Timeline;
 
