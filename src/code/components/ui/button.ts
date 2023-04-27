@@ -15,6 +15,7 @@ export class Button extends Sprite {
 
     private standardTexture: Texture<Resource>;
     private hoverTexture: Texture<Resource>;
+    private text: BigText;
 
     private currentState: ButtonState = ButtonState.Active;
 
@@ -58,9 +59,9 @@ export class Button extends Sprite {
     }
 
     private addText(text: string) {
-        const txtObj = new BigText(this);
-        txtObj.text = text;
-        txtObj.style = ({
+        this.text = new BigText(this);
+        this.text.text = text;
+        this.text.style = ({
             ...bigTextStyle,
             dropShadowColor: 0x331116,
             strokeThickness: 10,
@@ -68,9 +69,9 @@ export class Button extends Sprite {
             fontSize: 128,
         });
 
-        txtObj.anchor.set(0.5, 0.6);
+        this.text.anchor.set(0.5, 0.6);
         
-        this.addChild(txtObj);     
+        this.addChild(this.text);     
     }
 
     public setActive(isActive: boolean) {
@@ -86,6 +87,8 @@ export class Button extends Sprite {
             return;
         }
         this.texture = isActive ? this.hoverTexture : this.standardTexture;
+        if (this.text) {
+            this.text.scale.set(isActive ? 1.1 : 1);
+        }
     }
 }
-// Add optional overloads typescript
