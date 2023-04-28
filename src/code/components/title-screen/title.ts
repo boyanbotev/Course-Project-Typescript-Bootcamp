@@ -14,7 +14,7 @@ export class Title extends BigText {
         this.text = text;
         this.style.fillGradientStops = [0.2, 0.58, 0.78, 0.98];
 
-        this.ticker = Ticker.shared;
+        //this.ticker = Ticker.shared;
     }
 
     public animateTitleDown(finalYOffset: number, ease: any, duration: number) {
@@ -26,9 +26,13 @@ export class Title extends BigText {
         const fadeDuration = duration * 1.5;
         gsap.to(this, { alpha: 0, ease: ease, duration: fadeDuration  });
 
-        this.ticker.add(this.updateGradientText, this);
+        //this.ticker.add(this.updateGradientText, this);
     }
 
+    /*
+     * Disabled due to optimisation concerns
+     * Updates gradient text to simulate lighting change
+     */
     private updateGradientText() {
         const stops = this.style.fillGradientStops;
         const i = 0.003;
@@ -49,8 +53,7 @@ export class Title extends BigText {
         this.style.fillGradientStops = [stop0, stop1, stop2, stop3];
     }
 
-    destroy(options?: boolean | IDestroyOptions): void {
-        this.ticker.remove(this.updateGradientText, this);
-    }
+    // destroy(options?: boolean | IDestroyOptions): void {
+    //     this.ticker.remove(this.updateGradientText, this);
+    // }
 }
-        
