@@ -1,7 +1,7 @@
 import { Sound, filters } from "@pixi/sound";
 import { Assets } from "pixi.js";
-import { SlotMachineObserver, SlotMachine } from "../common/types";
 import { gsap } from "gsap";
+import { SlotMachineObserver, SlotMachine } from "../common/types";
 
 export class MusicManager implements SlotMachineObserver {   
     private music: Sound;

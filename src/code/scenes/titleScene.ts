@@ -1,4 +1,6 @@
 import { Container, Assets, Texture } from "pixi.js";
+import { gsap } from "gsap"
+import { CustomEase } from "gsap/all";
 import { Scene } from "../common/types";
 import { Manager } from "../common/manager";
 import { GameScene } from "./gameScene";
@@ -6,8 +8,6 @@ import { Background } from "../components/background/background";
 import { Button } from "../components/ui/button";
 import { Vector2 } from "../common/vector2";
 import { SmallText } from "../components/ui/text/smallText";
-import { gsap } from "gsap"
-import { CustomEase } from "gsap/all";
 import { Title } from "../components/title-screen/title";
 import { TitleScreenSymbols } from "../components/title-screen/titleScreenSymbols";
 import { SpriteSheetLoader } from "../common/assets/spriteSheetLoader"

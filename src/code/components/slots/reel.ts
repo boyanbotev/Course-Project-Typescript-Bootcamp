@@ -1,10 +1,8 @@
 import { Container, Texture, BlurFilter } from "pixi.js";
 import { PIXISymbol } from "./symbol";
-import { SymbolBundle, SymbolReference } from "../../common/types";
-import { ReelState, SymbolState, SlotMachineState } from "../../common/types";
+import { SymbolBundle, SymbolReference, ReelState, SymbolState, SlotMachineState, Reel } from "../../common/types";
 import { multiplier, xIndexMultiplier, baseVelocity } from "../../common/consts";
 import { PIXISlotMachine } from "./slotMachine";
-import { Reel } from "../../common/types";
 
 export class PIXIReel extends Container implements Reel {  
     private readonly reelLength: number;

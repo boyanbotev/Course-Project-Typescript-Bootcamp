@@ -1,8 +1,9 @@
-import { Background } from "./background";
 import { Texture, Container } from "pixi.js";
+import { gsap } from "gsap";
+import { Background } from "./background";
 import { Manager } from "../../common/manager";
 import { frameYAdjust } from "../../common/consts";
-import { gsap } from "gsap";
+
 
 export class Frame extends Background {
     constructor(

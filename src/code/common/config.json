@@ -1,5 +1,5 @@
 {
-    "reelCount": 4,
+    "reelCount": 5,
     "reelLength": 4,
     "reelSize": 20,
 
@@ -8,5 +8,5 @@
     "initialBalance": 100,
     "bet": 2,
 
-    "testMode": true  
+    "testMode": false 
 }

@@ -1,8 +1,7 @@
-import { Sprite, Texture, Ticker, Container, Assets } from "pixi.js";
+import { Sprite, Texture, Ticker, Container } from "pixi.js";
 import { Emitter, upgradeConfig } from '@pixi/particle-emitter';
-import fireworkConfig from './emmiter.json';
 import { gsap } from 'gsap';
-import { ParticleBundle } from "../../common/types";
+import fireworkConfig from './emmiter.json';
 import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
 
 export class FireworkNode extends Container{

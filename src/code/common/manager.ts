@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
-import { Scene } from "./types";
 import gsap from "gsap";
+import { Scene } from "./types";
 
 export class Manager {
     private constructor() {}

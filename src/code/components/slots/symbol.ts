@@ -1,9 +1,8 @@
 import { Sprite, Texture } from "pixi.js";
-import { Symbol, SymbolState } from "../../common/types";
 import { gsap } from "gsap";
 import { CustomEase } from "gsap/all";
+import { Symbol, SymbolState, Reel } from "../../common/types";
 import { pulseSizeMultiplier, baseTweenDuration, symbolIndexMultiplier, standardSymbolSize } from "../../common/consts";
-import { Reel } from "../../common/types";
 
 export class PIXISymbol extends Sprite implements Symbol {
     private readonly symbolSize: number = 0;
@@ -170,7 +169,7 @@ export class PIXISymbol extends Sprite implements Symbol {
     }
 
     private getFinalSymbol(): Texture {
-        return this.reel.FinalSymbol; // could this be given to the symbol somehow? like a set instead of a get?
+        return this.reel.FinalSymbol; // Could this be given to the symbol somehow? like a set instead of a get?
     }
     
     public set Velocity(velocity: number) {

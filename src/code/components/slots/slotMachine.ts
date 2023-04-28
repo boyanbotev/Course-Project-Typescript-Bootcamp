@@ -1,13 +1,13 @@
-import { Container, Assets, Graphics, Texture, Resource } from "pixi.js";
-import { ReelState, UpdateResponse, SymbolBundle, SlotMachineState, SlotMachineObserver, UpdateAction, UIObserver, UpdateData, SlotMachine } from "../../common/types";
+import { Container, Graphics, Texture, Resource } from "pixi.js";
+import { Dict } from "@pixi/utils";
+import { gsap } from "gsap";
+import { ReelState, UpdateResponse, SlotMachineState, SlotMachineObserver, UpdateAction, UIObserver, UpdateData, SlotMachine } from "../../common/types";
 import { Manager } from "../../common/manager";
 import { PIXIReel } from "./reel";
 import { config } from "../../common/config";
 import { FakeAPI } from "../../backend/fakeAPI";
 import { APIGateway } from "../../common/apiGateway";
-import { gsap } from "gsap";
 import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
-import { Dict } from "@pixi/utils";
 import { getSymbols } from "../../common/utils/getSymbols";
 
 export class PIXISlotMachine extends Container implements UIObserver, SlotMachine {    
@@ -239,15 +239,3 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
         this.notifyObservers(UpdateAction.BalanceUpdate, balance);
     }
 }
-
-// Extract areReelsStopped, checkIfReelsStopped, handleReelStopped into separate classes/functions?
-
-// investigate symbol mystery
-
-// TODO: Use Spritesheet for symbols
-
-// TODO: sort out web.yml
-
-// think about reel and symbol responsibilities
-
-// TODO: text size responsive to ratio of reelCount to reelLength?

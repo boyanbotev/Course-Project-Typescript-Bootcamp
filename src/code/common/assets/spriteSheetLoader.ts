@@ -8,9 +8,10 @@ export class SpriteSheetLoader {
     private constructor() {};
 
     static async loadSpritesheet(): Promise<void> {
-        const spritsheetUrl = "assets/images/spritesheet/symbols_and_ui_spritesheet.png";
+        const spritesheetUrl = "assets/images/spritesheet/symbols_and_ui_spritesheet.png";
+
         const spritesheet = new Spritesheet( 
-            BaseTexture.from(spritsheetUrl),
+            BaseTexture.from(spritesheetUrl),
             atlasData,
         );
         SpriteSheetLoader.spritesheet = await spritesheet.parse();
