@@ -22,6 +22,9 @@ export class FireWorkContainer extends Container implements SlotMachineObserver 
         this.createMask();
     }
 
+    /*
+     * Create mask to hide symbols outside of frame
+     */
     private createMask() {
         const graphics = new Graphics();
         graphics.beginFill(0x000000);

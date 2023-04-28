@@ -18,8 +18,6 @@ export const config: Config = JSON.parse(JSON.stringify(configJSON));
 
 config.symbolSize = 660/config.reelLength;
 
-// or adjust symbols to fit reelCount?
-
 if (
     typeof config.reelCount !== 'number' ||
     typeof config.reelLength !== 'number' ||

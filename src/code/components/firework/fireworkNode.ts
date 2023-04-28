@@ -49,6 +49,9 @@ export class FireworkNode extends Container{
         }, this.delay);
     }
 
+    /*
+     * Move node randomly away from center of firework
+     */
     private moveNodeTween() {
         const { normalisedX, normalisedY } = getRandomVector();
 
@@ -64,6 +67,10 @@ export class FireworkNode extends Container{
         this.sprite.visible = false;
     }
 
+    /**
+     * Creates sprite for the firework node and increase it in size until it reaches 20x20
+     * Then it will be destroyed and will emit particles
+     */
     private createFireworkNodeSprite(texture: Texture): void {
         const sprite = new Sprite(texture);
         sprite.width = 0;

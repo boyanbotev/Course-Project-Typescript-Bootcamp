@@ -19,7 +19,7 @@ export class FakeAPI {
 
         switch (request.action) {
             case "init":
-                // Get tops of reels for intial positions, with + 1 for extra reel - doesn't work
+                // Get tops of reels for intial positions, with + 1 for extra symbol in reel that we don't see
                 const reelIndexes = Array(this.reelCount).fill(0);
                 response = {
                     "action": "init",
@@ -139,7 +139,7 @@ export class FakeAPI {
 
         const boardSize = this.reelLength * this.reelCount;
 
-        const winMultiplier = (bet * (Math.max(10 + (35-boardSize)), 10)) / (boardSize * 9.5); // put stuff into consts ?
+        const winMultiplier = (bet * (Math.max(10 + (35-boardSize)), 10)) / (boardSize * 9.5);
 
         const finalCount = roundToTwoDecimalPlaces(totalCount * winMultiplier);
 
