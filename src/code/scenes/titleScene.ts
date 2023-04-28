@@ -91,6 +91,9 @@ export class TitleScene extends Container implements Scene {
         }, duration * 360);
     }
 
+    /*
+     * Animates title, text and button down the screen
+     */
     private animateElements(duration: number): void {
         const finalYOffset = 100;
 

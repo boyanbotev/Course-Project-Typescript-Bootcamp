@@ -169,7 +169,7 @@ export class PIXISymbol extends Sprite implements Symbol {
     }
 
     private getFinalSymbol(): Texture {
-        return this.reel.FinalSymbol; // Could this be done by reel to symbol? like a set instead of a get?
+        return this.reel.FinalSymbol;
     }
     
     public set Velocity(velocity: number) {
