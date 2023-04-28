@@ -2,7 +2,6 @@ import { Container, Texture, BlurFilter } from "pixi.js";
 import { Background } from "../background/background";
 import { Manager } from "../../common/manager";
 import { gsap } from "gsap";
-import { SymbolBundle } from "../../common/types";
 import { CustomEase } from "gsap/all";
 import { SpriteSheetLoader } from "../../common/assets/spriteSheetLoader";
 

@@ -31,7 +31,7 @@ export class Title extends BigText {
 
     /*
      * Disabled due to optimisation concerns
-     * Updates gradient text to simulate lighting change
+     * Updates gradient text to simulate lighting change as title moves down
      */
     private updateGradientText() {
         const stops = this.style.fillGradientStops;
@@ -39,9 +39,7 @@ export class Title extends BigText {
 
         const stop0 = stops[0];
         let stop1 = stops[1] - i;
-
         let stop2 = stops[2] - i;
-
         let stop3 = stops[3] - i;
 
         if (stop1 < 0) {
