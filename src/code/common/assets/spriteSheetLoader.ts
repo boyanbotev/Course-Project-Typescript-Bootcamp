@@ -15,8 +15,6 @@ export class SpriteSheetLoader {
             atlasData,
         );
         SpriteSheetLoader.spritesheet = await spritesheet.parse();
-        console.log("spritesheet loaded");
-        console.log("spritesheet", SpriteSheetLoader.spritesheet);
     }
 
     public get SpriteSheet(): Dict<Texture<Resource>> {

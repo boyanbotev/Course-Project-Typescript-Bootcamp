@@ -36,7 +36,6 @@ export class Button extends Sprite {
         }
 
         if (options.scale) {
-            console.log(options.scale)
             this.scale.set(options.scale, options.scale);
         }
 

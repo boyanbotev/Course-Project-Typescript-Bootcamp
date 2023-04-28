@@ -60,8 +60,6 @@ export class PIXISlotMachine extends Container implements UIObserver, SlotMachin
         const sprites = SpriteSheetLoader.spritesheet;
         const symbols: Dict<Texture<Resource>> = getSymbols(sprites);
 
-        console.log("symbols", symbols);
-
         for (let i = 0; i < this.reelCount; i++) {
             const reel = new PIXIReel(
                 i, 

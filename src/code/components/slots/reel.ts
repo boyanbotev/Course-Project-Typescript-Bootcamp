@@ -47,7 +47,6 @@ export class PIXIReel extends Container implements Reel {
         for (let j = 0; j < this.reelLength; j++) {
             const symbol = new PIXISymbol(this.symbolSize, (this.symbolSize * this.reelLength), this);
 
-            //symbol.texture = this.symbolsBundle[initialSymbols[j]];
             symbol.texture = this.symbolsBundle[initialSymbols[j]];
     
             symbol.x = this.symbolSize * this.reelXIndex;
@@ -127,7 +126,6 @@ export class PIXIReel extends Container implements Reel {
 
     public getRandomTexture(): Texture {
         const randomIndex = Math.floor(Math.random() * Object.keys(this.symbolsBundle).length);
-        console.log('randomIndex: ', randomIndex);
         return this.symbolsBundle[randomIndex + 1];
     }
 
