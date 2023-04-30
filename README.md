@@ -1,6 +1,6 @@
 # Ancient Treasures
 
-This repository contains the code and assets for'Ancient Treaures,' a Slots game developed during the Evolution Typescript Bootcamp.
+This repository contains the code and assets for 'Ancient Treaures,' a Slots game developed during the Evolution Typescript Bootcamp.
 ### [Demo Build](https://boyanbotev.itch.io/slots-typescript-evolution-bootcamp-project)
 
 ### Features
