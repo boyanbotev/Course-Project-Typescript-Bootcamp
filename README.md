@@ -1,7 +1,8 @@
 # Ancient Treasures
 
 This repository contains the code and assets for 'Ancient Treasures,' a Slots game developed during the Evolution Typescript Bootcamp.
-### [Demo Build](https://boyanbotev.itch.io/slots-typescript-evolution-bootcamp-project)
+### [Demo Build with Frequent Wins](https://boyanbotev.itch.io/slots-typescript-evolution-bootcamp-project)
+### [Demo Build with Standard Win/Lose ratio](https://boyanbotev.itch.io/evolution-course-project)
 
 ### Features
 - Configurable number of reels and reel length
